@@ -1,0 +1,13 @@
+.loadingBar {
+    z-index: 600;
+    animation: loadingBar-hide 4s;
+}
+
+@keyframes loadingBar-hide {
+    0% {
+        opacity: 1;
+    } 100% {
+        opacity: 0;
+        display: none;
+    }
+}

@@ -1,0 +1,41 @@
+@media (max-width: 1140px) {
+    .adaptive_table_head {
+        display: none;
+    }
+
+    .adaptive-table {
+        display: flex;
+        flex-direction: row;
+
+    }
+
+    .adaptive-table tbody {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .adaptive-table thead {
+        display: block;
+    }
+
+    .adaptive-table tr {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+       
+    }
+
+    .adaptive-table td {
+
+        display: flex;
+        display: block;
+        justify-content: center;
+        gap: 30px;
+        
+    }
+
+    .adaptive-table th,
+    .adaptive-table td {
+        min-height: 150px;
+    }
+}

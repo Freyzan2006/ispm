@@ -2,9 +2,9 @@
 
 const AboutPage: React.FC = () => {
     return (
-        <div>
+        <main>
             <h2>About</h2>
-        </div>
+        </main>
     )
 }
 

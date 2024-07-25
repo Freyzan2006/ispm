@@ -4,10 +4,13 @@ import TableHead from "./TableHead/TableHead"
 
 const Table: React.FC = () => {
     return (
-        <table className="table p-5 adaptive-table">
-            <TableHead />
-            <TableBody />
-        </table>
+        <div className = "overflow-x-auto ">
+            <table className="table p-5 adaptive-table">
+                <TableHead />
+                <TableBody />
+            </table>
+        </div>
+
     )
 }
 

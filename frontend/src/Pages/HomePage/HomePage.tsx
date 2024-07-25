@@ -8,9 +8,9 @@ const HomePage: React.FC = () => {
 
 
     return (
-        <>
+        <main>
             <Table />  
-        </>
+        </main>
     )
 }
 

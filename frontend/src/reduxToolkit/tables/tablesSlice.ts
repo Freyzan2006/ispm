@@ -6,8 +6,11 @@ import { ITablesState, ITable } from "./Itables";
 
 const initialState: ITablesState  = {
   tables: [],
+  nextPage: null,
+  previousPage: null,
+  count: 0,
   status: null,
-  error: null 
+  error: null,
 };
   
 
@@ -23,12 +26,15 @@ const tablesSlice = createSlice({
         state.error = null;
       })
       .addCase(tablesFetch.fulfilled, (state, action: PayloadAction<ITable[]>) => {
-        state.status = 'resolved';
-        state.tables = action.payload;
+        state.status = 'succeeded';
+        state.tables = action.payload.results;
+        state.nextPage = action.payload.next;
+        state.previousPage = action.payload.previous;
+        state.count = action.payload.count;
       })
       .addCase(tablesFetch.rejected, (state, action: PayloadAction<string>) => {
         state.status = 'failed';
-        state.error = action.payload;
+        state.error = action.error.message;
       });
   }
 });

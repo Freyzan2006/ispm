@@ -7,6 +7,7 @@ import App from '../App.tsx'
 import HomePage from '../Pages/HomePage/HomePage.tsx';
 import AboutPage from "../Pages/AboutPage/AboutPage.tsx";
 import SearchPage from "../Pages/SearchPage/SearchPage.tsx";
+import LoginPage from "../Pages/LoginPage/LoginPage.tsx";
 
 
 const router = createBrowserRouter([
@@ -27,6 +28,11 @@ const router = createBrowserRouter([
         {
           path: "search",
           Component: SearchPage
+        },
+
+        {
+          path: "login",
+          Component: LoginPage
         }
       ]
     },

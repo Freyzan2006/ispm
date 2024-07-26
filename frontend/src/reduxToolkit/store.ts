@@ -6,6 +6,7 @@ import themeSlice from './theme/themeSlice';
 import screenDimmingSlice from './screenDimming/screenDimmingSlice';
 import loadingSlice from './loading/loadingSlice';
 import tablesSlice from './tables/tablesSlice';
+import authSlice from './auth/authSlice';
 
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -17,7 +18,8 @@ const store = configureStore({
     theme: themeSlice.reducer,
     screenDimming: screenDimmingSlice.reducer,
     loading: loadingSlice.reducer,
-    tables: tablesSlice.reducer
+    tables: tablesSlice.reducer,
+    auth: authSlice,
   },
 });
 

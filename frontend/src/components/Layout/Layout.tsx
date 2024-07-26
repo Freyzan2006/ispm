@@ -1,28 +1,58 @@
 
 
 
-import { Outlet } from "react-router-dom"
+import { Outlet, redirect } from "react-router-dom"
 import Header from "../Header/Header";
 import Container from "../Container/Container";
 import { Loading, ScreenDimming } from "../../widgets/Widgets";
 import Footer from "../Footer/Footer";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../reduxToolkit/useAppDispatch";
+import { RootState } from "../../reduxToolkit/store";
+import { logout, updateTokens } from "../../reduxToolkit/auth/authSlice";
+
 
 const Layout: React.FC = () => {
+
+    const dispatch = useAppDispatch();
+    const { accessToken, refreshToken } = useAppSelector((state: RootState) => state.auth);
+
+    useEffect(() => {
+        if (!accessToken && refreshToken) {
+            // Если токен доступа отсутствует, но есть токен обновления, обновляем токены
+            dispatch(updateTokens(refreshToken));
+        } else if (!accessToken && !refreshToken) {
+            // Если токен доступа и токен обновления отсутствуют, выходим из системы
+            
+            dispatch(logout());
+           
+        }
+
+        const redRect = setTimeout(() => {
+            return redirect("/login");
+        }, 500)
+
+        return () => {
+            clearTimeout(redRect)
+        }
+
+    }, [dispatch, accessToken, refreshToken]);
+
     return (
-        <>
-        <Loading time = { 3000 } />
+        <div className = "flex flex-col gap-10">
+            <Loading time = { 3000 } />
 
 
-        <Header />
+            <Header />
 
-        <Container>
-            <Outlet />
-        </Container>
+            <Container>
+                <Outlet />
+            </Container>
 
-        <Footer />
+            <Footer />
 
-        <ScreenDimming />
-    </>
+            <ScreenDimming />
+        </div>
     )
 }
 

@@ -22,5 +22,6 @@ urlpatterns = [
     path('api/v1/', include('rest_framework.urls')),
 
     path("api/v1/main/", include("main.urls")),
-    path("api/v1/table/", include("table.urls"))
+    path("api/v1/table/", include("table.urls")),
+    path("api/v1/user/", include("user.urls"))
 ]

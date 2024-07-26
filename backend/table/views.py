@@ -10,11 +10,12 @@ from table.serializers import TableModelSerializer, PublicationTypeSerializer
 #     def get(self, request):
 #         data = [{"name": "Hello world !"}]
 #         return Response(data)
-
+from rest_framework.permissions import IsAuthenticated
 
 class TableListCreateAPIView(generics.ListCreateAPIView):
     queryset = TableModel.objects.all()
     serializer_class = TableModelSerializer
+    permission_classes = [IsAuthenticated] 
 
 class TableDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = TableModel.objects.all()

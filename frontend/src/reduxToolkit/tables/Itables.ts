@@ -4,6 +4,9 @@ export interface ITablesState  {
     tables: ITable[];
     status: string | null;
     error: string | null;
+    nextPage: string | null,
+    previousPage: string | null,
+    count: number,
 }
   
 export interface ITable {

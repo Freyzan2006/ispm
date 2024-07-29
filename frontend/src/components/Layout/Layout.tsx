@@ -28,13 +28,7 @@ const Layout: React.FC = () => {
            
         }
 
-        const redRect = setTimeout(() => {
-            return redirect("/login");
-        }, 500)
-
-        return () => {
-            clearTimeout(redRect)
-        }
+   
 
     }, [dispatch, accessToken, refreshToken]);
 

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import tablesFetch from "../../../api/tablesFetch";
+import tablesFetch, { tablesUserFetch } from "../../../api/tablesFetch";
 
 import { useAppDispatch, useAppSelector } from "../../../reduxToolkit/useAppDispatch";
 
@@ -9,21 +9,32 @@ import TableItem from "../TableItem/TableItem";
 import { RootState } from "../../../reduxToolkit/store";
 
 import { TablesAPI } from "../../../api/api";
+import { ITableComponent } from "../ITable";
 
-const TableBody: React.FC = () => {
-    // const dispatch = useAppDispatch();
-    // const tables = useAppSelector<ITable[]>((state: RootState) => state.tables.tables);    
-    
-    // useEffect(() => {
-    //     dispatch(tablesFetch())
-    // }, [dispatch]) 
+const TableBody: React.FC<ITableComponent> = ({ isBelongsUser }) => {
+ 
 
     const dispatch = useAppDispatch();
     const { tables, status, error } = useAppSelector((state: RootState) => state.tables);
 
+    const userId = useAppSelector((state: RootState) => state.user.id)
+
     useEffect(() => {
-        dispatch(tablesFetch(TablesAPI))
-    }, [dispatch]) 
+        if (isBelongsUser) {
+            if (userId !== undefined) {
+                // Передайте объект с `url` и `userId` как указано в `createAsyncThunk`
+                dispatch(tablesUserFetch({ url: TablesAPI, userId }));
+            } else {
+                console.error('User ID is undefined');
+            }
+        } else {
+            dispatch(tablesFetch(TablesAPI));
+        }
+ 
+
+        
+        
+    }, [dispatch, userId, isBelongsUser]) 
 
 
 
@@ -31,6 +42,8 @@ const TableBody: React.FC = () => {
     if (status === 'failed') return <tbody><tr><td>{error}</td></tr></tbody>;
 
     return (  
+    
+
         <tbody>
             {
                 tables.map((el: ITable, index) => <TableItem key = { index } { ...el } />)

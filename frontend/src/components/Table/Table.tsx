@@ -1,9 +1,10 @@
 
+import { ITableComponent } from "./ITable"
 import TableBody from "./TableBody/TableBody"
 import TableHead from "./TableHead/TableHead"
 
 
-const Table: React.FC = () => {
+const Table: React.FC<ITableComponent> = ({ isBelongsUser }) => {
 
 
 
@@ -11,7 +12,7 @@ const Table: React.FC = () => {
         <div className = "overflow-x-auto ">
             <table className="table p-5 adaptive-table">
                 <TableHead />
-                <TableBody />
+                <TableBody isBelongsUser = { isBelongsUser } />
             </table>
 
     

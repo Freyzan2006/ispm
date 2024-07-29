@@ -1,6 +1,6 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+
 
 import { TokenAPI, RefreshTokenAPI } from './api';
 import axiosConfig from './axiosConfig';
@@ -16,3 +16,6 @@ export const refreshToken  = createAsyncThunk('auth/refreshToken', async (refres
     console.log(response.data)
     return response.data;
 });
+
+
+

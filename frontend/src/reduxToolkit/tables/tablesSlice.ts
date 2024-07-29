@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { tablesFetch } from "../../api/tablesFetch";
+import { tablesFetch, tablesUserFetch } from "../../api/tablesFetch";
 
 import { ITablesState, ITable } from "./Itables";
 
@@ -25,17 +25,35 @@ const tablesSlice = createSlice({
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(tablesFetch.fulfilled, (state, action: PayloadAction<ITable[]>) => {
+      .addCase(tablesFetch.fulfilled, (state, action: PayloadAction<ITablesApiResponse>) => {
         state.status = 'succeeded';
         state.tables = action.payload.results;
         state.nextPage = action.payload.next;
         state.previousPage = action.payload.previous;
         state.count = action.payload.count;
       })
-      .addCase(tablesFetch.rejected, (state, action: PayloadAction<string>) => {
+      .addCase(tablesFetch.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        state.error = action.error.message || 'Unknown error';
+      })
+
+
+      .addCase(tablesUserFetch.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(tablesUserFetch.fulfilled, (state, action: PayloadAction<ITablesApiResponse>) => {
+        state.status = 'succeeded';
+        state.tables = action.payload.results;
+        state.nextPage = action.payload.next;
+        state.previousPage = action.payload.previous;
+        state.count = action.payload.count;
+      })
+      .addCase(tablesUserFetch.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message || 'Unknown error';
       });
+     
   }
 });
   

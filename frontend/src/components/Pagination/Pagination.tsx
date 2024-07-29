@@ -22,6 +22,7 @@ const Pagination: React.FC = () => {
     const handlePageChange = (url: string | null, pageNumber: number) => {
         if (url) {
             setCurrentPage(pageNumber);
+            console.log(url)
             dispatch(tablesFetch(url));
         }
     };

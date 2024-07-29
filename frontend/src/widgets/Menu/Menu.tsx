@@ -12,6 +12,8 @@ import { RootState } from '../../reduxToolkit/store';
 import Theme from "../Theme/Theme";
 import MyLink from "../../widgets/MyLink/MyLink";
 import { logout } from "../../reduxToolkit/auth/authSlice";
+import { useEffect } from "react";
+import { fetchUserData } from "../../api/userFetch";
 
 
 const Menu: React.FC = () => {
@@ -20,7 +22,14 @@ const Menu: React.FC = () => {
 
     const { accessToken } = useAppSelector((state: RootState) => state.auth)
 
-    
+
+    const token = useAppSelector((state: RootState) => state.auth.accessToken);
+    const user = useAppSelector((state: RootState) => state.user);
+
+    useEffect(() => {
+        if (token) 
+            dispatch(fetchUserData(token))
+    }, [dispatch, token])
 
     return (
         <div className = { `${css.myMenu} ${isAction ? css.active : ""}  gap-5 pt-2 pb-2 ${isAction ? "bg-blue-600 dark:bg-slate-900" : ""}`}>
@@ -52,7 +61,7 @@ const Menu: React.FC = () => {
                             
                             
                             <MyLink to = "/search" styled = "opacity-100 transition gap-5 hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-cyan-500 shadow-lg shadow-cyan-500/50 flex justify-center items-center text-white"><FaSearch /> Поиск</MyLink>
-                            <MyLink to = "/user" styled = "opacity-100 transition hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-green-500 shadow-lg shadow-green-500/50 flex justify-center items-center text-white gap-3"><FaUserCircle /> User</MyLink>
+                            <MyLink to = "/user" styled = "opacity-100 transition hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-green-500 shadow-lg shadow-green-500/50 flex justify-center items-center text-white gap-3"><FaUserCircle /> { user.username }</MyLink>
                         
                             
                             

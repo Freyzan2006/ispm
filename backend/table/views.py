@@ -2,7 +2,7 @@
 
 from rest_framework import generics
 from table.models import TableModel, PublicationType
-from table.serializers import TableModelSerializer, PublicationTypeSerializer
+from table.serializers import TableModelSerializer, PublicationTypeSerializer, TableUserSerializer
 
 
 
@@ -17,6 +17,7 @@ class TableListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = TableModelSerializer
     permission_classes = [IsAuthenticated] 
 
+
 class TableDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = TableModel.objects.all()
     serializer_class = TableModelSerializer
@@ -25,3 +26,19 @@ class TableDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 class PublicationTypeCreateAPIView(generics.ListCreateAPIView):
     queryset = PublicationType.objects.all()
     serializer_class = PublicationTypeSerializer
+
+
+class TableListAPIView(generics.ListAPIView):
+    serializer_class = TableModelSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+
+        
+        user = self.request.user
+        for_user = self.request.query_params.get('for_user')
+
+        print(for_user)
+        if for_user:
+            return TableModel.objects.filter(for_user=for_user)
+        return TableModel.objects.all()

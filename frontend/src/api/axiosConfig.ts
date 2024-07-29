@@ -8,6 +8,7 @@ import authSlice, { logout, updateTokens } from '../reduxToolkit/auth/authSlice'
 
 const axiosConfig = axios.create({
     baseURL: `${BaseAPI}/`,
+    withCredentials: true,
 });
 
 axiosConfig.interceptors.request.use(
@@ -28,21 +29,24 @@ axiosConfig.interceptors.response.use(
         const { config, response } = error;
         const { auth } = store.getState();
 
-        if (response.status === 401 && auth.refreshToken) {
+        if (response && response.status === 401 && auth.refreshToken) {
             try {
-                const refreshResponse = await axios.post('refresh/', {
+                const refreshResponse = await axiosConfig.post('user/token/refresh/', {
                     refresh: auth.refreshToken,
                 });
                 store.dispatch(updateTokens(refreshResponse.data)); // Обновите токены в Redux
                 config.headers.Authorization = `JWT ${refreshResponse.data.access}`;
-                return axios(config);
+                return axiosConfig(config);
             } catch (err) {
                 store.dispatch(logout()); // Удалите токены при ошибке
+                console.log("Z")
                 return Promise.reject(err);
             }
         }
         return Promise.reject(error);
     }
 );
+
+
 
 export default axiosConfig;

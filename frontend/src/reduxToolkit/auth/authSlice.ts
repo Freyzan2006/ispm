@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { login, refreshToken } from '../../api/authFetch';
 import { RootState } from '../store';
@@ -16,8 +16,9 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        updateTokens(state, action) {
+        updateTokens(state, action: PayloadAction<{ access: string; refresh: string }>) {
             state.accessToken = action.payload.access;
+            state.refreshToken = action.payload.refresh;
             localStorage.setItem('accessToken', action.payload.access);
         },
 
@@ -33,22 +34,6 @@ const authSlice = createSlice({
     },
     extraReducers(builder) {
         builder
-            // .addCase(login.pending, (state) => {
-            //     state.status = 'loading';
-            // })
-            // .addCase(login.fulfilled, (state, action) => {
-            //     state.status = 'succeeded';
-            //     state.token = action.payload.access;
-            //     state.user = action.payload.user; // Assuming you get user info in the response
-            // })
-            // .addCase(login.rejected, (state, action) => {
-            //     state.status = 'failed';
-            //     state.error = action.error.message;
-            // })
-            // .addCase(refreshToken.fulfilled, (state, action) => {
-            //     state.token = action.payload.access;
-            // });
-
             .addCase(login.fulfilled, (state, action) => {
                 state.accessToken = action.payload.access;
                 state.refreshToken = action.payload.refresh;

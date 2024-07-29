@@ -1,5 +1,5 @@
 import { AsyncThunk, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+
 
 import { TablesAPI } from './api';
 import { ITablesState } from '../reduxToolkit/tables/Itables';
@@ -7,13 +7,28 @@ import { ITablesState } from '../reduxToolkit/tables/Itables';
  
 import axiosConfig from './axiosConfig';
 
-// Создайте асинхронный экшен для получения данных с сервера
-export const tablesFetch: AsyncThunk<ITablesState[], string, {}> = createAsyncThunk<ITablesState[], string>('table/fetchTableData', async (url: string = TablesAPI) => {
-    // Выполните запрос к API
-    const response = await axiosConfig.get(url);
-    // Возвращаем данные в формате, который будет обработан в extraReducers
+
+
+
+
+// Асинхронный экшен для получения всех данных
+export const tablesFetch: AsyncThunk<ITablesState[], string, {}> = createAsyncThunk<ITablesState[], string>('table/fetchAllTableData', async (url) => {
+    const response = await axiosConfig.get(`${ url ? url  : TablesAPI}`, {
+        headers: {
+            'Authorization': `JWT ${localStorage.getItem('access_token')}`
+        }
+    });
     return response.data;
 });
 
+
+export const tablesUserFetch = createAsyncThunk<ITablesState, { url: string, userId: number }>(
+    'table/fetchUserTableData',
+    async ({ url, userId }) => {
+        
+        const response = await axiosConfig.get(`${TablesAPI}tableUser`, { params: { for_user: userId } });
+        return response.data;
+    }
+  );
 
 export default tablesFetch;

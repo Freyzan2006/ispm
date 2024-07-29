@@ -10,6 +10,8 @@ import { RootState } from "../../reduxToolkit/store";
 import { login } from "../../api/authFetch";
 import { redirect } from "react-router-dom";
 
+
+
 const LoginPage: React.FC = () => {
 
     const [username, setUsername] = useState<string>('');
@@ -35,11 +37,13 @@ const LoginPage: React.FC = () => {
                 <input placeholder = "Имя" type="text" 
                     className = { css.LoginPage__login } 
                     onChange = { (e) => setUsername(e.target.value) }
+                    value = { username }
                 />
                 <div className = "w-full flex justify-center items-center gap-5">
                     <input placeholder = "Пароль" type = { isShowPassword ? "text" : "password" } 
                         className = { css.LoginPage__password } 
                         onChange = { (e) => setPassword(e.target.value) }
+                        value = { password }
                     />
                     <button type = "button" onClick = { () => setIsShowPassword(!isShowPassword) } className = "transition hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-green-500 shadow-lg shadow-green-500/50 flex justify-center items-center text-white gap-3">
                         { isShowPassword ? <FaEyeSlash /> : <FaEye /> }

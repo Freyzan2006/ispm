@@ -1,0 +1,39 @@
+.SearchPage {
+    border-radius: 30px;
+    max-width: 500px;
+    width: 100%;
+    min-height: 300px;
+    padding: 15px 0;
+    
+    box-shadow: 5px 5px 5px rgba(255, 255, 255, 0.205);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+
+    &__search {
+        color: aliceblue;
+        padding-left: 5px;
+        border-radius: 5px;
+        border: solid 1px white;
+        background: none;
+        box-shadow: 5px 5px 5px rgba(255, 255, 255, 0.281);
+        outline: none;
+        max-width: 250px;
+        width: 100%;
+        height: 50px;
+        transition: 0.5s all ease;
+    }
+
+    &__search:hover {
+        box-shadow: 5px 5px 5px white;
+        transform: scale(105%);
+    } 
+
+
+    &__submit {
+
+    }
+}

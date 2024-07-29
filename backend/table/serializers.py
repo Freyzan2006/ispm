@@ -13,3 +13,9 @@ class TableModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = TableModel
         fields = '__all__'
+
+
+class TableUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TableModel
+        fields = "__all__" 

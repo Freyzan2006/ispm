@@ -20,6 +20,7 @@ const authSlice = createSlice({
             state.accessToken = action.payload.access;
             state.refreshToken = action.payload.refresh;
             localStorage.setItem('accessToken', action.payload.access);
+            // localStorage.setItem('refreshToken', action.payload.refresh);
         },
 
         logout(state) {
@@ -28,21 +29,52 @@ const authSlice = createSlice({
             state.accessToken = null;
             state.refreshToken = null;
 
+            
+
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
         },
     },
     extraReducers(builder) {
         builder
+            // .addCase(login.fulfilled, (state, action) => {
+            //     state.accessToken = action.payload.access;
+            //     state.refreshToken = action.payload.refresh;
+            //     localStorage.setItem('accessToken', action.payload.access);
+            //     localStorage.setItem('refreshToken', action.payload.refresh);
+            // })
+            // .addCase(refreshToken.fulfilled, (state, action) => {
+            //     state.accessToken = action.payload.access;
+            //     localStorage.setItem('accessToken', action.payload.access);
+            // });
+
+            .addCase(login.pending, (state) => {
+                state.status = 'loading';
+            })
             .addCase(login.fulfilled, (state, action) => {
                 state.accessToken = action.payload.access;
                 state.refreshToken = action.payload.refresh;
                 localStorage.setItem('accessToken', action.payload.access);
                 localStorage.setItem('refreshToken', action.payload.refresh);
+                state.status = 'succeeded';
+            })
+            .addCase(login.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message || 'Failed to login';
+            })
+            .addCase(refreshToken.pending, (state) => {
+                state.status = 'loading';
             })
             .addCase(refreshToken.fulfilled, (state, action) => {
                 state.accessToken = action.payload.access;
+                state.refreshToken = action.payload.refresh; // Обновляем refreshToken тоже
                 localStorage.setItem('accessToken', action.payload.access);
+                localStorage.setItem('refreshToken', action.payload.refresh);
+                state.status = 'succeeded';
+            })
+            .addCase(refreshToken.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message || 'Failed to refresh token';
             });
     },
 });

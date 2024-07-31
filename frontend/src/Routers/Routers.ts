@@ -9,6 +9,8 @@ import AboutPage from "../Pages/AboutPage/AboutPage.tsx";
 import SearchPage from "../Pages/SearchPage/SearchPage.tsx";
 import LoginPage from "../Pages/LoginPage/LoginPage.tsx";
 import UserPage from "../Pages/UserPage/UserPage.tsx";
+import EditPage from "../Pages/EditPage/EditPage.tsx";
+import DeletePage from "../Pages/DeletePage/DeletePage.tsx";
 
 
 const router = createBrowserRouter([
@@ -39,6 +41,16 @@ const router = createBrowserRouter([
         {
           path: "user",
           Component: UserPage
+        },
+
+        {
+          path: "change/:id",
+          Component: EditPage
+        },
+
+        {
+          path: "delete/:id",
+          Component: DeletePage
         }
       ]
     },

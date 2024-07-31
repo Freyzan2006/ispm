@@ -8,7 +8,7 @@ import { FaEyeSlash } from "react-icons/fa6";
 import { useAppDispatch, useAppSelector } from "../../reduxToolkit/useAppDispatch";
 import { RootState } from "../../reduxToolkit/store";
 import { login } from "../../api/authFetch";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 
 
 
@@ -18,7 +18,7 @@ const LoginPage: React.FC = () => {
     const [password, setPassword] = useState<string>('');
     const dispatch = useAppDispatch();
     const status = useAppSelector((state: RootState) => state.auth.status);
-
+    const navigate = useNavigate();
 
     const [ isShowPassword, setIsShowPassword ] = useState<boolean>(false);
 
@@ -27,7 +27,8 @@ const LoginPage: React.FC = () => {
         if (username && password)
             dispatch(login({ username, password }));
 
-        return redirect("");
+
+        navigate("/")
     }
 
     return (

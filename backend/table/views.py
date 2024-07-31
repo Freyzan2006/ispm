@@ -4,7 +4,9 @@ from rest_framework import generics
 from table.models import TableModel, PublicationType
 from table.serializers import TableModelSerializer, PublicationTypeSerializer, TableUserSerializer
 
-
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 # class TableView(APIView):
 #     def get(self, request):
@@ -42,3 +44,15 @@ class TableListAPIView(generics.ListAPIView):
         if for_user:
             return TableModel.objects.filter(for_user=for_user)
         return TableModel.objects.all()
+
+
+class TableDeleteAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk, format=None):
+        my_model = self.get_object(pk)
+        # Проверка на соответствие владельцу (если необходимо)
+        if my_model.owner != request.user:
+            return Response({'detail': 'У вас нет прав на удаление этой записи.'}, status=status.HTTP_403_FORBIDDEN)
+        my_model.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

@@ -13,7 +13,8 @@
     align-items: center;
     gap: 30px;
 
-    &__search {
+    &__search,
+    &__selector {
         color: aliceblue;
         padding-left: 5px;
         border-radius: 5px;
@@ -27,10 +28,22 @@
         transition: 0.5s all ease;
     }
 
-    &__search:hover {
+    &__search:hover,
+    &__selector:hover {
         box-shadow: 5px 5px 5px white;
         transform: scale(105%);
     } 
+
+    &__selector option {
+        background-color: rgba(255, 255, 255, 0.021); /* Прозрачный фон */
+        color: #333; /* Цвет текста */
+        border: 1px solid rgba(0, 0, 0, 0.2); /* Прозрачная граница */
+    }
+
+    &__selector option:hover {
+        background-color: aliceblue;
+        color: black;
+    }
 
 
     &__submit {

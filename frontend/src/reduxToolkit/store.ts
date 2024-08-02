@@ -8,6 +8,8 @@ import loadingSlice from './loading/loadingSlice';
 import tablesSlice from './tables/tablesSlice';
 import authSlice from './auth/authSlice';
 import userSlice from './user/userSlice';
+import usersSlice from './users/usersSlice';
+import publicTypeSlice from './publicType/publicTypeSlice';
 
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -22,6 +24,8 @@ const store = configureStore({
     tables: tablesSlice.reducer,
     auth: authSlice,
     user: userSlice,
+    users: usersSlice,
+    publicTypes: publicTypeSlice
   },
 });
 

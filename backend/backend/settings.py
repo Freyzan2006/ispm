@@ -119,9 +119,11 @@ INSTALLED_APPS = [
     "search"
 ]
 
+# AUTH_USER_MODEL = "user.UserModel"
+
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 2,
+    # 'PAGE_SIZE': 2,
 
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.

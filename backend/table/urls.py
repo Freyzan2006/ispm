@@ -4,7 +4,7 @@ from table.views import TableListCreateAPIView, TableDetailAPIView, PublicationT
 
 urlpatterns = [
     path('', TableListCreateAPIView.as_view(), name='table-list-create'),
-    # path('', TableListAPIView.as_view(), name='table-list-create'),
+  
 
 
     path('<int:pk>/', TableDetailAPIView.as_view(), name='table-detail'),

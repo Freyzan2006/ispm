@@ -8,16 +8,20 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from rest_framework.permissions import AllowAny
+
 # class TableView(APIView):
 #     def get(self, request):
 #         data = [{"name": "Hello world !"}]
 #         return Response(data)
 from rest_framework.permissions import IsAuthenticated
+from table.pagination import TablePagination
 
 class TableListCreateAPIView(generics.ListCreateAPIView):
-    queryset = TableModel.objects.all()
+    queryset = TableModel.objects.all().order_by('id') 
     serializer_class = TableModelSerializer
     permission_classes = [IsAuthenticated] 
+    pagination_class = TablePagination
 
 
 class TableDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -28,6 +32,7 @@ class TableDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 class PublicationTypeCreateAPIView(generics.ListCreateAPIView):
     queryset = PublicationType.objects.all()
     serializer_class = PublicationTypeSerializer
+    permission_classes = [AllowAny]
 
 
 class TableListAPIView(generics.ListAPIView):

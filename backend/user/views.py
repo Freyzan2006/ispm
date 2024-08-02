@@ -13,9 +13,11 @@ from rest_framework.response import Response
 # from rest_framework.response import Response
 # from rest_framework import status
 
+from django.contrib.auth.models import User
+
 from user.serializers import UserSerializer
 
-from django.contrib.auth.models import User
+
 
 
 class RegisterView(generics.CreateAPIView):
@@ -34,3 +36,15 @@ class UserView(APIView):
             'username': user.username,
             # добавьте другие поля, которые хотите вернуть
         }) 
+
+# from user.models import UserModel
+
+class UserListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        print("Response data:", response.data)  # Добавьте отладочную информацию
+        return response

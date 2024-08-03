@@ -1,6 +1,6 @@
 
-import { RootState } from "../../reduxToolkit/store";
-import { useAppSelector } from "../../reduxToolkit/useAppDispatch";
+import { RootState } from "../../state/store";
+import { useAppSelector } from "../../state/useAppDispatch";
 import css from "./ScreenDimming.module.scss";
 
 const ScreenDimming: React.FC = () => {

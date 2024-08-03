@@ -11,12 +11,15 @@ from django.db.models import Q
 
 # from django.contrib.auth.models import User
 
+from table.pagination import TablePagination
+
 class SearchListAPIView(generics.ListAPIView):
     serializer_class = TableModelSerializer
     # permission_classes = [IsAuthenticated]
+    pagination_class = TablePagination
 
     def get_queryset(self):
-        table: TableModel
+        
         
         # user = self.request.user
         search_name = self.request.query_params.get('searchName', '').strip()

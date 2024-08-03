@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUsers } from "../../api/usersFetch";
+import { fetchUsers } from "../api/usersFetch";
 
 interface User {
   id: number;

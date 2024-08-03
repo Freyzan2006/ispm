@@ -1,9 +1,9 @@
 
 
 import { useState } from "react";
-import tablesFetch from "../../api/tablesFetch";
-import { RootState } from "../../reduxToolkit/store";
-import { useAppDispatch, useAppSelector } from "../../reduxToolkit/useAppDispatch";
+import { tablesThunk } from "../../state/tables/tablesThunk";
+import { RootState } from "../../state/store";
+import { useAppDispatch, useAppSelector } from "../../state/useAppDispatch";
 
 import { RiPagesLine } from "react-icons/ri";
 
@@ -22,8 +22,7 @@ const Pagination: React.FC = () => {
     const handlePageChange = (url: string | null, pageNumber: number) => {
         if (url) {
             setCurrentPage(pageNumber);
-            console.log(url)
-            dispatch(tablesFetch(url));
+            dispatch(tablesThunk(url));
         }
     };
 

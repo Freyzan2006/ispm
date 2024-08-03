@@ -2,12 +2,12 @@ import { redirect, useNavigate, useParams } from 'react-router-dom';
 
 import { GrStatusGood } from "react-icons/gr";
 import { RxCross1 } from "react-icons/rx";
-import { useAppDispatch, useAppSelector } from '../../reduxToolkit/useAppDispatch';
-import { RootState } from '../../reduxToolkit/store';
-import { ITable } from '../../reduxToolkit/tables/Itables';
+import { useAppDispatch, useAppSelector } from '../../state/useAppDispatch';
+import { RootState } from '../../state/store';
+import { ITable } from '../../state/tables/Itables';
 import { Loading, MyLink } from '../../widgets/Widgets';
 import { useEffect, useState } from 'react';
-import axiosConfig from '../../api/axiosConfig';
+import axiosConfig from '../../state/api/axiosConfig';
 
 
 

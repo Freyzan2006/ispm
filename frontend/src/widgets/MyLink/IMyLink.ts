@@ -1,7 +1,8 @@
+import { EPath } from "../../Routers/ERouters";
 
 
 export interface IProps {
-    to: string;
+    to: EPath | string;
     children: React.ReactNode;
     styled?: string;
 }

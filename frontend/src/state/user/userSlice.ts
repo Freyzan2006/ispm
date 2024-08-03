@@ -1,7 +1,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { UserState } from "./Iuser";
-import { fetchUserData } from "../../api/userFetch";
+import { fetchUserData } from "../api/userFetch";
 
 
 const initialState: UserState = {

@@ -1,9 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { tablesFetch, tablesUserFetch } from "../../api/tablesFetch";
+import { searchTablesThunk, tablesThunk, tablesUserThunk } from "./tablesThunk";
 
-import { ITablesState, ITable } from "./Itables";
-import { searchTablesFetch } from "../../api/seatchTablesFetch";
+import { ITablesApiResponse, ITablesState } from "./Itables";
+
 
 const initialState: ITablesState  = {
   tables: [],
@@ -22,52 +22,52 @@ const tablesSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      .addCase(tablesFetch.pending, (state) => {
+      .addCase(tablesThunk.pending, (state) => {
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(tablesFetch.fulfilled, (state, action: PayloadAction<ITablesApiResponse>) => {
+      .addCase(tablesThunk.fulfilled, (state, action: PayloadAction<ITablesApiResponse>) => {
         state.status = 'succeeded';
         state.tables = action.payload.results;
         state.nextPage = action.payload.next;
         state.previousPage = action.payload.previous;
         state.count = action.payload.count;
       })
-      .addCase(tablesFetch.rejected, (state, action) => {
+      .addCase(tablesThunk.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || 'Unknown error';
       })
 
 
-      .addCase(tablesUserFetch.pending, (state) => {
+      .addCase(tablesUserThunk.pending, (state) => {
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(tablesUserFetch.fulfilled, (state, action: PayloadAction<ITablesApiResponse>) => {
+      .addCase(tablesUserThunk.fulfilled, (state, action: PayloadAction<ITablesApiResponse>) => {
         state.status = 'succeeded';
         state.tables = action.payload.results;
         state.nextPage = action.payload.next;
         state.previousPage = action.payload.previous;
         state.count = action.payload.count;
       })
-      .addCase(tablesUserFetch.rejected, (state, action) => {
+      .addCase(tablesUserThunk.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || 'Unknown error';
       })
 
 
-      .addCase(searchTablesFetch.pending, (state) => {
+      .addCase(searchTablesThunk.pending, (state) => {
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(searchTablesFetch.fulfilled, (state, action: PayloadAction<ITablesApiResponse>) => {
+      .addCase(searchTablesThunk.fulfilled, (state, action: PayloadAction<ITablesApiResponse>) => {
         state.status = 'succeeded';
         state.tables = action.payload.results;
         state.nextPage = action.payload.next;
         state.previousPage = action.payload.previous;
         state.count = action.payload.count;
       })
-      .addCase(searchTablesFetch.rejected, (state, action) => {
+      .addCase(searchTablesThunk.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || 'Unknown error';
       });

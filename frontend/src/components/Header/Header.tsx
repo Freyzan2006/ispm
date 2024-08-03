@@ -2,19 +2,13 @@ import Logo from "../../widgets/Logo/Logo";
 import Container from "../Container/Container";
 import { Menu } from "../../widgets/Widgets";
 import NavBar from "../NavBar/NavBar";
-import css from "./Header.module.scss";
-import { useAppDispatch, useAppSelector } from "../../reduxToolkit/useAppDispatch";
-import { RootState } from "../../reduxToolkit/store";
-import { useEffect } from "react";
-import { fetchUserData } from "../../api/userFetch";
+
+
 
 const Header: React.FC = () => {
 
-
-
-
     return (
-        <header className = { css.header + " bg-blue-600 dark:bg-slate-900 w-full shadow-lg shadow-black-100/50 h-[100px]" }>
+        <header className = { `css.header bg-blue-600 dark:bg-slate-900 w-full shadow-lg shadow-black-100/50 h-[100px]` }>
         
             <Container> 
                 <NavBar>

@@ -1,15 +1,17 @@
 import { useEffect } from "react";
-import tablesFetch, { tablesUserFetch } from "../../../api/tablesFetch";
+import { tablesThunk } from "../../../state/tables/tablesThunk";
 
-import { useAppDispatch, useAppSelector } from "../../../reduxToolkit/useAppDispatch";
+import { useAppDispatch, useAppSelector } from "../../../state/useAppDispatch";
 
-import { ITable } from "../../../reduxToolkit/tables/Itables";
+import { ITable } from "../../../state/tables/Itables";
 import TableItem from "../TableItem/TableItem";
 
-import { RootState } from "../../../reduxToolkit/store";
+import { RootState } from "../../../state/store";
 
-import { TablesAPI } from "../../../api/api";
+import { TablesAPI } from "../../../state/api/api";
 import { ITableComponent } from "../ITable";
+import { tablesUserThunk } from "../../../state/tables/tablesThunk";
+import { TableAPI } from "../../../state/api/EAPI";
 
 const TableBody: React.FC<ITableComponent> = ({ isBelongsUser }) => {
  
@@ -23,12 +25,12 @@ const TableBody: React.FC<ITableComponent> = ({ isBelongsUser }) => {
         if (isBelongsUser) {
             if (userId !== undefined) {
                 // Передайте объект с `url` и `userId` как указано в `createAsyncThunk`
-                dispatch(tablesUserFetch({ url: TablesAPI, userId }));
+                dispatch(tablesUserThunk({ userId }));
             } else {
                 console.error('User ID is undefined');
             }
         } else {
-            dispatch(tablesFetch(TablesAPI));
+            dispatch(tablesThunk(TablesAPI));
         }
  
 
@@ -41,6 +43,7 @@ const TableBody: React.FC<ITableComponent> = ({ isBelongsUser }) => {
     if (status === 'loading') return <tbody><tr><td>Loading...</td></tr></tbody>;
     if (status === 'failed') return <tbody><tr><td>{error}</td></tr></tbody>;
 
+   
     return (  
     
 
@@ -50,6 +53,7 @@ const TableBody: React.FC<ITableComponent> = ({ isBelongsUser }) => {
             }           
         </tbody>
     )
+    
 }
 
 export default TableBody;

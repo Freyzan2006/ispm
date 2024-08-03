@@ -1,55 +1,51 @@
 
 import { createBrowserRouter } from "react-router-dom";
 
-
+import { ERouters } from "./ERouters.ts";
 
 import App from '../App.tsx'
-import HomePage from '../Pages/HomePage/HomePage.tsx';
-import AboutPage from "../Pages/AboutPage/AboutPage.tsx";
-import SearchPage from "../Pages/SearchPage/SearchPage.tsx";
-import LoginPage from "../Pages/LoginPage/LoginPage.tsx";
-import UserPage from "../Pages/UserPage/UserPage.tsx";
-import EditPage from "../Pages/EditPage/EditPage.tsx";
-import DeletePage from "../Pages/DeletePage/DeletePage.tsx";
+import { HomePage, AboutPage, SearchPage,
+  LoginPage, UserPage, EditPage, DeletePage
+} from "../Pages/Page.ts";
 
 
 const router = createBrowserRouter([
     {
-      path: "*",
+      path: ERouters.APP,
       Component: App,
       children: [
         {
-          path: "",
+          path: ERouters.HOME,
           Component: HomePage
         },
   
         {
-          path: "about",
+          path: ERouters.ABOUT,
           Component: AboutPage,
         },
 
         {
-          path: "search",
+          path: ERouters.SEARCH,
           Component: SearchPage
         },
 
         {
-          path: "login",
+          path: ERouters.LOGIN,
           Component: LoginPage
         },
 
         {
-          path: "user",
+          path: ERouters.USER,
           Component: UserPage
         },
 
         {
-          path: "change/:id",
+          path: ERouters.EDIT,
           Component: EditPage
         },
 
         {
-          path: "delete/:id",
+          path: ERouters.DELETE,
           Component: DeletePage
         }
       ]

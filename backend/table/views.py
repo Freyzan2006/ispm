@@ -38,6 +38,7 @@ class PublicationTypeCreateAPIView(generics.ListCreateAPIView):
 class TableListAPIView(generics.ListAPIView):
     serializer_class = TableModelSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = TablePagination
 
     def get_queryset(self):
 

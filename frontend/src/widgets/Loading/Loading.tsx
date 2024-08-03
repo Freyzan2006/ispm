@@ -2,9 +2,9 @@
 import { useEffect } from "react";
 import LoadingImg from "../../Assets/loading.gif";
 import { IProps } from "./ILoading";
-import { useAppDispatch, useAppSelector } from "../../reduxToolkit/useAppDispatch";
-import { RootState } from "../../reduxToolkit/store";
-import { isLoading } from "../../reduxToolkit/loading/loadingSlice";
+import { useAppDispatch, useAppSelector } from "../../state/useAppDispatch";
+import { RootState } from "../../state/store";
+import { isLoading } from "../../state/loading/loadingSlice";
 
 import css from "./Loading.module.scss";
 

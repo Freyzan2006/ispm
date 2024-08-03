@@ -5,7 +5,7 @@ import './index.scss'
 import "./input.css"
 import { Provider } from 'react-redux'
 
-import store from "./reduxToolkit/store.ts";
+import store from "./state/store.ts";
 
 
 import { RouterProvider } from "react-router-dom";

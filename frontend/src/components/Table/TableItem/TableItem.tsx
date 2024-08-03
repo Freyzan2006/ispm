@@ -1,8 +1,8 @@
 
 
-import { RootState } from "../../../reduxToolkit/store";
-import { ITable } from "../../../reduxToolkit/tables/Itables";
-import { useAppSelector } from "../../../reduxToolkit/useAppDispatch";
+import { RootState } from "../../../state/store";
+import { ITable } from "../../../state/tables/Itables";
+import { useAppSelector } from "../../../state/useAppDispatch";
 
 import { RiDeleteBin6Fill } from "react-icons/ri";
 

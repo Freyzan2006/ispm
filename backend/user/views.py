@@ -48,3 +48,28 @@ class UserListView(generics.ListAPIView):
         response = super().get(request, *args, **kwargs)
         print("Response data:", response.data)  # Добавьте отладочную информацию
         return response
+
+
+from django.conf import settings
+from django.http import JsonResponse
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.views import TokenRefreshView
+
+class CustomTokenRefreshView(TokenRefreshView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        refresh_token = request.data.get('refresh')
+        if refresh_token:
+            try:
+                token = RefreshToken(refresh_token)
+                response.set_cookie(
+                    'refresh_token',
+                    refresh_token,
+                    max_age=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
+                    httponly=True,
+                    secure=True,
+                    samesite='None'
+                )
+            except Exception as e:
+                return JsonResponse({'detail': str(e)}, status=400)
+        return response

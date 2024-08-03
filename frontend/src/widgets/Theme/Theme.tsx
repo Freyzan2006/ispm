@@ -1,8 +1,8 @@
 
 import { FaMoon } from "react-icons/fa";
 import css from "./Theme.module.scss";
-import { useAppDispatch, useAppSelector } from "../../reduxToolkit/useAppDispatch";
-import { RootState } from "../../reduxToolkit/store";
+import { useAppDispatch, useAppSelector } from "../../state/useAppDispatch";
+import { RootState } from "../../state/store";
 
 import { MdWbSunny } from "react-icons/md";
 
@@ -10,9 +10,9 @@ import { MdWbSunny } from "react-icons/md";
 import React, { useEffect } from "react";
 
 
-import { changeTheme, initializeTheme } from "../../reduxToolkit/theme/themeSlice";
+import { changeTheme, initializeTheme } from "../../state/theme/themeSlice";
 
-import { ETheme } from "../../reduxToolkit/theme/ETheme";
+import { ETheme } from "../../state/theme/ETheme";
 
 const Theme: React.FC = () => {
     const dispatch = useAppDispatch();

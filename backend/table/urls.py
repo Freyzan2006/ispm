@@ -12,7 +12,7 @@ urlpatterns = [
     path("publicType/", PublicationTypeCreateAPIView.as_view(), name = "public-type"),
 
 
-    path("tableUser", TableListAPIView.as_view(), name = "table-user"),
+    path("tableUser/", TableListAPIView.as_view(), name = "table-user"),
 
     path("delete/<int:pk>/", TableDeleteAPIView.as_view(), name = "delete-table")
     

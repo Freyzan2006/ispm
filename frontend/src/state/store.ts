@@ -12,6 +12,7 @@ import usersSlice from './users/usersSlice';
 import publicTypeSlice from './publicType/publicTypeSlice';
 
 
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 

@@ -1,23 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUsers } from "../../api/usersFetch";
-import { publicTypeFetch } from "../../api/publicTypeFetch";
 
-interface IPublicType {
-  id: number;
-  title: string;
-  // добавьте другие поля по необходимости
-}
+import { publicTypeFetch } from "./publicTypeFetch";
 
-interface IPublicTypeState {
-    publicTypes: IPublicType[];
-    status2: 'idle' | 'loading' | 'failed';
-    error2: string | null
-}
+import { IPublicTypeState } from "./IpublicType";
 
 const initialState: IPublicTypeState = {
-    publicTypes: [],
-    status2: 'idle',
-    error2: null,
+  publicTypes: [],
+  status: 'idle',
+  error: null,
 };
 
 const publicTypeSlice = createSlice({
@@ -27,15 +17,16 @@ const publicTypeSlice = createSlice({
     extraReducers: (builder) => {
       builder
         .addCase(publicTypeFetch.pending, (state) => {
-            state.status2 = 'loading';
+            state.status = 'loading';
+            state.error = null;
         })
         .addCase(publicTypeFetch.fulfilled, (state, action) => {
-            state.status2 = 'idle';
+            state.status = 'idle';
             state.publicTypes = action.payload;
         })
         .addCase(publicTypeFetch.rejected, (state, action) => {
-            state.status2 = 'failed';
-            state.error2 = action.error.message;
+            state.status = 'failed';
+            state.error = action.error.message || 'An unknown error occurred';
             console.error("Fetch users failed:", action.error.message); // Добавьте отладочную информацию
         });
     },

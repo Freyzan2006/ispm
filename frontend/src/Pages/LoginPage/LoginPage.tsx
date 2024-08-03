@@ -5,10 +5,11 @@ import css from "./LoginPage.module.scss";
 import { FaEye } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
-import { useAppDispatch, useAppSelector } from "../../reduxToolkit/useAppDispatch";
-import { RootState } from "../../reduxToolkit/store";
-import { login } from "../../api/authFetch";
+import { useAppDispatch, useAppSelector } from "../../state/useAppDispatch";
+import { RootState } from "../../state/store";
+import { login } from "../../state/auth/authThunk";
 import { redirect, useNavigate } from "react-router-dom";
+import { EPath } from "../../Routers/ERouters";
 
 
 
@@ -22,13 +23,19 @@ const LoginPage: React.FC = () => {
 
     const [ isShowPassword, setIsShowPassword ] = useState<boolean>(false);
 
-    const handlerSubmit = (e: React.FormEvent<HTMLElement>) => {
+    const handlerSubmit = async (e: React.FormEvent<HTMLElement>) => {
         e.preventDefault();
-        if (username && password)
-            dispatch(login({ username, password }));
+        // if (username && password)
+        //     dispatch(login({ username, password }));
+
+        try {
+            await dispatch(login({ username, password })).unwrap();
+        } catch (error) {
+            console.error('Failed to login:', error);
+        }
 
 
-        navigate("/")
+        navigate(EPath.HOME)
     }
 
     return (

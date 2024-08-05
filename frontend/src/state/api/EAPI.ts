@@ -33,3 +33,10 @@ export enum SearchAPI {
 export enum KeyWordJWT {
     KEY = "JWT"
 }
+
+export enum EStatus {
+    IDLE = "idle",
+    LOADING = "loading",
+    SUCCEEDED = "succeeded",
+    FAILED = "failed",
+}

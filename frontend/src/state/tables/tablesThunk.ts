@@ -7,18 +7,12 @@ import { SearchAPI, TableAPI } from '../api/EAPI';
 
 
 
-export const tablesThunk = createAsyncThunk<ITablesApiResponse, {}, { rejectValue: string }>(
+export const tablesThunk = createAsyncThunk<ITablesApiResponse, { url?: string }, { rejectValue: string }>(
     'table/fetchAllTableData',
-    async ({}, { rejectWithValue }) => {
+    async ({ url }, { rejectWithValue }) => {
         try {
-            const response = await axiosConfig.get<ITablesApiResponse>(`${TableAPI.ALL_TABLE_GET}`, {
-                // headers: {
-                //     'Authorization': `${KeyWordJWT.KEY} ${localStorage.getItem('access_token')}`
-                // }
-            });
-
-          
-            
+            const urlNow = url ? url : TableAPI.ALL_TABLE_GET;
+            const response = await axiosConfig.get<ITablesApiResponse>(urlNow);
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data || 'Failed to fetch tables');
@@ -32,9 +26,7 @@ export const tablesUserThunk = createAsyncThunk<ITablesApiResponse, { userId: nu
         try {
             const response = await axiosConfig.get<ITablesApiResponse>(TableAPI.ALL_TABLE_USER_GET, {
                 params: { for_user: userId },
-                // headers: {
-                //     'Authorization': `${KeyWordJWT.KEY} ${localStorage.getItem('access_token')}`
-                // }
+
             });
 
             return response.data;
@@ -53,22 +45,21 @@ export const tablesUserThunk = createAsyncThunk<ITablesApiResponse, { userId: nu
 
 export const searchTablesThunk = createAsyncThunk<ITablesApiResponse, ISearchFiled, {}>(
     'table/searchFetchAllTableData', 
-    async ({ searchName, searchDate, searchCoauthor }) => {
+    async ({ searchName, searchPublicType, searchUser, searchDate, searchCoauthor }) => {
 
 
     const response = await axiosConfig.get(SearchAPI.SEARCH_GET, {
-        // headers: {
-        //     'Authorization': `JWT ${localStorage.getItem('access_token')}`
-        // },
+
         params: {
             searchName: searchName,
-            
+            searchPublicType: searchPublicType,
             searchDate: searchDate,
-
+            searchUser: searchUser,
             searchCoauthor: searchCoauthor
         }
     })
 
+    console.log(searchName, searchPublicType, searchUser, searchDate, searchCoauthor)
    
 
     return response.data;

@@ -8,10 +8,13 @@ import TableItem from "../TableItem/TableItem";
 
 import { RootState } from "../../../state/store";
 
-import { TablesAPI } from "../../../state/api/api";
+
 import { ITableComponent } from "../ITable";
 import { tablesUserThunk } from "../../../state/tables/tablesThunk";
-import { TableAPI } from "../../../state/api/EAPI";
+
+
+
+import { BiSad } from "react-icons/bi";
 
 const TableBody: React.FC<ITableComponent> = ({ isBelongsUser }) => {
  
@@ -30,7 +33,7 @@ const TableBody: React.FC<ITableComponent> = ({ isBelongsUser }) => {
                 console.error('User ID is undefined');
             }
         } else {
-            dispatch(tablesThunk(TablesAPI));
+            dispatch(tablesThunk({}));
         }
  
 
@@ -43,16 +46,27 @@ const TableBody: React.FC<ITableComponent> = ({ isBelongsUser }) => {
     if (status === 'loading') return <tbody><tr><td>Loading...</td></tr></tbody>;
     if (status === 'failed') return <tbody><tr><td>{error}</td></tr></tbody>;
 
-   
-    return (  
-    
-
-        <tbody>
-            {
-                tables.map((el: ITable, index) => <TableItem key = { index } { ...el } />)
-            }           
-        </tbody>
-    )
+    if (tables) {
+        return (  
+            <tbody>
+                {
+                    tables.map((el: ITable, index) => <TableItem key = { index } { ...el } />)
+                }           
+            </tbody>
+        )
+    } else {
+        return (
+            <tbody>
+                <tr>
+                    <td className = "flex justify-center items-center gap-2">
+                        <h2 className = "text-black dark:text-white bg-yellow-500 p-5 rounded-md">
+                            Записи не найдены <BiSad />
+                        </h2>
+                    </td>
+                </tr>
+            </tbody>
+        )
+    }
     
 }
 

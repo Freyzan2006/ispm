@@ -1,7 +1,8 @@
 
 
 
-import axios from 'axios';
+
+import { KeyWordJWT } from './EAPI';
 import axiosConfig from './axiosConfig';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
@@ -11,13 +12,14 @@ export const getUserData = async (token: string) => {
     try {
         const response = await axiosConfig.get(`user/`, {
             headers: {
-                Authorization: `JWT ${token}`,
+                Authorization: `${KeyWordJWT} ${token}`,
             },
         });
         return response.data;
     } catch (error) {
         console.error('Failed to fetch user data:', error);
         throw error;
+       
     }
 };
 

@@ -1,8 +1,11 @@
+import { EStatus } from "../api/EAPI";
 
 
-export interface IAuth {
-    accessToken: string;
-    refreshToken: string;
-    status: string;
-    error: string;
+
+
+export interface AuthState {
+    accessToken: string | null;
+    refreshToken: string | null;
+    status: EStatus;
+    error: string | null;
 }

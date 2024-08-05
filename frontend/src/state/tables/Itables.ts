@@ -1,10 +1,11 @@
+import { EStatus } from "../api/EAPI";
 
 export interface ISearchFiled {
     searchName: string;
     searchDate: string;
     searchCoauthor: string;
-    // searchTitle: string;
-    // searchUser: string;
+    searchPublicType: string;
+    searchUser: string;
 }
 
 export interface ITablesApiResponse {
@@ -16,7 +17,7 @@ export interface ITablesApiResponse {
 
 export interface ITablesState  {
     tables: ITable[];
-    status: 'idle' | "loading" | "succeeded" | "failed" | null;
+    status: EStatus| null;
     error: string | null;
     nextPage: string | null,
     previousPage: string | null,

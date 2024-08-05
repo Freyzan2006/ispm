@@ -11,41 +11,41 @@ import css from "./Pagination.module.scss";
 
 import { GrNext } from "react-icons/gr";
 import { IoChevronBackSharp } from "react-icons/io5";
+import Button from "../../widgets/Button/Button";
+import { EButton, ITypeBtn } from "../../widgets/Button/EButton";
+import { PAGINATION_SIZE } from "../../state/api/config";
 
 const Pagination: React.FC = () => {
 
     const dispatch = useAppDispatch();
-    const { nextPage, previousPage, count } = useAppSelector((state: RootState) => state.tables);
+    const { nextPage, previousPage, count, tables } = useAppSelector((state: RootState) => state.tables);
 
     const [ currentPage, setCurrentPage ] = useState<number>(1);
 
     const handlePageChange = (url: string | null, pageNumber: number) => {
         if (url) {
             setCurrentPage(pageNumber);
-            dispatch(tablesThunk(url));
+            dispatch(tablesThunk({ url }));
         }
     };
 
-    return (
-        <div className = { css.pagination }>
-            <button
-                onClick={() => handlePageChange(previousPage, currentPage - 1) }
-                disabled={!previousPage}
-                className = "  disabled:bg-red-800 disabled:shadow-red-500/50 transition disabled:hover:scale-100 hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-green-500 shadow-lg shadow-green-500/50 flex justify-center items-center text-white gap-3"
-            >
-                <IoChevronBackSharp />
-            </button>
-            <span className = " dark:text-white text-slate-900 flex justify-center items-center flex-row">Сейчас <RiPagesLine />: { currentPage }</span>
-            <span className = " dark:text-white text-slate-900 flex justify-center items-center flex-row">Всего <RiPagesLine />: { count }</span>
-            <button
-                onClick={() => handlePageChange(nextPage,  currentPage + 1) }
-                disabled={!nextPage}
+    const paginationSize = PAGINATION_SIZE;
+    const countTableInPage = tables.length;
 
-                className = "disabled:bg-red-800 disabled:shadow-red-500/50 transition disabled:hover:scale-100 hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-green-500 shadow-lg shadow-green-500/50 flex justify-center items-center text-white gap-3"
-            >
-                <GrNext />
-            </button>
-        </div>
+    return (
+        <section className = { css.pagination }>
+            <Button onClick={() => handlePageChange(previousPage, currentPage - 1)} type = { ITypeBtn.BUTTON } styled = { EButton.IS_ACTIVE } disabled = {!previousPage} >
+                <IoChevronBackSharp /> { currentPage - 1 <= 0 ? '' : currentPage - 1 }
+            </Button>
+
+            <span className = " dark:text-white text-slate-900 flex justify-center items-center flex-row">Сейчас <RiPagesLine />: { currentPage }</span>
+            <span className = " dark:text-white text-slate-900 flex justify-center items-center flex-row">Сейчас записей <RiPagesLine />: { countTableInPage }</span>
+            <span className = " dark:text-white text-slate-900 flex justify-center items-center flex-row">Всего записей <RiPagesLine />: { count }</span>
+            
+            <Button onClick={() => handlePageChange(nextPage, currentPage + 1)} type = { ITypeBtn.BUTTON } styled = { EButton.IS_ACTIVE } disabled = {!nextPage} >
+                <GrNext /> { count / paginationSize ? currentPage + 1 : '' }
+            </Button>
+        </section>
     )
 }
 

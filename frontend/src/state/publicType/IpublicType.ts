@@ -1,3 +1,5 @@
+import { EStatus } from "../api/EAPI";
+
 export interface IPublicType {
     id: number;
     title: string;
@@ -5,6 +7,6 @@ export interface IPublicType {
   
 export interface IPublicTypeState {
     publicTypes: IPublicType[];
-    status: 'idle' | 'loading' | 'failed';
+    status: EStatus;
     error: string | null
 }

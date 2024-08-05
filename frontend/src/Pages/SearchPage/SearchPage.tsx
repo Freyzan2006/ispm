@@ -22,6 +22,8 @@ import { yearsRage } from "../../utils";
 
 const SearchPage: React.FC = () => {
     const [searchName, setSearchName] = useState<string>("");
+    const [ searchPublicType, setSearchPublicType ] = useState<string>("");
+    const [ searchUser, setSearchUser ] = useState<string>("");
     const [searchDate, setSearchDate] = useState<string>("");
     const [searchCoauthor, setSearchCoauthor] = useState<string>("");
 
@@ -38,7 +40,7 @@ const SearchPage: React.FC = () => {
 
     const handlerSubmit = (e: React.FormEvent<HTMLElement>) => {
         e.preventDefault();
-        dispatch(searchTablesThunk({ searchName, searchDate, searchCoauthor }));
+        dispatch(searchTablesThunk({ searchName, searchPublicType, searchUser, searchDate, searchCoauthor }));
        
     };
 
@@ -46,18 +48,6 @@ const SearchPage: React.FC = () => {
 
     if (status === 'loading') return <div>Loading...</div>;
     if (status === 'failed') return <div>Error loading users: {error}</div>;
-
-
-
-
-
-   
-
-
- // Текущий год
-  
-    // Генерируйте массив годов
-    
 
     return (
         <main className="flex justify-center items-center flex-col gap-5">
@@ -72,7 +62,10 @@ const SearchPage: React.FC = () => {
                         value={searchName}
                     />
 
-                    <select className = { css.SearchPage__selector } name="" id="">
+                    <select className = { css.SearchPage__selector } value={searchPublicType || ''} onChange = { (e) => setSearchPublicType(e.target.value) }>
+                        <option value = { '' }>
+                            --------
+                        </option>
                         {publicTypes.map((el, index) => (
                             <option value={el.id} key={index}>
                                 {el.title}
@@ -81,7 +74,10 @@ const SearchPage: React.FC = () => {
                     </select>
 
                    
-                    <select className = { css.SearchPage__selector } name="" id="">
+                    <select className = { css.SearchPage__selector } value = { searchUser || '' } onChange = { (e) => setSearchUser(e.target.value) }>
+                        <option value = { '' }>
+                            --------
+                        </option>
                         {users.map((el, index) => (
                             <option value={el.id} key={index}>
                                 {el.username}
@@ -90,6 +86,9 @@ const SearchPage: React.FC = () => {
                     </select>
          
                     <select className = { css.SearchPage__selector } value={searchDate || ''} onChange = { (e) => setSearchDate(e.target.value) }>
+                        <option value = { '' }>
+                            --------
+                        </option>
                         {yearsRage.map(year => (
                         <option key={year} value={year}>
                             {year}

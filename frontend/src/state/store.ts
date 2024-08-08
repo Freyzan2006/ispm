@@ -10,6 +10,7 @@ import authSlice from './auth/authSlice';
 import userSlice from './user/userSlice';
 import usersSlice from './users/usersSlice';
 import publicTypeSlice from './publicType/publicTypeSlice';
+import paginationSlice from './pagination/paginationSlice';
 
 
 
@@ -26,7 +27,8 @@ const store = configureStore({
     auth: authSlice,
     user: userSlice,
     users: usersSlice,
-    publicTypes: publicTypeSlice
+    publicTypes: publicTypeSlice,
+    pagination: paginationSlice.reducer
   },
 });
 

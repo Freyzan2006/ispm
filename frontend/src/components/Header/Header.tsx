@@ -8,7 +8,7 @@ import NavBar from "../NavBar/NavBar";
 const Header: React.FC = () => {
 
     return (
-        <header className = { `css.header bg-blue-600 dark:bg-slate-900 w-full shadow-lg shadow-black-100/50 h-[100px]` }>
+        <header id = "header" className = { `css.header bg-blue-600 dark:bg-slate-900 w-full shadow-lg shadow-black-100/50 h-[100px]` }>
         
             <Container> 
                 <NavBar>

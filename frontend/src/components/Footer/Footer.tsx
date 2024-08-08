@@ -7,7 +7,7 @@ import { EPath } from "../../Routers/ERouters";
 
 const Footer: React.FC = () => {
     return (
-        <footer className="border-t-2  border-blue-600 dark:border-blue-950 h-auto mt-20">
+        <footer id = "footer" className="border-t-2  border-blue-600 dark:border-blue-950 h-auto mt-20">
             <Container>
                 <div className = "flex flex-col justify-center w-full pt-5 pb-5 gap-5">
                     <ul className="flex justify-center items-center gap-5">

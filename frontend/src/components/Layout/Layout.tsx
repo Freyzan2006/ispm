@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../state/useAppDispatch";
 import { RootState } from "../../state/store";
 import { clearTokens, setTokens } from "../../state/auth/authSlice";
+import Navigation from "../../widgets/Navigation/Navigation";
 
 const Layout: React.FC = () => {
 
@@ -36,6 +37,7 @@ const Layout: React.FC = () => {
 
             <Footer />
             <ScreenDimming />
+            <Navigation />
         </div>
     )
 }

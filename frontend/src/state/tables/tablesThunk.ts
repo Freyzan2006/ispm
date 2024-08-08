@@ -7,12 +7,19 @@ import { SearchAPI, TableAPI } from '../api/EAPI';
 
 
 
-export const tablesThunk = createAsyncThunk<ITablesApiResponse, { url?: string }, { rejectValue: string }>(
+export const tablesThunk = createAsyncThunk<ITablesApiResponse, { url?: string, page_size?: string }, { rejectValue: string }>(
     'table/fetchAllTableData',
-    async ({ url }, { rejectWithValue }) => {
+    async ({ url, page_size }, { rejectWithValue }) => {
         try {
             const urlNow = url ? url : TableAPI.ALL_TABLE_GET;
-            const response = await axiosConfig.get<ITablesApiResponse>(urlNow);
+
+            const isPagination = page_size ? `?page_size=${page_size}` : ""
+
+            const response = await axiosConfig.get<ITablesApiResponse>(`${urlNow}${isPagination}`, {
+                params: {
+                    page_size: (page_size ? page_size : ""),
+                }
+            });
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data || 'Failed to fetch tables');

@@ -6,20 +6,30 @@ import { ISearchFiled, ITablesApiResponse } from './Itables';
 import { SearchAPI, TableAPI } from '../api/EAPI';
 
 
-
-export const tablesThunk = createAsyncThunk<ITablesApiResponse, { url?: string, page_size?: string }, { rejectValue: string }>(
+export const tablesPaginationThunk = createAsyncThunk<ITablesApiResponse, { url?: string, page_size?: string }, { rejectValue: string }>(
     'table/fetchAllTableData',
     async ({ url, page_size }, { rejectWithValue }) => {
         try {
-            const urlNow = url ? url : TableAPI.ALL_TABLE_GET;
+            const urlWithParams = `${url || TableAPI.ALL_TABLE_GET}${page_size ? `?page_size=${page_size}` : ""}`;
+            const response = await axiosConfig.get<ITablesApiResponse>(urlWithParams);
+            return response.data;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data || 'Failed to fetch tables');
+        }
+    }
+);
 
-            const isPagination = page_size ? `?page_size=${page_size}` : ""
 
-            const response = await axiosConfig.get<ITablesApiResponse>(`${urlNow}${isPagination}`, {
-                params: {
-                    page_size: (page_size ? page_size : ""),
-                }
-            });
+
+export const tablesThunk = createAsyncThunk<ITablesApiResponse, { url?: string }, { rejectValue: string }>(
+    'table/fetchAllTableData',
+    async ({ url }, { rejectWithValue }) => {
+        try {
+            const urlNow = url || TableAPI.ALL_TABLE_GET;
+           
+            const response = await axiosConfig.get<ITablesApiResponse>(`${urlNow}`);
+            console.log(`${urlNow}`)
+            
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data || 'Failed to fetch tables');
@@ -43,13 +53,6 @@ export const tablesUserThunk = createAsyncThunk<ITablesApiResponse, { userId: nu
     }
 );
 
-
-
-
-
-
-
-
 export const searchTablesThunk = createAsyncThunk<ITablesApiResponse, ISearchFiled, {}>(
     'table/searchFetchAllTableData', 
     async ({ searchName, searchPublicType, searchUser, searchDate, searchCoauthor }) => {
@@ -65,9 +68,6 @@ export const searchTablesThunk = createAsyncThunk<ITablesApiResponse, ISearchFil
             searchCoauthor: searchCoauthor
         }
     })
-
-    console.log(searchName, searchPublicType, searchUser, searchDate, searchCoauthor)
-   
 
     return response.data;
 });

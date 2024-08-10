@@ -1,16 +1,20 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { useAppSelector } from "../useAppDispatch";
+
+
+import { MAX_PAGINATION_SIZE, PAGINATION_SIZE } from "../api/config";
 
 interface IPaginationState {
     paginationCount: number;
     maxPaginationCount: number;
     minPaginationCount: number;
+    currentPage: number;
 }
 
 const initialState: IPaginationState = {
-    paginationCount: 2,
-    maxPaginationCount: 100,
+    paginationCount: PAGINATION_SIZE,
+    maxPaginationCount: MAX_PAGINATION_SIZE,
     minPaginationCount: 1,
+    currentPage: 1,
 };
   
 
@@ -18,7 +22,11 @@ const paginationSlice = createSlice({
     name: 'pagination',
     initialState,
     reducers: {
-        ChangePagination(state, actions) {
+        SetCurrentPage(state, actions: PayloadAction<number>) {
+            state.currentPage = actions.payload
+        },
+
+        ChangePagination(state, actions: PayloadAction<number>) {
             state.paginationCount = actions.payload;
         },
 
@@ -30,7 +38,7 @@ const paginationSlice = createSlice({
     
 });
   
-export const { ChangePagination, SetMaxPaginationCount } = paginationSlice.actions;
+export const { ChangePagination, SetMaxPaginationCount, SetCurrentPage } = paginationSlice.actions;
 
 
 

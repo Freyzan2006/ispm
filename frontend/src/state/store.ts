@@ -11,6 +11,7 @@ import userSlice from './user/userSlice';
 import usersSlice from './users/usersSlice';
 import publicTypeSlice from './publicType/publicTypeSlice';
 import paginationSlice from './pagination/paginationSlice';
+import searchSlice from './search/searchSlice';
 
 
 
@@ -28,7 +29,8 @@ const store = configureStore({
     user: userSlice,
     users: usersSlice,
     publicTypes: publicTypeSlice,
-    pagination: paginationSlice.reducer
+    pagination: paginationSlice.reducer,
+    search: searchSlice.reducer
   },
 });
 

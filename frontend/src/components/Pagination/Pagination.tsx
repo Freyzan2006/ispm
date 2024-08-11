@@ -1,7 +1,7 @@
 
 
 import { useEffect, useState } from "react";
-import { tablesPaginationThunk, tablesThunk } from "../../state/tables/tablesThunk";
+import { searchTablesPaginationThunk, searchTablesThunk, tablesPaginationThunk, tablesThunk, tablesUserPaginationThunk } from "../../state/tables/tablesThunk";
 import { RootState } from "../../state/store";
 import { useAppDispatch, useAppSelector } from "../../state/useAppDispatch";
 
@@ -16,7 +16,9 @@ import { EButton, ITypeBtn } from "../../widgets/Button/EButton";
 import { PAGINATION_SIZE } from "../../state/api/config";
 import { ChangePagination, SetCurrentPage, SetMaxPaginationCount } from "../../state/pagination/paginationSlice";
 
-const Pagination: React.FC = () => {
+import { IProps } from "./IPagination"; 
+
+const Pagination: React.FC<IProps> = ({ isBelongsUser, isSearch }) => {
 
     const dispatch = useAppDispatch();
     const { nextPage, previousPage, count, tables } = useAppSelector((state: RootState) => state.tables);
@@ -24,9 +26,9 @@ const Pagination: React.FC = () => {
     const { paginationCount, maxPaginationCount, minPaginationCount, currentPage } = useAppSelector((state: RootState) => state.pagination)
 
     
+    const { id } = useAppSelector((state: RootState) => state.user)
 
-
-     
+    const { searchName, searchPublicType, searchUser, searchCoauthor, searchDate } = useAppSelector((state: RootState) => state.search); 
     
     useEffect(() => {
         if (count > 0 && count <= 100) {
@@ -59,7 +61,15 @@ const Pagination: React.FC = () => {
 
     const handlePagination = (value: string) => {
         dispatch(ChangePagination(+value));
-        dispatch(tablesPaginationThunk({ page_size: value }));
+
+        if ( isBelongsUser ) {
+            dispatch(tablesUserPaginationThunk({ userId: id, page_size: +value }))
+        } else if ( isSearch ) {
+            
+            dispatch(searchTablesPaginationThunk({ searchName, searchPublicType, searchUser, searchDate, searchCoauthor, page_size: +value }))
+        } else {
+            dispatch(tablesPaginationThunk({ page_size: value }));
+        }
     }
 
     const paginationSize = PAGINATION_SIZE;

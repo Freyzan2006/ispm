@@ -18,18 +18,24 @@ import { publicTypeFetch } from "../../state/publicType/publicTypeFetch";
 
 
 import { yearsRage } from "../../utils";
+import { setSearchCoauthor, setSearchDate, setSearchName, setSearchPublicType, setSearchUser } from "../../state/search/searchSlice";
 
 
 const SearchPage: React.FC = () => {
-    const [searchName, setSearchName] = useState<string>("");
-    const [ searchPublicType, setSearchPublicType ] = useState<string>("");
-    const [ searchUser, setSearchUser ] = useState<string>("");
-    const [searchDate, setSearchDate] = useState<string>("");
-    const [searchCoauthor, setSearchCoauthor] = useState<string>("");
+    // const [searchName, setSearchName] = useState<string>("");
+    // const [ searchPublicType, setSearchPublicType ] = useState<string>("");
+    // const [ searchUser, setSearchUser ] = useState<string>("");
+    // const [searchDate, setSearchDate] = useState<string>("");
+    // const [searchCoauthor, setSearchCoauthor] = useState<string>("");
 
     const dispatch = useAppDispatch();
     const { users, status, error } = useAppSelector((state: RootState) => state.users);
-    const { publicTypes } = useAppSelector((state: RootState) => state.publicTypes)
+    const { publicTypes } = useAppSelector((state: RootState) => state.publicTypes);
+
+    const { paginationCount } = useAppSelector((state: RootState) => state.pagination);
+
+
+    const { searchName, searchPublicType, searchUser, searchCoauthor, searchDate } = useAppSelector((state: RootState) => state.search); 
 
     useEffect(() => {
         if (status === 'idle') {
@@ -40,7 +46,7 @@ const SearchPage: React.FC = () => {
 
     const handlerSubmit = (e: React.FormEvent<HTMLElement>) => {
         e.preventDefault();
-        dispatch(searchTablesThunk({ searchName, searchPublicType, searchUser, searchDate, searchCoauthor }));
+        dispatch(searchTablesThunk({ searchName, searchPublicType, searchUser, searchDate, searchCoauthor, page_size: paginationCount }));
        
     };
 
@@ -58,11 +64,11 @@ const SearchPage: React.FC = () => {
                         placeholder="Название публикации"
                         type="text"
                         className={css.SearchPage__search}
-                        onChange={(e) => setSearchName(e.target.value)}
+                        onChange={(e) => dispatch(setSearchName(e.target.value))}
                         value={searchName}
                     />
 
-                    <select className = { css.SearchPage__selector } value={searchPublicType || ''} onChange = { (e) => setSearchPublicType(e.target.value) }>
+                    <select className = { css.SearchPage__selector } value={searchPublicType || ''} onChange = { (e) => dispatch(setSearchPublicType(e.target.value)) }>
                         <option value = { '' }>
                             --------
                         </option>
@@ -74,7 +80,7 @@ const SearchPage: React.FC = () => {
                     </select>
 
                    
-                    <select className = { css.SearchPage__selector } value = { searchUser || '' } onChange = { (e) => setSearchUser(e.target.value) }>
+                    <select className = { css.SearchPage__selector } value = { searchUser || '' } onChange = { (e) => dispatch(setSearchUser(e.target.value)) }>
                         <option value = { '' }>
                             --------
                         </option>
@@ -85,7 +91,7 @@ const SearchPage: React.FC = () => {
                         ))}
                     </select>
          
-                    <select className = { css.SearchPage__selector } value={searchDate || ''} onChange = { (e) => setSearchDate(e.target.value) }>
+                    <select className = { css.SearchPage__selector } value={searchDate || ''} onChange = { (e) => dispatch(setSearchDate(e.target.value)) }>
                         <option value = { '' }>
                             --------
                         </option>
@@ -100,7 +106,7 @@ const SearchPage: React.FC = () => {
                         placeholder="Соавтор"
                         type="text"
                         className={css.SearchPage__search}
-                        onChange={(e) => setSearchCoauthor(e.target.value)}
+                        onChange={(e) => dispatch(setSearchCoauthor(e.target.value))}
                         value={searchCoauthor}
                     />
                 </div>
@@ -115,7 +121,7 @@ const SearchPage: React.FC = () => {
 
          
             <Table />
-            <Pagination />
+            <Pagination isSearch = { true } />
         </main>
     );
 };

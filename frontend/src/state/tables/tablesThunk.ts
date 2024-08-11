@@ -37,6 +37,25 @@ export const tablesThunk = createAsyncThunk<ITablesApiResponse, { url?: string }
     }
 );
 
+export const tablesUserPaginationThunk = createAsyncThunk<ITablesApiResponse, { userId: number | null, page_size: number }, { rejectValue: string }>(
+    'table/fetchUserTableData',
+    async ({ userId, page_size }, { rejectWithValue }) => {
+        try {
+
+            // const urlWithParams = `${url || TableAPI.ALL_TABLE_GET}${page_size ? `?page_size=${page_size}` : ""}`;
+
+            const response = await axiosConfig.get<ITablesApiResponse>(TableAPI.ALL_TABLE_USER_GET, {
+                params: { for_user: userId, page_size: page_size },
+
+            });
+
+            return response.data;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data || 'Failed to fetch user tables');
+        }
+    }
+);
+
 export const tablesUserThunk = createAsyncThunk<ITablesApiResponse, { userId: number | null }, { rejectValue: string }>(
     'table/fetchUserTableData',
     async ({ userId }, { rejectWithValue }) => {
@@ -53,21 +72,47 @@ export const tablesUserThunk = createAsyncThunk<ITablesApiResponse, { userId: nu
     }
 );
 
+
+export const searchTablesPaginationThunk = createAsyncThunk<ITablesApiResponse, ISearchFiled, {}>(
+    'table/searchFetchAllTableData', 
+    async ({ searchName, searchPublicType, searchUser, searchDate, searchCoauthor, page_size }) => {
+    
+        const isPagination = {page_size: page_size} || null;
+
+        const response = await axiosConfig.get(SearchAPI.SEARCH_GET, {
+
+            params: {
+                searchName: searchName,
+                searchPublicType: searchPublicType,
+                searchDate: searchDate,
+                searchUser: searchUser,
+                searchCoauthor: searchCoauthor,
+
+                ...isPagination 
+            }
+        })
+
+    return response.data;
+});
+
 export const searchTablesThunk = createAsyncThunk<ITablesApiResponse, ISearchFiled, {}>(
     'table/searchFetchAllTableData', 
     async ({ searchName, searchPublicType, searchUser, searchDate, searchCoauthor }) => {
+    
+       
 
+        const response = await axiosConfig.get(SearchAPI.SEARCH_GET, {
 
-    const response = await axiosConfig.get(SearchAPI.SEARCH_GET, {
+            params: {
+                searchName: searchName,
+                searchPublicType: searchPublicType,
+                searchDate: searchDate,
+                searchUser: searchUser,
+                searchCoauthor: searchCoauthor,
 
-        params: {
-            searchName: searchName,
-            searchPublicType: searchPublicType,
-            searchDate: searchDate,
-            searchUser: searchUser,
-            searchCoauthor: searchCoauthor
-        }
-    })
+              
+            }
+        })
 
     return response.data;
 });

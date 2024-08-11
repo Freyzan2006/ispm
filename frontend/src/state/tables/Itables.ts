@@ -6,6 +6,7 @@ export interface ISearchFiled {
     searchCoauthor: string;
     searchPublicType: string;
     searchUser: string;
+    page_size: number;
 }
 
 export interface ITablesApiResponse {

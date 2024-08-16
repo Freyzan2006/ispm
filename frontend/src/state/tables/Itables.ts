@@ -6,7 +6,7 @@ export interface ISearchFiled {
     searchCoauthor: string;
     searchPublicType: string;
     searchUser: string;
-    page_size: number;
+    page_size?: number;
 }
 
 export interface ITablesApiResponse {
@@ -40,4 +40,14 @@ export interface ITable {
     created_at: string;
     updated_at: string;
     for_user: number;
+}
+
+
+export interface IDownloadTableResponse {
+    download_url: string;
+}
+
+export interface IDownloadFileResponse {
+    file: Blob;
+    name: string;
 }

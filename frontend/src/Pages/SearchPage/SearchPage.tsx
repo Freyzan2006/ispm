@@ -8,7 +8,7 @@ import Table from "../../components/Table/Table";
 import Pagination from "../../components/Pagination/Pagination";
 import { useAppDispatch, useAppSelector } from "../../state/useAppDispatch";
 
-import { searchTablesThunk } from "../../state/tables/tablesThunk";
+import { searchTablesPaginationThunk, searchTablesThunk } from "../../state/tables/tablesThunk";
 
 import { fetchUsers } from "../../state/api/usersFetch";
 import { RootState } from "../../state/store";
@@ -19,6 +19,7 @@ import { publicTypeFetch } from "../../state/publicType/publicTypeFetch";
 
 import { yearsRage } from "../../utils";
 import { setSearchCoauthor, setSearchDate, setSearchName, setSearchPublicType, setSearchUser } from "../../state/search/searchSlice";
+import { PAGINATION_SIZE } from "../../state/api/config";
 
 
 const SearchPage: React.FC = () => {
@@ -32,7 +33,7 @@ const SearchPage: React.FC = () => {
     const { users, status, error } = useAppSelector((state: RootState) => state.users);
     const { publicTypes } = useAppSelector((state: RootState) => state.publicTypes);
 
-    const { paginationCount } = useAppSelector((state: RootState) => state.pagination);
+    
 
 
     const { searchName, searchPublicType, searchUser, searchCoauthor, searchDate } = useAppSelector((state: RootState) => state.search); 
@@ -44,9 +45,19 @@ const SearchPage: React.FC = () => {
         }
     }, []);
 
+    const { paginationCount } = useAppSelector((state: RootState) => state.pagination);
+
     const handlerSubmit = (e: React.FormEvent<HTMLElement>) => {
         e.preventDefault();
-        dispatch(searchTablesThunk({ searchName, searchPublicType, searchUser, searchDate, searchCoauthor, page_size: paginationCount }));
+        
+        if ( paginationCount != PAGINATION_SIZE ) {
+            dispatch(searchTablesPaginationThunk({ searchName, searchPublicType, searchUser, searchDate, searchCoauthor, page_size: paginationCount }));
+        } else {
+            dispatch(searchTablesThunk({ searchName, searchPublicType, searchUser, searchDate, searchCoauthor }));
+        }
+
+        console.log(paginationCount)
+        
        
     };
 

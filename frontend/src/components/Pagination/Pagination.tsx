@@ -39,23 +39,12 @@ const Pagination: React.FC<IProps> = ({ isBelongsUser, isSearch }) => {
     
 
     const handlePageChange = (url: string | null, pageNumber: number) => {
-        
         dispatch(SetCurrentPage(pageNumber))
         
         if (url) {
-            console.log(url)
-           
             dispatch(tablesThunk({ url: url }))
         }
-       
-        // if (url && paginationCount == PAGINATION_SIZE) {
-        //     dispatch(tablesThunk({ url: url }));
-        //     console.log("1: ", url)
-        // }
-        // else if (url && paginationCount) {
-        //     dispatch(tablesThunk({ url: url, page_size: paginationCount.toString() }));
-        //     console.log("2: ", paginationCount)
-        // }
+
     };
 
 
@@ -65,7 +54,6 @@ const Pagination: React.FC<IProps> = ({ isBelongsUser, isSearch }) => {
         if ( isBelongsUser ) {
             dispatch(tablesUserPaginationThunk({ userId: id, page_size: +value }))
         } else if ( isSearch ) {
-            
             dispatch(searchTablesPaginationThunk({ searchName, searchPublicType, searchUser, searchDate, searchCoauthor, page_size: +value }))
         } else {
             dispatch(tablesPaginationThunk({ page_size: value }));

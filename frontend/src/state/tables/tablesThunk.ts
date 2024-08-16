@@ -42,7 +42,7 @@ export const tablesUserPaginationThunk = createAsyncThunk<ITablesApiResponse, { 
     async ({ userId, page_size }, { rejectWithValue }) => {
         try {
 
-            // const urlWithParams = `${url || TableAPI.ALL_TABLE_GET}${page_size ? `?page_size=${page_size}` : ""}`;
+          
 
             const response = await axiosConfig.get<ITablesApiResponse>(TableAPI.ALL_TABLE_USER_GET, {
                 params: { for_user: userId, page_size: page_size },
@@ -116,3 +116,40 @@ export const searchTablesThunk = createAsyncThunk<ITablesApiResponse, ISearchFil
 
     return response.data;
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+// export const downloadTable = createAsyncThunk('tables/downloadTable', async () => {
+//     const response = await axiosConfig.post('download/');
+//     return response.data;
+// });
+
+// export const downloadFile = createAsyncThunk('tables/downloadFile', async (fileId: number) => {
+//     const response = await axiosConfig.get(`download/${fileId}/`, {
+//         responseType: 'blob',
+//     });
+//     return {
+//         file: response.data,
+//         name: response.headers['content-disposition']?.split('filename=')[1] || 'file',
+//     };
+// });
+
+
+
+

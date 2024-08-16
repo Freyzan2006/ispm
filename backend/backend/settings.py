@@ -116,10 +116,14 @@ INSTALLED_APPS = [
     "main",
     "table",
     "user",
-    "search"
+    "search",
+    "download"
 ]
 
 # AUTH_USER_MODEL = "user.UserModel"
+
+MEDIA_URL = "/download/media/"
+MEDIA_ROOT = BASE_DIR / "download/media"
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',

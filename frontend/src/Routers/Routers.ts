@@ -7,6 +7,7 @@ import App from '../App.tsx'
 import { HomePage, AboutPage, SearchPage,
   LoginPage, UserPage, EditPage, DeletePage
 } from "../Pages/Page.ts";
+import AddPage from "../Pages/AddPage/AddPage.tsx";
 
 
 const router = createBrowserRouter([
@@ -47,6 +48,11 @@ const router = createBrowserRouter([
         {
           path: ERouters.DELETE,
           Component: DeletePage
+        },
+
+        {
+          path: ERouters.ADD,
+          Component: AddPage
         }
       ]
     },

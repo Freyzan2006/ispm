@@ -31,6 +31,8 @@ const Pagination: React.FC<IProps> = ({ isBelongsUser, isSearch }) => {
     const { searchName, searchPublicType, searchUser, searchCoauthor, searchDate } = useAppSelector((state: RootState) => state.search); 
     
     useEffect(() => {
+        dispatch(SetCurrentPage(1));
+
         if (count > 0 && count <= 100) {
           dispatch(SetMaxPaginationCount(count));
         }

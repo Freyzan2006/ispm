@@ -25,8 +25,8 @@ const LoginPage: React.FC = () => {
 
     const handlerSubmit = async (e: React.FormEvent<HTMLElement>) => {
         e.preventDefault();
-        // if (username && password)
-        //     dispatch(login({ username, password }));
+        if (!username || !password)
+            return
 
         try {
             await dispatch(login({ username, password })).unwrap();

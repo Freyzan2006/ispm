@@ -9,7 +9,8 @@ export enum ERouters {
     LOGIN = "login",
     USER = "user",
     EDIT = "change/:id",
-    DELETE = "delete/:id"
+    DELETE = "delete/:id",
+    ADD = "add/",
 }
 
 export enum EPath {
@@ -18,6 +19,8 @@ export enum EPath {
     SEARCH = "search/",
     LOGIN = "login/",
     USER = "user/",
-    EDIT = "change",
-    DELETE = "delete"
+    EDIT = "change/",
+    DELETE = "delete/",
+    ADD = "/add/",
+   
 }

@@ -8,17 +8,20 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 
 import { MdOutlinePublishedWithChanges } from "react-icons/md";
 import { MyLink } from "../../../widgets/Widgets";
+import { IParseDate, ParseDate } from "../../../utils/ParseDate";
 
 const TableItem: React.FC<ITable> = ({ id, Type, name, title, data, tom, issue, page_start, page_end, pages, Co_authors, created_at, updated_at, for_user }) => {
 
    
     const userId = useAppSelector((state: RootState) => state.user.id );
   
+    const parse_created_at = ParseDate(created_at);
+    const parse_updated_at = ParseDate(updated_at); 
 
     return (
         <tr className = "text-black dark:text-white" >
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950" scope="row">{ id }</td>
-            {/* {% comment %} <th class = "border-2 p-3 border-blue-950">{{ t.for_user_id }}</th> {% endcomment %} */}
+          
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950">{ name }</td>
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950">{ Type }</td>
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 leading-loose">
@@ -29,8 +32,8 @@ const TableItem: React.FC<ITable> = ({ id, Type, name, title, data, tom, issue, 
             </td>
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950">{ pages }</td>
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950">{ Co_authors }</td>
-            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950">{ created_at }</td>
-            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950">{ updated_at }</td>
+            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950">{ parse_created_at.day }/{ parse_created_at.month }/{ parse_created_at.year }</td>
+            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950">Год: { parse_updated_at.year  }; Месяц: { parse_updated_at.month }; День: { parse_updated_at.day }; Час: { parse_updated_at.hours }</td>
 
             {
                 userId == for_user 

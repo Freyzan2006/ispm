@@ -32,7 +32,7 @@ const TableItem: React.FC<ITable> = ({ id, Type, name, title, data, tom, issue, 
             </td>
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950">{ pages }</td>
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950">{ Co_authors }</td>
-            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950">{ parse_created_at.day }/{ parse_created_at.month }/{ parse_created_at.year }</td>
+            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950">{ parse_created_at.day }/{ parse_created_at.month }/{ parse_created_at.year } { `${parse_created_at.hours}:${parse_created_at.minutes}` }</td>
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950">Год: { parse_updated_at.year  }; Месяц: { parse_updated_at.month }; День: { parse_updated_at.day }; Час: { parse_updated_at.hours }</td>
 
             {

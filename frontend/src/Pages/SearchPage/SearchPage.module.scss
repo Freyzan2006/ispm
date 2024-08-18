@@ -1,11 +1,10 @@
 .SearchPage {
     border-radius: 30px;
-    // max-width: 500px;
     width: 100%;
     min-height: 300px;
     padding: 15px 0;
     
-    box-shadow: 5px 5px 5px rgba(255, 255, 255, 0.205);
+   
 
     display: flex;
     flex-direction: column;
@@ -17,12 +16,12 @@
 
     &__search,
     &__selector {
-        color: aliceblue;
+        color: black;
         padding-left: 5px;
         border-radius: 5px;
-        border: solid 1px white;
+        border: solid 1px black;
         background: none;
-        box-shadow: 5px 5px 5px rgba(255, 255, 255, 0.281);
+        box-shadow: 5px 5px 5px rgb(7, 181, 204);
         outline: none;
         max-width: 250px;
         width: 100%;
@@ -46,9 +45,6 @@
         background-color: aliceblue;
         color: black;
     }
-
-
-    &__submit {
-
-    }
 }
+
+

@@ -68,18 +68,18 @@ const SearchPage: React.FC = () => {
 
     return (
         <main className="flex justify-center items-center flex-col gap-5">
-            <form className={`${css.SearchPage}`} onSubmit={handlerSubmit}>
+            <form className={`${css.SearchPage} shadow-lg shadow-blue-400 dark:shadow-lg dark:shadow-gray-500 `} onSubmit={handlerSubmit}>
                 <h1 className="text-black dark:text-white text-2xl">Поиск</h1>
                 <div className="flex justify-center items-center gap-4 flex-wrap">
                     <input
                         placeholder="Название публикации"
                         type="text"
-                        className={css.SearchPage__search}
+                        className={`${css.SearchPage__search}  dark:border-white dark:text-white dark:shadow-lg dark:shadow-gray-500`}
                         onChange={(e) => dispatch(setSearchName(e.target.value))}
                         value={searchName}
                     />
 
-                    <select className = { css.SearchPage__selector } value={searchPublicType || ''} onChange = { (e) => dispatch(setSearchPublicType(e.target.value)) }>
+                    <select className = { `${css.SearchPage__selector}  dark:border-white dark:text-white dark:shadow-lg dark:shadow-gray-500` } value={searchPublicType || ''} onChange = { (e) => dispatch(setSearchPublicType(e.target.value)) }>
                         <option value = { '' }>
                             --------
                         </option>
@@ -91,7 +91,7 @@ const SearchPage: React.FC = () => {
                     </select>
 
                    
-                    <select className = { css.SearchPage__selector } value = { searchUser || '' } onChange = { (e) => dispatch(setSearchUser(e.target.value)) }>
+                    <select className = { `${css.SearchPage__selector}  dark:border-white dark:text-white dark:shadow-lg dark:shadow-gray-500` } value = { searchUser || '' } onChange = { (e) => dispatch(setSearchUser(e.target.value)) }>
                         <option value = { '' }>
                             --------
                         </option>
@@ -102,7 +102,7 @@ const SearchPage: React.FC = () => {
                         ))}
                     </select>
          
-                    <select className = { css.SearchPage__selector } value={searchDate || ''} onChange = { (e) => dispatch(setSearchDate(e.target.value)) }>
+                    <select className = { `${css.SearchPage__selector}  dark:border-white dark:text-white dark:shadow-lg dark:shadow-gray-500` } value={searchDate || ''} onChange = { (e) => dispatch(setSearchDate(e.target.value)) }>
                         <option value = { '' }>
                             --------
                         </option>
@@ -116,7 +116,7 @@ const SearchPage: React.FC = () => {
                     <input
                         placeholder="Соавтор"
                         type="text"
-                        className={css.SearchPage__search}
+                        className={`${css.SearchPage__search}  dark:border-white dark:text-white dark:shadow-lg dark:shadow-gray-500`}
                         onChange={(e) => dispatch(setSearchCoauthor(e.target.value))}
                         value={searchCoauthor}
                     />

@@ -12,6 +12,7 @@ import usersSlice from './users/usersSlice';
 import publicTypeSlice from './publicType/publicTypeSlice';
 import paginationSlice from './pagination/paginationSlice';
 import searchSlice from './search/searchSlice';
+import alertSlice from './alert/alertSlice';
 
 
 
@@ -20,6 +21,7 @@ export type AppDispatch = typeof store.dispatch;
 
 const store = configureStore({
   reducer: {
+    alert: alertSlice.reducer,
     menu: menuSlice.reducer,
     theme: themeSlice.reducer,
     screenDimming: screenDimmingSlice.reducer,

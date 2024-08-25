@@ -1,7 +1,11 @@
+import { EStatus } from "../api/EAPI";
+
 export interface UserState {
     id: number | null;
     username: string | null;
-    status: 'idle' | 'loading' | 'failed';
+    is_staff: boolean | null;
+    is_superuser: boolean | null;
+    status: EStatus;
     error: string | null;
 }
 

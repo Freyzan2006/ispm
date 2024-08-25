@@ -11,6 +11,8 @@ import { useAppDispatch, useAppSelector } from "../../state/useAppDispatch";
 import { RootState } from "../../state/store";
 import { clearTokens, setTokens } from "../../state/auth/authSlice";
 import Navigation from "../../widgets/Navigation/Navigation";
+import BgAnimation from "../BgAnimation/BgAnimation";
+import Alert from "../../widgets/Alert/Alert";
 
 const Layout: React.FC = () => {
 
@@ -27,18 +29,28 @@ const Layout: React.FC = () => {
     }, [dispatch, accessToken, refreshToken]);
 
     return (
-        <div className = "flex flex-col gap-10">
-            <Loading time = { 3000 } />
-            <Header />
+        
+        <div className = "flex flex-col">
+            <BgAnimation id="particles" />
 
-            <Container>
-                <Outlet />
-            </Container>
+            <div className = "flex flex-col gap-10 z-10">
+                <Loading time = { 3000 } />
+                <Header />
 
-            <Footer />
-            <ScreenDimming />
-            <Navigation />
+                <Container>
+                    <Outlet />
+                </Container>
+
+                <Footer />
+
+                <ScreenDimming />
+                <Navigation />
+                <Alert />
+            </div>
+
+            
         </div>
+        
     )
 }
 

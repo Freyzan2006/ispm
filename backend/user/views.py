@@ -34,6 +34,8 @@ class UserView(APIView):
         return Response({
             'id': user.id,
             'username': user.username,
+            'is_staff': user.is_staff,  # Добавлено для проверки, является ли пользователь администратором
+            'is_superuser': user.is_superuser  # Добавлено для проверки, является ли пользователь суперпользователем
             # добавьте другие поля, которые хотите вернуть
         }) 
 

@@ -4,11 +4,12 @@ import Button from "../../widgets/Button/Button";
 import { EButton, ITypeBtn } from "../../widgets/Button/EButton";
 import { useEffect, useState } from "react";
 import axiosConfig from "../../state/api/axiosConfig";
-import { useAppSelector } from "../../state/useAppDispatch";
+import { useAppDispatch, useAppSelector } from "../../state/useAppDispatch";
 import { RootState } from "../../state/store";
+import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../state/alert/alertSlice";
 const Download: React.FC = () => {
     const [ download, setDownload ] = useState();
-
+    const dispatch = useAppDispatch();
    
     async function featch() {
         const response = await axiosConfig.get("download/");
@@ -22,7 +23,7 @@ const Download: React.FC = () => {
         const response = await axiosConfig.post("download/", { data: tables }, {
             responseType: 'blob', // Указываем, что ожидаем бинарный ответ
         });
-        console.log(response.data)
+       
 
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const a = document.createElement('a');
@@ -32,7 +33,11 @@ const Download: React.FC = () => {
         a.click();
         a.remove();
         window.URL.revokeObjectURL(url); // Освобождение URL после использования
-      
+        
+
+        dispatch(setShowAlert());
+        dispatch(setMessageAlert("Вы успешно скачали таблицу"));
+        dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
     }
 
     

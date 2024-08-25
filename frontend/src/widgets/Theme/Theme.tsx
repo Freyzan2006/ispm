@@ -13,14 +13,22 @@ import React, { useEffect } from "react";
 import { changeTheme, initializeTheme } from "../../state/theme/themeSlice";
 
 import { ETheme } from "../../state/theme/ETheme";
+import { EAlertType, setShowAlert, setMessageAlert, setTypeAlert } from "../../state/alert/alertSlice";
+
+
 
 const Theme: React.FC = () => {
     const dispatch = useAppDispatch();
     const isTheme = useAppSelector((state: RootState) => state.theme.theme);
 
+    
+
+    
 
     useEffect(() => {
         dispatch(initializeTheme());
+
+        
 
         const htmlElement = document.documentElement;
 
@@ -33,12 +41,21 @@ const Theme: React.FC = () => {
         }
     }, [dispatch, isTheme]);
 
-    const handleThemeChange = () => dispatch(changeTheme());
+    const handleThemeChange = () => {
+        dispatch(changeTheme())
+
+        
+        dispatch(setShowAlert());
+        dispatch(setMessageAlert("Тема успешно изменена"));
+        dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
+    };
+
+    
     
 
     return (
         <div className = { css.theme }>
-            <button onClick={handleThemeChange} className="alertBtn transition gap-5 hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-cyan-500 shadow-lg shadow-cyan-500/50 flex justify-center items-center text-white">
+            <button onClick={handleThemeChange} className="transition gap-5 hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-cyan-500 shadow-lg shadow-cyan-500/50 flex justify-center items-center text-white">
                 {isTheme === ETheme.LIGHT ? <FaMoon /> : <MdWbSunny />}
             </button>
         </div>

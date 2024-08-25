@@ -1,3 +1,5 @@
+import { BaseAPI } from "../state/api/EAPI";
+
 
 
 export enum ERouters {
@@ -22,5 +24,5 @@ export enum EPath {
     EDIT = "change/",
     DELETE = "delete/",
     ADD = "/add/",
-   
+    ADMIN_DISPLAY = BaseAPI.BaseAPI + "main/admin/" 
 }

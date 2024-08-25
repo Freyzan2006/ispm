@@ -13,12 +13,13 @@ import Theme from "../Theme/Theme";
 import MyLink from "../../widgets/MyLink/MyLink";
 import { clearTokens } from "../../state/auth/authSlice";
 import { useEffect } from "react";
-import { fetchUserData } from "../../state/api/userFetch";
+import { userThunk } from "../../state/user/userThunk";
 import { useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
 import { EButton, ITypeBtn } from "../Button/EButton";
 import { EMyLink } from "../MyLink/EMyLink";
 import { EPath } from "../../Routers/ERouters";
+import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../state/alert/alertSlice";
 
 
 const Menu: React.FC = () => {
@@ -31,7 +32,7 @@ const Menu: React.FC = () => {
 
     useEffect(() => {
         if (accessToken) 
-            dispatch(fetchUserData(accessToken))
+            dispatch(userThunk(accessToken))
     }, [dispatch, accessToken])
 
     function handlerMenuMedia() {
@@ -40,8 +41,12 @@ const Menu: React.FC = () => {
     }
 
     function handlerLogout() {
-        dispatch(clearTokens())
-        navigate(EPath.LOGIN)
+        dispatch(clearTokens());
+        navigate(EPath.LOGIN);
+
+        dispatch(setShowAlert());
+        dispatch(setMessageAlert("Вы вышли из аккаунта "));
+        dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
     }
 
     return (
@@ -63,7 +68,7 @@ const Menu: React.FC = () => {
                     accessToken ? (
                         <div className = { css.myMenuEl }>
                             <MyLink to = { EPath.SEARCH } styled = { EMyLink.BLUE }><FaSearch /> Поиск</MyLink>
-                            <MyLink to = { EPath.USER } styled = { EMyLink.GREEN }><FaUserCircle /> { user.username }</MyLink>
+                            <MyLink to = { EPath.USER } styled = { EMyLink.GREEN }><FaUserCircle /> { user.username } { user.is_staff || "(Админ)" }</MyLink>
                         
                             <Button type = { ITypeBtn.BUTTON } onClick = { handlerLogout } styled = { EButton.RED }>
                                 <FaSignOutAlt /> Выход

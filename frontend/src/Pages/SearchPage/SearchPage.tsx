@@ -20,14 +20,11 @@ import { publicTypeFetch } from "../../state/publicType/publicTypeFetch";
 import { yearsRage } from "../../utils";
 import { setSearchCoauthor, setSearchDate, setSearchName, setSearchPublicType, setSearchUser } from "../../state/search/searchSlice";
 import { PAGINATION_SIZE } from "../../state/api/config";
+import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../state/alert/alertSlice";
 
 
 const SearchPage: React.FC = () => {
-    // const [searchName, setSearchName] = useState<string>("");
-    // const [ searchPublicType, setSearchPublicType ] = useState<string>("");
-    // const [ searchUser, setSearchUser ] = useState<string>("");
-    // const [searchDate, setSearchDate] = useState<string>("");
-    // const [searchCoauthor, setSearchCoauthor] = useState<string>("");
+
 
     const dispatch = useAppDispatch();
     const { users, status, error } = useAppSelector((state: RootState) => state.users);
@@ -37,6 +34,7 @@ const SearchPage: React.FC = () => {
 
 
     const { searchName, searchPublicType, searchUser, searchCoauthor, searchDate } = useAppSelector((state: RootState) => state.search); 
+    const { count } = useAppSelector((state: RootState) => state.tables)
 
     useEffect(() => {
         if (status === 'idle') {
@@ -56,7 +54,9 @@ const SearchPage: React.FC = () => {
             dispatch(searchTablesThunk({ searchName, searchPublicType, searchUser, searchDate, searchCoauthor }));
         }
 
-        console.log(paginationCount)
+        dispatch(setShowAlert());
+        dispatch(setMessageAlert(`Вы нашли ${paginationCount} ш.т записей из таблиц`));
+        dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
         
        
     };

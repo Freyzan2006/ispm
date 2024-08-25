@@ -11,7 +11,7 @@ const SelectField: React.FC<ISelectField> =
 
 
     
-    const selectorStyle = `${css.selector} w-full dark:border-white dark:text-white dark:shadow-lg dark:shadow-gray-500`;
+    const selectorStyle = `${css.selector} w-full bg-white dark:bg-slate-900 dark:border-white dark:text-white dark:shadow-lg dark:shadow-gray-500`;
 
 
 

@@ -10,6 +10,7 @@ import { RootState } from "../../state/store";
 import { login } from "../../state/auth/authThunk";
 import { redirect, useNavigate } from "react-router-dom";
 import { EPath } from "../../Routers/ERouters";
+import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../state/alert/alertSlice";
 
 
 
@@ -30,7 +31,16 @@ const LoginPage: React.FC = () => {
 
         try {
             await dispatch(login({ username, password })).unwrap();
+
+            dispatch(setShowAlert());
+            dispatch(setMessageAlert(`Добро пожаловать ${username}`));
+            dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
+
         } catch (error) {
+            dispatch(setShowAlert());
+            dispatch(setMessageAlert("Проверьте пожалуйтса свой логин и пароль"));
+            dispatch(setTypeAlert(EAlertType.ERROR));
+
             console.error('Failed to login:', error);
         }
 
@@ -43,13 +53,13 @@ const LoginPage: React.FC = () => {
             <form className = { `${css.LoginPage} ` } onSubmit = { handlerSubmit }>
                 <h1 className = "text-black dark:text-white  text-2xl">Вход в Аккаунт</h1>
                 <input placeholder = "Имя" type="text" 
-                    className = { css.LoginPage__login } 
+                    className = { `${css.LoginPage__login} bg-white dark:bg-slate-900` } 
                     onChange = { (e) => setUsername(e.target.value) }
                     value = { username }
                 />
                 <div className = "w-full flex justify-center items-center gap-5">
                     <input placeholder = "Пароль" type = { isShowPassword ? "text" : "password" } 
-                        className = { css.LoginPage__password } 
+                        className = { `${css.LoginPage__login} bg-white dark:bg-slate-900` } 
                         onChange = { (e) => setPassword(e.target.value) }
                         value = { password }
                     />

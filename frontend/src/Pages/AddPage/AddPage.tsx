@@ -22,6 +22,7 @@ import { IFrom } from "./IAddPage.interface";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import useGetPubType from "../../hooks/useGetPubType";
 import { useCountPages } from "../../hooks/useCountPages";
+import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../state/alert/alertSlice";
 
 const AddPage: React.FC = () => {
 
@@ -36,7 +37,7 @@ const AddPage: React.FC = () => {
     const { publicTypes, status } = useAppSelector((state: RootState) => state.publicTypes);
     const userId = useAppSelector((state: RootState) => state.user.id);
 
-    
+    const dispatch = useAppDispatch();
 
     useCountPages({startPageWatch, endPageWatch, setValue});
     useGetPubType(status);
@@ -49,6 +50,11 @@ const AddPage: React.FC = () => {
        
         data.for_user = userId;
         console.log(data)
+
+        dispatch(setShowAlert());
+        dispatch(setMessageAlert(`Вы успешно добавили запись "${data.name}" в свою таблицу`));
+        dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
+
         // async function addRequest() {
         //     const response = await axiosConfig.post("table/", data);
 

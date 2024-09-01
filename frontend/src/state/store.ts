@@ -14,6 +14,8 @@ import paginationSlice from './pagination/paginationSlice';
 import searchSlice from './search/searchSlice';
 import alertSlice from './alert/alertSlice';
 
+import bgAnimationSlice from './bgAnimation/bgAnimationSlice';
+
 
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -32,7 +34,8 @@ const store = configureStore({
     users: usersSlice,
     publicTypes: publicTypeSlice,
     pagination: paginationSlice.reducer,
-    search: searchSlice.reducer
+    search: searchSlice.reducer,
+    bgAnimation: bgAnimationSlice.reducer
   },
 });
 

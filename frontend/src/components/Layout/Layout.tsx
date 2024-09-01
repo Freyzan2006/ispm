@@ -14,10 +14,13 @@ import Navigation from "../../widgets/Navigation/Navigation";
 import BgAnimation from "../BgAnimation/BgAnimation";
 import Alert from "../../widgets/Alert/Alert";
 
+
 const Layout: React.FC = () => {
 
     const dispatch = useAppDispatch();
     const { accessToken, refreshToken } = useAppSelector((state: RootState) => state.auth);
+    const { isActiveAnimation } = useAppSelector((state: RootState) => state.bgAnimation); 
+    
 
     useEffect(() => {
          
@@ -28,10 +31,13 @@ const Layout: React.FC = () => {
         
     }, [dispatch, accessToken, refreshToken]);
 
+   
+
     return (
         
         <div className = "flex flex-col">
-            <BgAnimation id="particles" />
+            { isActiveAnimation && <BgAnimation id="particles" /> }
+            
 
             <div className = "flex flex-col gap-10 z-10">
                 <Loading time = { 3000 } />

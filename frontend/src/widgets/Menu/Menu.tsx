@@ -20,7 +20,11 @@ import { EButton, ITypeBtn } from "../Button/EButton";
 import { EMyLink } from "../MyLink/EMyLink";
 import { EPath } from "../../Routers/ERouters";
 import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../state/alert/alertSlice";
+import DropDown from "../DropDown/DropDown";
+import { IoMdSettings } from "react-icons/io";
 
+import { MdOutlineAnimation } from "react-icons/md";
+import { isBgAnimation } from "../../state/bgAnimation/bgAnimationSlice";
 
 const Menu: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -29,6 +33,8 @@ const Menu: React.FC = () => {
     const isAction = useAppSelector((state: RootState) => state.menu.isActive);    
     const accessToken = useAppSelector((state: RootState) => state.auth.accessToken);
     const user = useAppSelector((state: RootState) => state.user);
+    
+    
 
     useEffect(() => {
         if (accessToken) 
@@ -49,6 +55,17 @@ const Menu: React.FC = () => {
         dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
     }
 
+
+    function handlerAnimationBg() {
+        dispatch(isBgAnimation());
+
+        dispatch(setShowAlert());
+        dispatch(setMessageAlert("Анимация успешна изменина"));
+        dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
+    }
+
+
+
     return (
         <div className = { `${css.myMenu} ${isAction ? `${css.active} bg-blue-600 dark:bg-slate-900` : ""}`}>
            
@@ -63,7 +80,23 @@ const Menu: React.FC = () => {
             </menu>  
 
             <div className={ `${css.myMenuEl}`}>
-                <Theme />
+                
+                <DropDown intro = { <IoMdSettings /> }>
+                    <div className = "flex flex-col justify-center items-center gap-1 text-black dark:text-white ">
+                        <h3>Тема сайта: Светлая/Тёмная</h3>
+                        <Theme />
+                    </div>
+
+                    <div className = "flex flex-col justify-center items-center gap-1 text-black dark:text-white ">
+                        <h3>Анимация на заднем фоне: Вкл/Выкл</h3>
+                        <Button onClick = { handlerAnimationBg} type = { ITypeBtn.BUTTON } styled = { EButton.BLUE }>
+                            <MdOutlineAnimation />
+                        </Button>
+                        
+                    </div>
+                    
+                </DropDown>
+
                 {
                     accessToken ? (
                         <div className = { css.myMenuEl }>

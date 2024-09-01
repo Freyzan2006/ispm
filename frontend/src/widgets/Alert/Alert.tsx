@@ -1,5 +1,8 @@
 
 import { GrStatusGood } from "react-icons/gr";
+import { MdError } from "react-icons/md";
+import { IoIosWarning } from "react-icons/io";
+import { FaInfoCircle } from "react-icons/fa";
 
 import css from "./Alert.module.scss";
 import { useAppDispatch, useAppSelector } from "../../state/useAppDispatch";
@@ -52,15 +55,24 @@ const Alert: React.FC = () => {
     || 
     EAlertType.INFO == type && "text-blue-500"
 
+    const typeIcon = 
+    EAlertType.SUCCESSFUL == type && <GrStatusGood size = { 30 } color="green" />
+    || 
+    EAlertType.ERROR == type && <MdError size = { 30 } color="red" />
+    || 
+    EAlertType.WARNING == type && <IoIosWarning size = { 30 } color="yellow" />
+    || 
+    EAlertType.INFO == type && <FaInfoCircle size = { 30 } color="blue" />
+
     return (
   
             
         
-        <div className={ `${css.toast} bg-slate-800 dark:bg-slate-800  ${ isActive && css.active }` }>
+        <div className={ `${css.toast}  bg-white dark:bg-slate-800  ${ isActive && css.active }` }>
 
             <div className= { css.toast_content }>
                 
-                <GrStatusGood size = { 30 } color="white" />
+                { typeIcon }
             
                 <div className= { css.message }>
                     <span className = { `${css.text } ${css.text_2} ${ colorTypeMessage }` }>{ typeMessage }</span>

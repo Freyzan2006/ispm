@@ -25,19 +25,20 @@ const TableBody: React.FC<ITableComponent> = ({ isBelongsUser }) => {
     const userId = useAppSelector((state: RootState) => state.user.id)
 
     useEffect(() => {
-        if (isBelongsUser) {
-            if (userId !== undefined) {
-                // Передайте объект с `url` и `userId` как указано в `createAsyncThunk`
-                dispatch(tablesUserThunk({ userId }));
+        try {
+            if (isBelongsUser) {
+                if (userId !== undefined) {
+                    // Передайте объект с `url` и `userId` как указано в `createAsyncThunk`
+                    dispatch(tablesUserThunk({ userId }));
+                } else {
+                    console.error('User ID is undefined');
+                }
             } else {
-                console.error('User ID is undefined');
+                dispatch(tablesThunk({}));
             }
-        } else {
-            dispatch(tablesThunk({}));
+        } catch(err) {
+            console.log("HHh")
         }
- 
-
-        
         
     }, [dispatch, userId, isBelongsUser]) 
 

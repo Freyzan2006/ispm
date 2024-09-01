@@ -28,19 +28,21 @@ export const refreshToken = createAsyncThunk<LoginResponse, void, { dispatch: Ap
     'auth/refreshToken',
     async (_, { getState, dispatch }) => {
         const state = getState() as any;
-        const { refreshToken } = state.auth;
+        const { refreshToken, refreshing } = state.auth;
 
         if (!refreshToken) {
             dispatch(clearTokens());
+            localStorage.removeItem('refreshToken');
             throw new Error('No refresh token available');
         }
 
-        if (state.auth.refreshing) {
+        if (refreshing) {
             throw new Error('Token refresh in progress');
         }
 
         try {
-            
+            dispatch({ type: 'auth/setRefreshing', payload: true });
+
             const response = await axiosConfig.post(UserAPI.REFRESH_TOKEN_POST, {
                 refresh: refreshToken,
             });
@@ -54,8 +56,12 @@ export const refreshToken = createAsyncThunk<LoginResponse, void, { dispatch: Ap
 
         } catch (error) {
             dispatch(clearTokens());
+            localStorage.removeItem('refreshToken');
             dispatch(setError('Failed to refresh token'));
             throw error;
+        } finally {
+            // Сброс состояния обновления токена независимо от результата
+            dispatch({ type: 'auth/setRefreshing', payload: false });
         }
     }
 );

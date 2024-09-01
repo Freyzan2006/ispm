@@ -13,6 +13,8 @@ export enum ERouters {
     EDIT = "change/:id",
     DELETE = "delete/:id",
     ADD = "add/",
+
+    NotFoundPage = "/*"
 }
 
 export enum EPath {

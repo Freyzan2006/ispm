@@ -50,9 +50,12 @@ axiosConfig.interceptors.response.use(
                
                 axiosConfig.defaults.headers.common['Authorization'] = `${KeyWordJWT.KEY} ${newToken}`;
 
+                
+
                 return axiosConfig(originalRequest);
             } catch (err) {
                 store.dispatch(clearTokens());
+                // localStorage.removeItem('refreshToken');
                 return Promise.reject(err);
             }
         }

@@ -28,6 +28,8 @@ const userSlice = createSlice({
                 state.status = EStatus.IDLE;
                 state.id = action.payload.id;
                 state.username = action.payload.username;
+                state.is_staff = action.payload.is_staff;
+                state.is_superuser = action.payload.is_superuser;
             })
             .addCase(userThunk.rejected, (state, action) => {
                 state.status = EStatus.FAILED;

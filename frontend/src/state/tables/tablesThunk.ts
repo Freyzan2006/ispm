@@ -26,12 +26,15 @@ export const tablesThunk = createAsyncThunk<ITablesApiResponse, { url?: string }
     async ({ url }, { rejectWithValue }) => {
         try {
             const urlNow = url || TableAPI.ALL_TABLE_GET;
-           
+            
+          
             const response = await axiosConfig.get<ITablesApiResponse>(`${urlNow}`);
+            
            
             
             return response.data;
         } catch (error: any) {
+           
             return rejectWithValue(error.response?.data || 'Failed to fetch tables');
         }
     }

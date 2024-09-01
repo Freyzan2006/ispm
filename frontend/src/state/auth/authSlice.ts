@@ -10,6 +10,7 @@ const initialState: AuthState = {
     refreshToken: localStorage.getItem('refreshToken') || null,
     status: EStatus.IDLE,
     error: null,
+    refreshing: false,
 };
 
 const authSlice = createSlice({
@@ -35,6 +36,10 @@ const authSlice = createSlice({
         },
         setError(state, action: PayloadAction<string>) {
             state.error = action.payload;
+        },
+
+        setRefreshing(state, action: PayloadAction<boolean>) {
+            state.refreshing = action.payload;
         },
     },
 

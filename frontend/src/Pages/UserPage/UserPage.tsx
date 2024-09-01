@@ -10,10 +10,16 @@ import { MyLink } from "../../widgets/Widgets";
 
 import { MdAdminPanelSettings } from "react-icons/md";
 
+import ErrorAlert from "../../components/ErrorAlert/ErrorAlert";
+
 import { FaPlus } from "react-icons/fa";
+import ErrorPage from "../NotFoundPage/NotFoundPage";
 const UserPage: React.FC = () => {
 
-    const { is_staff } = useAppSelector((state: RootState ) => state.user);
+    const { is_staff, username } = useAppSelector((state: RootState ) => state.user);
+
+    if ( !username )
+        return <ErrorPage />
 
     return (
         
@@ -24,7 +30,7 @@ const UserPage: React.FC = () => {
                 </MyLink>
 
                 {
-                    is_staff || (
+                    is_staff && (
                     <a target = "_blank" href = { EPath.ADMIN_DISPLAY } className = { EButton.GREEN }>
                         <MdAdminPanelSettings /> Перейти в админ панель 
                     </a>

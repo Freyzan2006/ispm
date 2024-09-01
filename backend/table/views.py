@@ -20,7 +20,7 @@ from table.pagination import TablePagination
 class TableListCreateAPIView(generics.ListCreateAPIView):
     queryset = TableModel.objects.all().order_by('id') 
     serializer_class = TableModelSerializer
-    permission_classes = [IsAuthenticated] 
+    permission_classes = [AllowAny] 
     pagination_class = TablePagination
 
 

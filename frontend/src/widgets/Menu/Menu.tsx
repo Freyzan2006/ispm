@@ -101,7 +101,7 @@ const Menu: React.FC = () => {
                     accessToken ? (
                         <div className = { css.myMenuEl }>
                             <MyLink to = { EPath.SEARCH } styled = { EMyLink.BLUE }><FaSearch /> Поиск</MyLink>
-                            <MyLink to = { EPath.USER } styled = { EMyLink.GREEN }><FaUserCircle /> { user.username } { user.is_staff || "(Админ)" }</MyLink>
+                            <MyLink to = { EPath.USER } styled = { EMyLink.GREEN }><FaUserCircle /> { user.username } { user.is_staff && "(Админ)" }</MyLink>
                         
                             <Button type = { ITypeBtn.BUTTON } onClick = { handlerLogout } styled = { EButton.RED }>
                                 <FaSignOutAlt /> Выход

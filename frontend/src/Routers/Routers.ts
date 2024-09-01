@@ -8,6 +8,7 @@ import { HomePage, AboutPage, SearchPage,
   LoginPage, UserPage, EditPage, DeletePage
 } from "../Pages/Page.ts";
 import AddPage from "../Pages/AddPage/AddPage.tsx";
+import NotFoundPage from "../Pages/NotFoundPage/NotFoundPage.tsx";
 
 
 const router = createBrowserRouter([
@@ -53,6 +54,11 @@ const router = createBrowserRouter([
         {
           path: ERouters.ADD,
           Component: AddPage
+        },
+
+        {
+          path: ERouters.NotFoundPage,
+          Component: NotFoundPage
         }
       ]
     },

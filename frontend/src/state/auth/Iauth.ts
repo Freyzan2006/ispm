@@ -8,4 +8,5 @@ export interface AuthState {
     refreshToken: string | null;
     status: EStatus;
     error: string | null;
+    refreshing: boolean;
 }

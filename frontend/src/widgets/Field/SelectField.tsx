@@ -39,22 +39,13 @@ const SelectField: React.FC<ISelectField> =
                 
                 render = { ({ field }) => (
                     <>
-                    {/* <input 
-                        type = { isNumber ? "number" : "text" }
-                        title = { noSpecialCharsMessage }
-                        className = { selectorStyle }
-                        onChange = { (e) => field.onChange(
-                            isNumber ? Number(e.target.value) : e.target.value
-                        ) } 
-                        value = { field.value === 0 ? "" : field.value } 
-                        placeholder = { placeholder }
-                    /> */}
+                    
 
                         <select className = { selectorStyle }
                             onChange = { (e) => field.onChange(isNumber ? +e.target.value : e.target.value) } 
-                            value = { field.value }
+                            value = { field.value  }
                         >
-                            <option value = { '' }>
+                            <option className = "text-black dark:text-white"  value = { '' }>
                                 ------- 
                             </option>
                             { children }

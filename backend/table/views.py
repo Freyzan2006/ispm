@@ -17,16 +17,19 @@ from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAuthenticated
 from table.pagination import TablePagination
 
+from table.permission import ReadOnly
+
 class TableListCreateAPIView(generics.ListCreateAPIView):
     queryset = TableModel.objects.all().order_by('id') 
     serializer_class = TableModelSerializer
-    permission_classes = [AllowAny] 
+    permission_classes = [ReadOnly] 
     pagination_class = TablePagination
 
 
 class TableDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = TableModel.objects.all()
     serializer_class = TableModelSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class PublicationTypeCreateAPIView(generics.ListCreateAPIView):
@@ -48,7 +51,7 @@ class TableListAPIView(generics.ListAPIView):
 
         print(for_user)
         if for_user:
-            return TableModel.objects.filter(for_user=for_user)
+            return TableModel.objects.filter(for_user=for_user).order_by('-id') 
         return TableModel.objects.all()
 
 
@@ -62,3 +65,18 @@ class TableDeleteAPIView(APIView):
             return Response({'detail': 'У вас нет прав на удаление этой записи.'}, status=status.HTTP_403_FORBIDDEN)
         my_model.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+
+# from table.serializers import AuthorSerializer, TableModelSerializer
+# from rest_framework import viewsets
+
+# class AuthorView(viewsets.ModelViewSet):
+#     queryset = Author.objects.all()
+#     serializer_class = AuthorSerializer
+#     permission_classes = [AllowAny]
+
+
+

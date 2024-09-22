@@ -1,8 +1,9 @@
 .DropDown {
     top: 0;
     right: 0;
-    padding: 15px;
+    padding: 1rem;
     overflow-y: hidden;
+    
 
     &__intro {
         transition: 0.5s all ease;

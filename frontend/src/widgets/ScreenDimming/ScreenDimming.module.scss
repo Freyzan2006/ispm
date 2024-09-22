@@ -1,7 +1,9 @@
+$mediaSize: 1280px;
+
 .screenDimming {
     display: none;
 
-    @media (max-width: 900px) {
+    @media (max-width: $mediaSize) {
         &.active {
             display: block;
             position: fixed;

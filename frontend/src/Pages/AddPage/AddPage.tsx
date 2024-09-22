@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+
 import Button from "../../widgets/Button/Button";
 import { EButton, ITypeBtn } from "../../widgets/Button/EButton";
 import { FaPlus } from "react-icons/fa";
@@ -7,9 +7,8 @@ import { RootState } from "../../state/store";
 
 import { yearsRage } from "../../utils";
 import css from "./AddPage.module.scss";
-import { EStatus } from "../../state/api/EAPI";
-import { publicTypeFetch } from "../../state/publicType/publicTypeFetch";
-import { SubmitHandler, useForm } from "react-hook-form";
+
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 
 import InputField from "../../widgets/Field/InputField";
 
@@ -23,6 +22,8 @@ import { FaArrowAltCircleLeft } from "react-icons/fa";
 import useGetPubType from "../../hooks/useGetPubType";
 import { useCountPages } from "../../hooks/useCountPages";
 import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../state/alert/alertSlice";
+import axiosConfig from "../../state/api/axiosConfig";
+
 
 const AddPage: React.FC = () => {
 
@@ -43,31 +44,45 @@ const AddPage: React.FC = () => {
     useGetPubType(status);
 
     
-
+    
 
     const onSubmit: SubmitHandler<IFrom> = (data) => {
         if ( !userId ) return 
        
         data.for_user = userId;
+        data.authors = JSON.stringify(data.authors);
         console.log(data)
+       
+
+        
+
+
+        async function addRequest() {
+            const response = await axiosConfig.post("table/", data);
+
+            console.log(response.data);
+
+        }
 
         dispatch(setShowAlert());
-        dispatch(setMessageAlert(`Вы успешно добавили запись "${data.name}" в свою таблицу`));
-        dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
-
-        // async function addRequest() {
-        //     const response = await axiosConfig.post("table/", data);
-
-        //     console.log(response.data);
-
-        // }
-
-        // addRequest();
+        try {
+            addRequest();
+            dispatch(setMessageAlert(`Вы успешно добавили запись "${data.name}" в свою таблицу`));
+            dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
+        } catch(err) {
+            dispatch(setMessageAlert(`Не удалось создать запись в таблице :(`));
+            dispatch(setTypeAlert(EAlertType.ERROR));
+        }
     }
 
    
     
 
+
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "authors", // Имя поля в вашей форме
+    });
 
     
     
@@ -92,34 +107,34 @@ const AddPage: React.FC = () => {
                 </SelectField>
 
                 <InputField 
-                    placeholder = "Название научной работы" 
+                    placeholder = "Название публикации" 
                     errorMessage = { errors.name?.message } 
-                    label="Название научной работы" name = "name" 
+                    label="Название публикации" name = "name" 
                     control = { control } 
                     validationRules = {{
-                        required: '"Название научной работы" обязательно',
+                        required: '"Название публикации" обязательно',
                         minLength: { value: 4, message: 'Минимальная длина 4 символа' },
                         maxLength: { value: 255, message: 'Максимальная длина 255 символов' },
                     }}
                 />
 
                 <InputField 
-                    placeholder = "Название" 
+                    placeholder = "Название издания" 
                     errorMessage = { errors.title?.message } 
-                    label="Название" name = "title" 
+                    label="Название издания" name = "title" 
                     control = { control } 
                     validationRules = {{
-                        required: '"Название" обязательно',
+                        required: '"Название издания" обязательно',
                         minLength: { value: 4, message: 'Минимальная длина 4 символа' },
                         maxLength: { value: 255, message: 'Максимальная длина 255 символов' },
                     }}
                 />
 
                 <SelectField isNumber = { true } control = { control }
-                    name = "data" label = "Дата публикации" 
+                    name = "data" label = "Год" 
                     errorMessage = { errors.data?.message }
                     validationRules = {{
-                        required: '"Дата публикации" обязательно',
+                        required: '"Год" обязательно',
                         valueAsNumber: true,
                         min: { value: 1, message: 'Вы не выбрали "Дату"' },
                     }}
@@ -134,12 +149,12 @@ const AddPage: React.FC = () => {
 
                 <InputField 
                     isNumber = { true }
-                    placeholder = "Томов" 
+                    placeholder = "Том" 
                     errorMessage = { errors.tom?.message } 
-                    label="Томов" name = "tom" 
+                    label="Том" name = "tom" 
                     control = { control } 
                     validationRules = {{
-                        required: '"Томов" обязательно',
+                        required: '"Том" обязательно',
                         valueAsNumber: true,
                         min: { value: 1, message: 'минимум 1 том' },
                         max: { value: 1000,  message: 'максимум 1000 томов' }
@@ -148,15 +163,15 @@ const AddPage: React.FC = () => {
 
                 <InputField 
                     isNumber = { true }
-                    placeholder = "issue" 
+                    placeholder = "Номер" 
                     errorMessage = { errors.issue?.message } 
-                    label="issue" name = "issue" 
+                    label="Номер" name = "issue" 
                     control = { control } 
                     validationRules = {{
-                        required: '"issue" обязательно',
+                        required: '"Номер" обязательно',
                         valueAsNumber: true,
-                        min: { value: 1, message: 'минимум 1 issue' },
-                        max: { value: 1000,  message: 'максимум 1000 issue' }
+                        min: { value: 1, message: 'минимум 1 Номер' },
+                        max: { value: 1000,  message: 'максимум 1000 Номер' }
                     }}
                 />
 
@@ -164,12 +179,12 @@ const AddPage: React.FC = () => {
                     <div className = {`flex justify-center items-start gap-3 flex-row w-full ${css.fields}`}>
                         <InputField 
                             isNumber = { true }
-                            placeholder = "Страницы от" 
+                            placeholder = "Начальная страница" 
                             errorMessage = { errors.page_start?.message } 
-                            label="Страницы от" name = "page_start" 
+                            label="Начальная страница" name = "page_start" 
                             control = { control } 
                             validationRules = {{
-                                required: '"Страницы от" обязательно',
+                                required: '"Начальная страница" обязательно',
                                 valueAsNumber: true,
                                 min: { value: 1, message: 'минимум 1 страница' },
                                 max: { value: endPageWatch || 5000,  message: 'Начальная страница не может быть больше конечной страницы.' }
@@ -179,14 +194,14 @@ const AddPage: React.FC = () => {
                         <InputField 
                             disabled = { !startPageWatch }
                             isNumber = { true }
-                            placeholder = "До страницы" 
+                            placeholder = "Конечная страница" 
                             errorMessage = { errors.page_end?.message } 
-                            label="До страницы" name = "page_end" 
+                            label="Конечная страница" name = "page_end" 
                             control = { control } 
                             validationRules = {{
-                                required: '"До страницы" обязательно',
+                                required: '"Конечная страницы" обязательно',
                                 valueAsNumber: true,
-                                min: { value: 1, message: 'минимум "Страницы от" ' },
+                                min: { value: 1, message: 'минимум "Начальная страница" ' },
                                 max: { value: 5000,  message: 'максимум 1000 страниц ' }
                             }}
                         />
@@ -207,18 +222,58 @@ const AddPage: React.FC = () => {
                         />
                     </div>
                 </div>
+
+              
+
+
+                <div className="flex flex-col justify-center items-center gap-5">
+                    <h2 className="text-black dark:text-white text-2xl">Соавторы</h2>
+                    {fields.map((field, index) => (
+                        <div key={field.id} className="flex justify-center items-center flex-row gap-5">
+                            <InputField
+                                placeholder="Фамилия Соавтора"
+                                errorMessage={errors.authors?.[index]?.last_name?.message}
+                                label="Фамилия Соавтора"
+                                name={`authors[${index}].last_name`}
+                                control={control}
+                                validationRules={{
+                                    required: '"Фамилия Соавтора" обязательно',
+                                    minLength: { value: 4, message: 'Минимальная длина 4 символа' },
+                                    maxLength: { value: 255, message: 'Максимальная длина 255 символов' },
+                                }}
+                            />
+                            <InputField
+                                placeholder="Имя Соавтора"
+                                errorMessage={errors.authors?.[index]?.first_name?.message}
+                                label="Имя Соавтора"
+                                name={`authors[${index}].first_name`}
+                                control={control}
+                                validationRules={{
+                                    required: '"Имя Соавтора" обязательно',
+                                    minLength: { value: 4, message: 'Минимальная длина 4 символа' },
+                                    maxLength: { value: 255, message: 'Максимальная длина 255 символов' },
+                                }}
+                            />
+                            <InputField
+                                placeholder="Отчество Соавтора"
+                                errorMessage={errors.authors?.[index]?.patronymic?.message}
+                                label="Отчество Соавтора"
+                                name={`authors[${index}].patronymic`}
+                                control={control}
+                                validationRules={{
+                                    minLength: { value: 4, message: 'Минимальная длина 4 символа' },
+                                    maxLength: { value: 255, message: 'Максимальная длина 255 символов' },
+                                }}
+                            />
+                            <Button styled = {EButton.RED} type= { ITypeBtn.BUTTON } onClick={() => remove(index)}>Удалить</Button>
+                        </div>
+                    ))}
+                    <Button styled = {EButton.GREEN} type= { ITypeBtn.BUTTON } onClick={() => append({ first_name: '', last_name: '' })}>
+                        <FaPlus /> Добавить Соавтора
+                    </Button>
+                </div>
                 
-                <InputField 
-                    placeholder = "Соавторы" 
-                    errorMessage = { errors.Co_authors?.message } 
-                    label="Соавторы" name = "Co_authors" 
-                    control = { control } 
-                    validationRules = {{
-                        required: '"Соавторы" обязательно',
-                        minLength: { value: 4, message: 'Минимальная длина 4 символа' },
-                        maxLength: { value: 255, message: 'Максимальная длина 255 символов' },
-                    }}
-                />
+                
 
                 <div className = "flex justify-center items-center gap-3">
                     <MyLink to = { `/${ERouters.USER}/` } styled = { EButton.BLUE }>
@@ -231,9 +286,10 @@ const AddPage: React.FC = () => {
                     </Button>
                 </div>
 
-
+                    
                 
             </form>
+           
         </main>
     )
 }

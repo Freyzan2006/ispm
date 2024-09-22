@@ -20,7 +20,9 @@ interface IState {
     searchPublicType: string;
     searchUser: string;
     searchDate: string;
-    searchCoauthor: string;
+    searchCoauthorFirstName: string;
+    searchCoauthorLastName: string;
+    searchCoauthorPatronymic: string;
 } 
 
 const initialState: IState = {
@@ -28,7 +30,9 @@ const initialState: IState = {
     searchPublicType: "",
     searchUser: "",
     searchDate: "",
-    searchCoauthor: ""
+    searchCoauthorFirstName: "",
+    searchCoauthorLastName: "",
+    searchCoauthorPatronymic: ""
 }
   
 
@@ -53,10 +57,17 @@ const searchSlice = createSlice({
             state.searchDate = action.payload;
         },
 
-        setSearchCoauthor: (state, action: PayloadAction<string>) => {
-            state.searchCoauthor = action.payload;
-        }
+        setSearchCoauthorFirstName: (state, action: PayloadAction<string>) => {
+            state.searchCoauthorFirstName = action.payload;
+        },
         
+        setSearchCoauthorLastName: (state, action: PayloadAction<string>) => {
+            state.searchCoauthorLastName = action.payload;
+        },
+
+        setSearchCoauthorPatronymic: (state, action: PayloadAction<string>) => {
+            state.searchCoauthorPatronymic = action.payload;
+        },
     },
 
 //   extraReducers: (builder) => {
@@ -115,7 +126,8 @@ const searchSlice = createSlice({
 });
   
 export const { setSearchName, setSearchPublicType, 
-    setSearchUser, setSearchDate, setSearchCoauthor
+    setSearchUser, setSearchDate, setSearchCoauthorFirstName,
+    setSearchCoauthorLastName, setSearchCoauthorPatronymic
 } = searchSlice.actions;
 
 

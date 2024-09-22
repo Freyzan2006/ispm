@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import css from "./SearchPage.module.scss"
 
@@ -18,10 +18,19 @@ import { publicTypeFetch } from "../../state/publicType/publicTypeFetch";
 
 
 import { yearsRage } from "../../utils";
-import { setSearchCoauthor, setSearchDate, setSearchName, setSearchPublicType, setSearchUser } from "../../state/search/searchSlice";
+import { setSearchCoauthorFirstName, setSearchCoauthorLastName, setSearchCoauthorPatronymic, setSearchDate, setSearchName, setSearchPublicType, setSearchUser } from "../../state/search/searchSlice";
 import { PAGINATION_SIZE } from "../../state/api/config";
 import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../state/alert/alertSlice";
+import InputField from "../../widgets/Field/InputField";
+import { SubmitHandler, useForm } from "react-hook-form";
+import SelectField from "../../widgets/Field/SelectField";
+import { ISearchFiled } from "../../state/tables/Itables";
+import { EStatus } from "../../state/api/EAPI";
+import { EButton, ITypeBtn } from "../../widgets/Button/EButton";
+import Button from "../../widgets/Button/Button";
 
+
+interface IFrom extends ISearchFiled {}
 
 const SearchPage: React.FC = () => {
 
@@ -29,15 +38,15 @@ const SearchPage: React.FC = () => {
     const dispatch = useAppDispatch();
     const { users, status, error } = useAppSelector((state: RootState) => state.users);
     const { publicTypes } = useAppSelector((state: RootState) => state.publicTypes);
+   
 
+    const { handleSubmit, control, formState: { errors  } } = useForm<IFrom>({
+        mode: "onChange",
+    });
     
 
-
-    const { searchName, searchPublicType, searchUser, searchCoauthor, searchDate } = useAppSelector((state: RootState) => state.search); 
-    const { count } = useAppSelector((state: RootState) => state.tables)
-
     useEffect(() => {
-        if (status === 'idle') {
+        if (status === EStatus.IDLE) {
             dispatch(fetchUsers());
             dispatch(publicTypeFetch())
         }
@@ -45,89 +54,157 @@ const SearchPage: React.FC = () => {
 
     const { paginationCount } = useAppSelector((state: RootState) => state.pagination);
 
-    const handlerSubmit = (e: React.FormEvent<HTMLElement>) => {
-        e.preventDefault();
-        
-        if ( paginationCount != PAGINATION_SIZE ) {
-            dispatch(searchTablesPaginationThunk({ searchName, searchPublicType, searchUser, searchDate, searchCoauthor, page_size: paginationCount }));
-        } else {
-            dispatch(searchTablesThunk({ searchName, searchPublicType, searchUser, searchDate, searchCoauthor }));
-        }
+    const setStateSearchFields = (data : IFrom) => {
+        dispatch(setSearchName(data.searchName));
+        dispatch(setSearchPublicType(data.searchPublicType));
+        dispatch(setSearchUser(data.searchUser));
+        dispatch(setSearchDate(data.searchDate));
+        dispatch(setSearchCoauthorLastName(data.searchCoauthorLastName));
+        dispatch(setSearchCoauthorFirstName(data.searchCoauthorFirstName));
+        dispatch(setSearchCoauthorPatronymic(data.searchCoauthorPatronymic));
+    }
+    
 
+   
+
+    const onSubmit: SubmitHandler<IFrom> = (data) => {
+        console.log(data)
+
+        setStateSearchFields(data);
+        
+
+
+            
+
+        if ( paginationCount != PAGINATION_SIZE ) 
+            dispatch(searchTablesPaginationThunk({ ...data, page_size: paginationCount }));
+        else 
+            dispatch(searchTablesThunk({ ...data }));
+        
         dispatch(setShowAlert());
-        dispatch(setMessageAlert(`Вы нашли ${paginationCount} ш.т записей из таблиц`));
-        dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
-        
-       
-    };
+        try {
+            dispatch(setMessageAlert(`Вы нашли записи из таблиц`));
+            dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
+        } catch(err) {
+            dispatch(setMessageAlert(`Не удалось найти записи`));
+            dispatch(setTypeAlert(EAlertType.ERROR));
+        }
+    }
 
 
 
-    if (status === 'loading') return <div>Loading...</div>;
-    if (status === 'failed') return <div>Error loading users: {error}</div>;
+    if (status === EStatus.LOADING) return <div>Loading...</div>;
+    if (status === EStatus.FAILED) return <div>Error loading users: {error}</div>;
 
     return (
-        <main className="flex justify-center items-center flex-col gap-5">
-            <form className={`${css.SearchPage} shadow-lg shadow-blue-400 dark:shadow-lg dark:shadow-gray-500 `} onSubmit={handlerSubmit}>
+        <main className="flex justify-center items-center flex-col gap-5 w-full overflow-auto">
+            <form className={`${css.SearchPage} shadow-lg shadow-blue-400 dark:shadow-lg dark:shadow-gray-500 `} onSubmit = { handleSubmit(onSubmit) } >
                 <h1 className="text-black dark:text-white text-2xl">Поиск</h1>
-                <div className="flex justify-center items-center gap-4 flex-wrap">
-                    <input
-                        placeholder="Название публикации"
-                        type="text"
-                        className={`${css.SearchPage__search}  dark:border-white dark:text-white dark:shadow-lg dark:shadow-gray-500`}
-                        onChange={(e) => dispatch(setSearchName(e.target.value))}
-                        value={searchName}
+                <div className="flex flex-col justify-center items-center gap-4 w-full flex-wrap">
+      
+
+                    <InputField 
+                        placeholder = "Название публикации" 
+                        errorMessage = { errors.searchName?.message } 
+                        name = "searchName" 
+                        control = { control } 
+                        validationRules = {{
+                            maxLength: { value: 255, message: 'Максимальная длина 255 символов' },
+                        }}
                     />
 
-                    <select className = { `${css.SearchPage__selector}  dark:border-white dark:text-white dark:shadow-lg dark:shadow-gray-500` } value={searchPublicType || ''} onChange = { (e) => dispatch(setSearchPublicType(e.target.value)) }>
-                        <option value = { '' }>
-                            --------
-                        </option>
-                        {publicTypes.map((el, index) => (
-                            <option value={el.id} key={index}>
-                                {el.title}
-                            </option>
-                        ))}
-                    </select>
+                    <div className = {`flex items-center justify-center gap-5 ${css.media}`}>
 
-                   
-                    <select className = { `${css.SearchPage__selector}  dark:border-white dark:text-white dark:shadow-lg dark:shadow-gray-500` } value = { searchUser || '' } onChange = { (e) => dispatch(setSearchUser(e.target.value)) }>
-                        <option value = { '' }>
-                            --------
-                        </option>
-                        {users.map((el, index) => (
-                            <option value={el.id} key={index}>
-                                {el.username}
-                            </option>
-                        ))}
-                    </select>
-         
-                    <select className = { `${css.SearchPage__selector}  dark:border-white dark:text-white dark:shadow-lg dark:shadow-gray-500` } value={searchDate || ''} onChange = { (e) => dispatch(setSearchDate(e.target.value)) }>
-                        <option value = { '' }>
-                            --------
-                        </option>
-                        {yearsRage.map(year => (
-                        <option key={year} value={year}>
-                            {year}
-                        </option>
-                        ))}
-                    </select>
+                        <SelectField isNumber = { true } control = { control }
+                            name = "searchPublicType" 
+                            errorMessage = { errors.searchPublicType?.message }
+                            validationRules = {{
+                                valueAsNumber: true,
+                            }}
+                        >
+                            {publicTypes.map((el, index) => (
+                                <option value={el.id} key={index}>
+                                    {el.title}
+                                </option>
+                            ))}
+                        </SelectField>
 
-                    <input
-                        placeholder="Соавтор"
-                        type="text"
-                        className={`${css.SearchPage__search}  dark:border-white dark:text-white dark:shadow-lg dark:shadow-gray-500`}
-                        onChange={(e) => dispatch(setSearchCoauthor(e.target.value))}
-                        value={searchCoauthor}
-                    />
+                    
+            
+
+
+                        <SelectField isNumber = { true } control = { control }
+                            name = "searchUser" 
+                            errorMessage = { errors.searchUser?.message }
+                            validationRules = {{
+                                valueAsNumber: true,
+                            }}
+                        >
+                            {users.map((el, index) => (
+                                <option value={el.id} key={index}>
+                                    {el.username}
+                                </option>
+                            ))}
+                        </SelectField>
+            
+                
+
+                        <SelectField isNumber = { true } control = { control }
+                            name = "searchDate" 
+                            errorMessage = { errors.searchDate?.message }
+                            validationRules = {{
+                                valueAsNumber: true,
+                            }}
+                        >
+                            {yearsRage.map(year => (
+                                <option key={year} value={ year }>
+                                    {year}
+                                </option>
+                            ))}
+                        </SelectField>
+                    </div>
+
+                    <div className = {`flex items-center justify-center gap-5 ${css.media}`}>
+                       
+
+                        <InputField 
+                            placeholder = "Фамилия Соавтора" 
+                            errorMessage = { errors.searchCoauthorLastName?.message } 
+                            name = "searchCoauthorLastName" 
+                            control = { control } 
+                            validationRules = {{
+                                maxLength: { value: 255, message: 'Максимальная длина 255 символов' },
+                            }}
+                        />
+
+                        <InputField 
+                            placeholder = "Имя Соавтора" 
+                            errorMessage = { errors.searchCoauthorFirstName?.message } 
+                            name = "searchCoauthorFirstName" 
+                            control = { control } 
+                            validationRules = {{
+                                maxLength: { value: 255, message: 'Максимальная длина 255 символов' },
+                            }}
+                        />
+
+                        <InputField 
+                            placeholder = "Отчество Соавтора" 
+                            errorMessage = { errors.searchCoauthorPatronymic?.message } 
+                            name = "searchCoauthorPatronymic" 
+                            control = { control } 
+                            validationRules = {{
+                                maxLength: { value: 255, message: 'Максимальная длина 255 символов' },
+                            }}
+                        />
+
+                        
+                    </div>
+
                 </div>
 
-                <button
-                    type="submit"
-                    className={`transition hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-green-500 shadow-lg shadow-green-500/50 flex justify-center items-center text-white gap-3`}
-                >
+                <Button type = { ITypeBtn.SUBMIT } styled = { EButton.GREEN } >
                     <FaSearch /> Поиск
-                </button>
+                </Button>
             </form>
 
          

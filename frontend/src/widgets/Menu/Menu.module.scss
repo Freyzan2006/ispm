@@ -1,3 +1,5 @@
+$mediaSize: 1280px;
+
 .myMenu {
     display: flex;
     justify-content: center;
@@ -8,7 +10,7 @@
     padding: 8px 8px;
 
 
-    @media (max-width: 900px) {
+    @media (max-width: $mediaSize) {
         
         height: 100%;
         display: flex;
@@ -35,7 +37,7 @@
     left: -80px;
     transform: translateY(-500%);
 
-    @media (max-width: 900px) {
+    @media (max-width: $mediaSize) {
         
         transform: translateY(0%)
         
@@ -49,7 +51,7 @@
     align-items: center;
     gap: 30px;
 
-    @media (max-width: 900px) {
+    @media (max-width: $mediaSize) {
         
         display: flex;
         flex-direction: column;

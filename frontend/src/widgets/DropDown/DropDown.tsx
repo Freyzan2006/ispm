@@ -23,7 +23,7 @@ const DropDown: React.FC<IProps> = ({ children, intro , ...props }) => {
                 { intro }
             </button>
             
-            <div className = { `${css.DropDown__content} ${ isActive ? css.active : "" } bg-white dark:bg-slate-800` }>
+            <div className = { `${css.DropDown__content} ${ isActive ? css.active : "" } bg-blue-500 dark:bg-slate-800` }>
                 {
                     children
                 }

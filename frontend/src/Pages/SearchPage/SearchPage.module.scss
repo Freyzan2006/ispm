@@ -47,4 +47,10 @@
     }
 }
 
+$screenMedia: 900px;
 
+.media {
+    @media (max-width: $screenMedia) {
+        flex-wrap: wrap;
+    }
+}

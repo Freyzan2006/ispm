@@ -32,7 +32,8 @@ const Loading: React.FC<IProps> = ({ time }) => {
         {
             isAction ? (
                 <div className = {`  ${css.loadingBar} flex justify-center items-center fixed top-0 left-0 right-0 bottom-0 w-full h-full bg-slate-800`}>
-                    <img className = "rounded-full" src= { LoadingImg } alt="Loading..." />
+                    {/* <img className = "rounded-full" src= { LoadingImg } alt="Loading..." /> */}
+                    <div className={`${css.loader} ${css.loader_2}`}></div>
                 </div>
             ) : (
                 <></>

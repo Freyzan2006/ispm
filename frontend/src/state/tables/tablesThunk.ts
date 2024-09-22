@@ -78,7 +78,7 @@ export const tablesUserThunk = createAsyncThunk<ITablesApiResponse, { userId: nu
 
 export const searchTablesPaginationThunk = createAsyncThunk<ITablesApiResponse, ISearchFiled, {}>(
     'table/searchFetchAllTableData', 
-    async ({ searchName, searchPublicType, searchUser, searchDate, searchCoauthor, page_size }) => {
+    async ({ searchName, searchPublicType, searchUser, searchDate, searchCoauthorFirstName, searchCoauthorPatronymic, searchCoauthorLastName, page_size }) => {
     
         const isPagination = {page_size: page_size} || null;
 
@@ -89,7 +89,9 @@ export const searchTablesPaginationThunk = createAsyncThunk<ITablesApiResponse, 
                 searchPublicType: searchPublicType,
                 searchDate: searchDate,
                 searchUser: searchUser,
-                searchCoauthor: searchCoauthor,
+                searchCoauthorLastName: searchCoauthorLastName, 
+                searchCoauthorFirstName: searchCoauthorFirstName,
+                searchCoauthorPatronymic: searchCoauthorPatronymic,
 
                 ...isPagination 
             }
@@ -100,7 +102,7 @@ export const searchTablesPaginationThunk = createAsyncThunk<ITablesApiResponse, 
 
 export const searchTablesThunk = createAsyncThunk<ITablesApiResponse, ISearchFiled, {}>(
     'table/searchFetchAllTableData', 
-    async ({ searchName, searchPublicType, searchUser, searchDate, searchCoauthor }) => {
+    async ({ searchName, searchPublicType, searchUser, searchDate, searchCoauthorFirstName, searchCoauthorPatronymic, searchCoauthorLastName }) => {
     
        
 
@@ -111,8 +113,9 @@ export const searchTablesThunk = createAsyncThunk<ITablesApiResponse, ISearchFil
                 searchPublicType: searchPublicType,
                 searchDate: searchDate,
                 searchUser: searchUser,
-                searchCoauthor: searchCoauthor,
-
+                searchCoauthorFirstName: searchCoauthorFirstName, 
+                searchCoauthorPatronymic: searchCoauthorPatronymic, 
+                searchCoauthorLastName: searchCoauthorLastName
               
             }
         })

@@ -11,7 +11,7 @@ export interface IFrom {
     "page_start": number;
     "page_end": number;
     "pages": number;
-    "Co_authors": string;
+    "authors": string;
     "for_user": number;
 }
 

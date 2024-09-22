@@ -3,10 +3,13 @@ import { EStatus } from "../api/EAPI";
 export interface ISearchFiled {
     searchName: string;
     searchDate: string;
-    searchCoauthor: string;
     searchPublicType: string;
     searchUser: string;
     page_size?: number;
+
+    searchCoauthorLastName: string;
+    searchCoauthorFirstName: string;
+    searchCoauthorPatronymic: string;
 }
 
 export interface ITablesApiResponse {
@@ -36,10 +39,16 @@ export interface ITable {
     page_start: number;
     page_end: number;
     pages: number;
-    Co_authors: string;
+    authors: IAuthor[];
     created_at: string;
     updated_at: string;
     for_user: number;
+}
+
+export interface IAuthor {
+    first_name: string;
+    last_name: string;
+    patronymic: string;
 }
 
 

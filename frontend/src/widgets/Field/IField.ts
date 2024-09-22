@@ -10,6 +10,7 @@ export interface IField {
     errorMessage?: string;
     placeholder?: string;
     validationRules: Record<string, any>;
+    type?: string;
 }
 
 

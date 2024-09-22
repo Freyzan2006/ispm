@@ -6,7 +6,7 @@ import ErrorAlert from "../../components/ErrorAlert/ErrorAlert";
 import { noSpecialChars, noSpecialCharsMessage } from "../../utils/validationInput";
 
 const InputField: React.FC<IField> = 
-({ control, name, label, errorMessage, placeholder, validationRules, isNumber, disabled }) => {
+({ control, name, label, errorMessage, placeholder, validationRules, isNumber, disabled, type }) => {
 
 
     const inputStyle = `${css.input} w-full bg-white dark:bg-slate-900  dark:border-white dark:text-white dark:shadow-lg dark:shadow-gray-500`;
@@ -40,7 +40,7 @@ const InputField: React.FC<IField> =
                     <>
                     <input 
                         disabled = { disabled }
-                        type = { isNumber ? "number" : "text" }
+                        type = { isNumber ? "number" :  type ? type : "text" }
                         title = { noSpecialCharsMessage }
                         className = { inputStyle }
                         onChange = { (e) => field.onChange(
@@ -48,6 +48,7 @@ const InputField: React.FC<IField> =
                         ) } 
                         value = { field.value === 0 ? "" : field.value } 
                         placeholder = { placeholder }
+                        
                     
                     />
                     {errorMessage && (

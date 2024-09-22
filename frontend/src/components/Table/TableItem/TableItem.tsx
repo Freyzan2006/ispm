@@ -8,15 +8,21 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 
 import { MdOutlinePublishedWithChanges } from "react-icons/md";
 import { MyLink } from "../../../widgets/Widgets";
-import { IParseDate, ParseDate } from "../../../utils/ParseDate";
+import { ParseDate } from "../../../utils/ParseDate";
 
-const TableItem: React.FC<ITable> = ({ id, Type, name, title, data, tom, issue, page_start, page_end, pages, Co_authors, created_at, updated_at, for_user }) => {
+import { IAuthor } from "../../../state/tables/Itables";
+
+const TableItem: React.FC<ITable> = ({ id, Type, name, title, data, tom, issue, page_start, page_end, pages, authors, created_at, updated_at, for_user }) => {
 
    
     const userId = useAppSelector((state: RootState) => state.user.id );
   
     const parse_created_at = ParseDate(created_at);
     const parse_updated_at = ParseDate(updated_at); 
+
+   
+    const parseAuthors = JSON.parse(authors);
+    
 
     return (
         <tr className = "text-black dark:text-white " >
@@ -29,9 +35,26 @@ const TableItem: React.FC<ITable> = ({ id, Type, name, title, data, tom, issue, 
                 <span><b>Дата публикации:</b>{ data } </span>
                 <span><b>Томов:</b> { tom }.</span>
                 <span><b>Страницы: от</b> { page_start } <b>до</b> { page_end }</span>
+                <span><b>Номер: </b>{ issue || "Нету" }</span>
             </td>
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">{ pages }</td>
-            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">{ Co_authors }</td>
+            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">
+                <div className="flex flex-row justify-between items-center w-full">
+                    <p>№</p>
+                    <p>Фамилия:</p>
+                    <p>Имя:</p>
+                    <p>Отчества:</p>
+                </div>
+                
+                { parseAuthors.map((author: IAuthor, index: number) => (
+                    <div key = { index } className = "flex gap-3 flex-row justify-between items-center w-full">
+                        <b>{ index + 1 }.</b>
+                        <p>{ author.last_name }</p>
+                        <p>{ author.first_name }</p>
+                        <p>{ author.patronymic }</p><br />
+                    </div>
+                )) }
+            </td>
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">{ parse_created_at.day }/{ parse_created_at.month }/{ parse_created_at.year } { `${parse_created_at.hours}:${parse_created_at.minutes}` }</td>
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">{ parse_updated_at.day }/{ parse_updated_at.month }/{ parse_updated_at.year } { `${parse_updated_at.hours}:${parse_updated_at.minutes}` }</td>
 

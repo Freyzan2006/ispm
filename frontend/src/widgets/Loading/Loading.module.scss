@@ -11,3 +11,34 @@
         display: none;
     }
 }
+
+
+.loader_2 {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    
+}
+
+.loader_2:after {
+    content: "";
+    display: block;
+    width: 80px;
+    height: 80px;
+    margin: 8px;
+    border-radius: 90%;
+    border: 6px solid #000;
+    border-color: rgb(2, 2, 131) transparent rgb(2, 170, 170) transparent;
+    animation: loader-2-dual-spin 1s linear infinite;
+
+    // box-shadow: 5px 5px 5px blueviolet;
+}
+
+@keyframes loader-2-dual-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

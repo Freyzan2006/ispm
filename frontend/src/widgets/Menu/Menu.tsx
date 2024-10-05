@@ -81,7 +81,7 @@ const Menu: React.FC = () => {
 
             <div className={ `${css.myMenuEl}`}>
                 
-                <DropDown intro = { <IoMdSettings /> }>
+                <DropDown intro = { <IoMdSettings /> } isScreenDark = { true }>
                     <div className = "flex flex-col justify-center items-center gap-1 text-black dark:text-white ">
                         <h3>Тема сайта: Светлая/Тёмная</h3>
                         <Theme />

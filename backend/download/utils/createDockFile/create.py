@@ -97,30 +97,65 @@ def set_font_color(cell, rgb_color):
 
 from docx.shared import Inches, Pt
 
+from utils.parseCoauthor import parse_json_to_dict
+
+
+def set_vertical_alignment(cell, alignment="center"):
+    """
+    Устанавливает вертикальное выравнивание текста в ячейке.
+    
+    :param cell: Объект ячейки
+    :param alignment: Значение выравнивания (top, center, bottom)
+    """
+    tc_pr = cell._element.get_or_add_tcPr()
+    v_align = OxmlElement('w:vAlign')
+    v_align.set(qn('w:val'), alignment)
+    tc_pr.append(v_align)
+
 class DocxGenerator:
     def __init__(self, data, filename):
         self.data = data
         self.filename = filename
     
+    def set_column_width(self, table, widths):
+        for row in table.rows:
+            for idx, width in enumerate(widths):
+                row.cells[idx].width = width
 
     def create_docx(self):
         doc = Document()
+        
+       
 
         # set_page_size(doc, 210, 297)
        
         
         # Добавляем заголовок
         doc.add_heading(f'Таблица с {len(self.data)}ш.т записями.', level=1)
-
+        doc.add_heading(f'Столбец "Соавторы": Ф = Фамилия; И = Имя; О = Отчество; ', level=2)
         # Определяем заголовки таблицы
         headers = ['№', 'Название научной работы', 'Тип публикации', 'Информация об издании', 'Кол-во страниц', 'Соавторы']
         
         # Создаем таблицу с одной строкой для заголовков
         # table = doc.add_table(rows=len(self.data), cols=len(headers))
         table = doc.add_table(rows=1, cols=len(headers))
-        table.width = 300
         table.style = "Table Grid"
+        
 
+        
+        section = doc.sections[0]
+        page_width = section.page_width - section.left_margin - section.right_margin
+        
+        column_widths = [
+            page_width * 0.01,  # № (1%)
+            page_width * 0.1,   # Название научной работы (10%)
+            page_width * 0.1,   # Тип публикации (10%)
+            page_width * 0.35,  # Информация об издании (35%)
+            page_width * 0.01,   # Кол-во страниц (1%)
+            page_width * 0.39    # Соавторы (39%)
+        ]
+
+        
 
 
         section = doc.sections[-1]
@@ -136,8 +171,9 @@ class DocxGenerator:
             hdr_cells[i].text = header
             set_bold(hdr_cells[i])  # Делаем заголовки жирными
             set_font_color(hdr_cells[i], RGBColor(63, 38, 186))
+            set_vertical_alignment(hdr_cells[i], 'center')
 
-            
+        
 
         # Заполняем таблицу данными
         for item in self.data:
@@ -156,15 +192,15 @@ class DocxGenerator:
             # '''
 
             row_cells[3].text = f"Название: {item.get('title', '')}. Дата: {str(item.get('data', ''))}. Томов: {str(item.get('tom', ''))}. Страницы: {str(item.get('issue', ''))} {str(item.get('page_start', ''))} {str(item.get('page_end', ''))}"
-            
-           
             row_cells[4].text = str(item.get('pages', ''))
-            row_cells[5].text = item.get('Co_authors', '')
-            # row_cells[6].text = item.get('created_at', '')
-            # row_cells[7].text = item.get('updated_at', '')
-            # row_cells[8].text = str(item.get('for_user', ''))
+            # row_cells[5].text = item.get('Co_authors', '')
+            
+            for i, key in enumerate(parse_json_to_dict(item.get("authors", []))):
+                row_cells[5].text += f"{i + 1} Ф: {key['last_name']} И: {key['first_name']}; О: {key['patronymic']}\n\n" 
+            
+ 
 
-       
+        self.set_column_width(table, column_widths)
 
         # Сохраняем документ
         doc.save(self.filename)

@@ -98,6 +98,22 @@ CORS_ALLOW_HEADERS = [
 CORS_MAX_AGE = 3600  # Время в секундах
 CORS_ALLOW_CREDENTIALS = True  # Разрешить отправку куки через CORS
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        # 'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': f"redis://{os.getenv('REDIS_HOST', 'localhost')}:{os.getenv('REDIS_PORT', 6379)}/1",
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+
+
+# Чтобы избежать повторного выполнения тяжелых операций при каждом запросе
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'
 
 # Application definition
 

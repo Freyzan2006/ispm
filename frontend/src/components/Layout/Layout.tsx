@@ -41,6 +41,10 @@ const Layout: React.FC = () => {
 
             <div className = "flex flex-col gap-10 z-10">
                 <Loading time = { 3000 } />
+                <ScreenDimming />
+                <Navigation />
+                <Alert />
+
                 <Header />
 
                 <Container>
@@ -49,9 +53,7 @@ const Layout: React.FC = () => {
 
                 <Footer />
 
-                <ScreenDimming />
-                <Navigation />
-                <Alert />
+
             </div>
 
             

@@ -11,6 +11,7 @@ export interface IField {
     placeholder?: string;
     validationRules: Record<string, any>;
     type?: string;
+    width?: string;
 }
 
 

@@ -17,6 +17,7 @@ import { EStatus } from "../api/EAPI";
 
 interface IState {
     searchName: string;
+    searchTitle: string;
     searchPublicType: string;
     searchUser: string;
     searchDate: string;
@@ -27,6 +28,7 @@ interface IState {
 
 const initialState: IState = {
     searchName: "",
+    searchTitle: "",
     searchPublicType: "",
     searchUser: "",
     searchDate: "",
@@ -41,7 +43,6 @@ const searchSlice = createSlice({
     initialState,
     reducers: { 
         setSearchName: ( state, action: PayloadAction<string> ) => {
-            console.log(action.payload)
             state.searchName = action.payload;
         },
 
@@ -68,6 +69,10 @@ const searchSlice = createSlice({
         setSearchCoauthorPatronymic: (state, action: PayloadAction<string>) => {
             state.searchCoauthorPatronymic = action.payload;
         },
+
+        setSearchTitle: (state, action: PayloadAction<string>) => {
+            state.searchTitle = action.payload;
+        }
     },
 
 //   extraReducers: (builder) => {
@@ -127,7 +132,8 @@ const searchSlice = createSlice({
   
 export const { setSearchName, setSearchPublicType, 
     setSearchUser, setSearchDate, setSearchCoauthorFirstName,
-    setSearchCoauthorLastName, setSearchCoauthorPatronymic
+    setSearchCoauthorLastName, setSearchCoauthorPatronymic,
+    setSearchTitle
 } = searchSlice.actions;
 
 

@@ -39,6 +39,7 @@ class SearchListAPIView(generics.ListAPIView):
     def get_queryset(self):
         # Получаем параметры запроса
         search_name = self.request.query_params.get('searchName', '').strip()
+        search_title = self.request.query_params.get('searchTitle', '').strip()
         search_public_type = self.request.query_params.get("searchPublicType", '').strip()
         search_user = self.request.query_params.get("searchUser", '').strip()
         search_date = self.request.query_params.get('searchDate', '').strip()
@@ -47,11 +48,11 @@ class SearchListAPIView(generics.ListAPIView):
         search_coauthor_patronymic = self.request.query_params.get('searchCoauthorPatronymic', '').strip()
 
         # Создание уникального ключа для кэша
-        cache_key = f'search_queryset__{search_name}_{search_public_type}_{search_user}_{search_date}_{search_coauthor_first_name}_{search_coauthor_last_name}_{search_coauthor_patronymic}'
+        cache_key = f'search_queryset__{search_name}_{search_title}_{search_public_type}_{search_user}_{search_date}_{search_coauthor_first_name}_{search_coauthor_last_name}_{search_coauthor_patronymic}'
         print("-------------------------------------------------")
         
 
-        
+     
         # Проверяем кэш
         cached_queryset = cache.get(cache_key)
  
@@ -64,6 +65,8 @@ class SearchListAPIView(generics.ListAPIView):
         query = Q()
         if search_name:
             query &= Q(name__icontains=search_name)
+        if search_title:
+            query &= Q(title__icontains=search_title)
         if search_public_type:
             query &= Q(Type=int(search_public_type))
         if search_user:

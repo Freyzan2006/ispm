@@ -2,6 +2,7 @@ import { EStatus } from "../api/EAPI";
 
 export interface ISearchFiled {
     searchName: string;
+    searchTitle: string;
     searchDate: string;
     searchPublicType: string;
     searchUser: string;

@@ -19,55 +19,7 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 
 
-# def set_page_size(doc, width_mm, height_mm):
-#     """
-#     Устанавливает размер страницы в документе.
-
-#     :param doc: Объект Document
-#     :param width_mm: Ширина страницы в миллиметрах
-#     :param height_mm: Высота страницы в миллиметрах
-#     """
-#     # Конвертируем миллиметры в точки (1 мм ≈ 2.83464567 точки)
-#     width_pt = width_mm * 2.83464567
-#     height_pt = height_mm * 2.83464567
-
-#     # Получаем XML элемент раздела документа
-#     section = doc.sections[0]
-#     section_xml = section._element
-
-#     # Настроим размеры страницы
-#     pg_sz = section_xml.find('.//w:pgSz')
-#     if pg_sz is None:
-#         pg_sz = OxmlElement('w:pgSz')
-#         section_xml.append(pg_sz)
-
-#     # Устанавливаем ширину и высоту страницы
-#     pg_sz.set(qn('w:w'), str(int(width_pt * 20)))  # Ширина в половине точек
-#     pg_sz.set(qn('w:h'), str(int(height_pt * 20)))  # Высота в половине точек
-
-#     # Устанавливаем ориентацию страницы (по умолчанию ландшафтный)
-#     pg_sz.set(qn('w:orient'), 'portrait')
-
-
-# def set_cell_alignment(cell, horizontal='center', vertical='center'):
-#     """
-#     Устанавливает выравнивание текста в ячейке.
-
-#     :param cell: Объект ячейки
-#     :param horizontal: Горизонтальное выравнивание (left, center, right)
-#     :param vertical: Вертикальное выравнивание (top, center, bottom)
-#     """
-#     cell_pr = cell._element.get_or_add('w:tcPr')
-    
-#     # Устанавливаем горизонтальное выравнивание
-#     align = OxmlElement('w:jc')
-#     align.set(qn('w:val'), horizontal)
-#     cell_pr.append(align)
-    
-#     # Устанавливаем вертикальное выравнивание
-#     v_align = OxmlElement('w:vAlign')
-#     v_align.set(qn('w:val'), vertical)
-#     cell_pr.append(v_align)
+from table.models import PublicationType
 
 from docx.shared import RGBColor
 
@@ -112,6 +64,8 @@ def set_vertical_alignment(cell, alignment="center"):
     v_align.set(qn('w:val'), alignment)
     tc_pr.append(v_align)
 
+from docx.oxml.ns import qn
+
 class DocxGenerator:
     def __init__(self, data, filename):
         self.data = data
@@ -121,18 +75,28 @@ class DocxGenerator:
         for row in table.rows:
             for idx, width in enumerate(widths):
                 row.cells[idx].width = width
+    
+    
+    def set_font(self, cell, font_name='Times New Roman', font_size=12):
+        """Устанавливаем шрифт для текста в ячейке"""
+        for paragraph in cell.paragraphs:
+            for run in paragraph.runs:
+                run.font.name = font_name
+                run.font.size = Pt(font_size)
+                
+                # Для совместимости с Word необходимо установить 'w:rFonts' через xml
+                rFonts = run._element.rPr.rFonts
+                rFonts.set(qn('w:eastAsia'), font_name)
 
     def create_docx(self):
         doc = Document()
         
-       
-
-        # set_page_size(doc, 210, 297)
+      
        
         
         # Добавляем заголовок
         doc.add_heading(f'Таблица с {len(self.data)}ш.т записями.', level=1)
-        doc.add_heading(f'Столбец "Соавторы": Ф = Фамилия; И = Имя; О = Отчество; ', level=2)
+
         # Определяем заголовки таблицы
         headers = ['№', 'Название научной работы', 'Тип публикации', 'Информация об издании', 'Кол-во страниц', 'Соавторы']
         
@@ -140,6 +104,8 @@ class DocxGenerator:
         # table = doc.add_table(rows=len(self.data), cols=len(headers))
         table = doc.add_table(rows=1, cols=len(headers))
         table.style = "Table Grid"
+        # table.font  = "Times New Roman"
+        
         
 
         
@@ -172,6 +138,8 @@ class DocxGenerator:
             set_bold(hdr_cells[i])  # Делаем заголовки жирными
             set_font_color(hdr_cells[i], RGBColor(63, 38, 186))
             set_vertical_alignment(hdr_cells[i], 'center')
+            self.set_font(hdr_cells[i])   
+                   
 
         
 
@@ -180,7 +148,7 @@ class DocxGenerator:
             row_cells = table.add_row().cells
             row_cells[0].text = str(item.get('id', ''))
             row_cells[1].text = item.get('name', '')
-            row_cells[2].text = str(item.get('Type', ''))
+            row_cells[2].text = str(PublicationType.objects.get(pk = int( item.get('Type', ''))))
             
 
             # row_cells[3].text = f'''
@@ -191,15 +159,16 @@ class DocxGenerator:
             # {str(item.get('page_end', ''))}
             # '''
 
-            row_cells[3].text = f"Название: {item.get('title', '')}. Дата: {str(item.get('data', ''))}. Томов: {str(item.get('tom', ''))}. Страницы: {str(item.get('issue', ''))} {str(item.get('page_start', ''))} {str(item.get('page_end', ''))}"
-            row_cells[4].text = str(item.get('pages', ''))
+            row_cells[3].text = f"{item.get('title', '')}, {str(item.get('data', ''))}, {str(item.get('tom', ''))}, {str(item.get('issue', ''))}"
+            row_cells[4].text = f"от {str(item.get('page_start', ''))} до {str(item.get('page_end', ''))} всего {str(item.get('pages', ''))}"
             # row_cells[5].text = item.get('Co_authors', '')
             
             for i, key in enumerate(parse_json_to_dict(item.get("authors", []))):
                 row_cells[5].text += f"{i + 1} Ф: {key['last_name']} И: {key['first_name']}; О: {key['patronymic']}\n\n" 
-            
- 
-
+         
+            for cell in row_cells:
+                self.set_font(cell)
+          
         self.set_column_width(table, column_widths)
 
         # Сохраняем документ

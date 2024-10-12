@@ -18,7 +18,7 @@ import { publicTypeFetch } from "../../state/publicType/publicTypeFetch";
 
 
 import { yearsRage } from "../../utils";
-import { setSearchCoauthorFirstName, setSearchCoauthorLastName, setSearchCoauthorPatronymic, setSearchDate, setSearchName, setSearchPublicType, setSearchUser } from "../../state/search/searchSlice";
+import { setSearchCoauthorFirstName, setSearchCoauthorLastName, setSearchCoauthorPatronymic, setSearchDate, setSearchName, setSearchPublicType, setSearchUser, setSearchTitle } from "../../state/search/searchSlice";
 import { PAGINATION_SIZE } from "../../state/api/config";
 import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../state/alert/alertSlice";
 import InputField from "../../widgets/Field/InputField";
@@ -56,6 +56,7 @@ const SearchPage: React.FC = () => {
 
     const setStateSearchFields = (data : IFrom) => {
         dispatch(setSearchName(data.searchName));
+        dispatch(setSearchTitle(data.searchTitle));
         dispatch(setSearchPublicType(data.searchPublicType));
         dispatch(setSearchUser(data.searchUser));
         dispatch(setSearchDate(data.searchDate));
@@ -112,6 +113,17 @@ const SearchPage: React.FC = () => {
                             maxLength: { value: 255, message: 'Максимальная длина 255 символов' },
                         }}
                     />
+
+                    <InputField 
+                        placeholder = "Название издания" 
+                        errorMessage = { errors.searchName?.message } 
+                        name = "searchTitle" 
+                        control = { control } 
+                        validationRules = {{
+                            maxLength: { value: 255, message: 'Максимальная длина 255 символов' },
+                        }}
+                    />
+
 
                     <div className = {`flex items-center justify-center gap-5 ${css.media}`}>
 

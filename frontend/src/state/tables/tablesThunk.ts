@@ -78,7 +78,7 @@ export const tablesUserThunk = createAsyncThunk<ITablesApiResponse, { userId: nu
 
 export const searchTablesPaginationThunk = createAsyncThunk<ITablesApiResponse, ISearchFiled, {}>(
     'table/searchFetchAllTableData', 
-    async ({ searchName, searchPublicType, searchUser, searchDate, searchCoauthorFirstName, searchCoauthorPatronymic, searchCoauthorLastName, page_size }) => {
+    async ({ searchName, searchPublicType, searchUser, searchDate, searchCoauthorFirstName, searchCoauthorPatronymic, searchCoauthorLastName, searchTitle, page_size }) => {
     
         const isPagination = {page_size: page_size} || null;
 
@@ -86,6 +86,7 @@ export const searchTablesPaginationThunk = createAsyncThunk<ITablesApiResponse, 
 
             params: {
                 searchName: searchName,
+                searchTitle: searchTitle,
                 searchPublicType: searchPublicType,
                 searchDate: searchDate,
                 searchUser: searchUser,
@@ -102,14 +103,15 @@ export const searchTablesPaginationThunk = createAsyncThunk<ITablesApiResponse, 
 
 export const searchTablesThunk = createAsyncThunk<ITablesApiResponse, ISearchFiled, {}>(
     'table/searchFetchAllTableData', 
-    async ({ searchName, searchPublicType, searchUser, searchDate, searchCoauthorFirstName, searchCoauthorPatronymic, searchCoauthorLastName }) => {
+    async ({ searchName, searchPublicType, searchUser, searchDate, searchCoauthorFirstName, searchCoauthorPatronymic, searchCoauthorLastName, searchTitle }) => {
     
        
-
+       
         const response = await axiosConfig.get(SearchAPI.SEARCH_GET, {
-
+            
             params: {
                 searchName: searchName,
+                searchTitle: searchTitle,
                 searchPublicType: searchPublicType,
                 searchDate: searchDate,
                 searchUser: searchUser,

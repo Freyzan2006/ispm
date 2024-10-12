@@ -2,7 +2,7 @@
 
 import { RootState } from "../../../state/store";
 import { ITable } from "../../../state/tables/Itables";
-import { useAppSelector } from "../../../state/useAppDispatch";
+import { useAppDispatch, useAppSelector } from "../../../state/useAppDispatch";
 
 import { RiDeleteBin6Fill } from "react-icons/ri";
 
@@ -11,17 +11,27 @@ import { MyLink } from "../../../widgets/Widgets";
 import { ParseDate } from "../../../utils/ParseDate";
 
 import { IAuthor } from "../../../state/tables/Itables";
+import { useEffect } from "react";
+import { publicTypeFetch } from "../../../state/publicType/publicTypeFetch";
 
 const TableItem: React.FC<ITable> = ({ id, Type, name, title, data, tom, issue, page_start, page_end, pages, authors, created_at, updated_at, for_user }) => {
 
    
     const userId = useAppSelector((state: RootState) => state.user.id );
+    const dispatch = useAppDispatch()
   
     const parse_created_at = ParseDate(created_at);
     const parse_updated_at = ParseDate(updated_at); 
 
+    const typePublication = useAppSelector(( state: RootState ) => state.publicTypes.publicTypes);
+    const titleTypePublic = typePublication.find(el => el.id == Type);
+   
    
     const parseAuthors = JSON.parse(authors);
+
+    useEffect(() => {
+        dispatch(publicTypeFetch())
+    }, [])
     
 
     return (
@@ -29,29 +39,28 @@ const TableItem: React.FC<ITable> = ({ id, Type, name, title, data, tom, issue, 
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900" scope="row">{ id }</td>
           
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">{ name }</td>
-            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">{ Type }</td>
+            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">{ titleTypePublic?.title }</td>
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900 leading-loose">
-                <span><b>Название:</b>{ title }.</span>
-                <span><b>Дата публикации:</b>{ data } </span>
-                <span><b>Томов:</b> { tom }.</span>
-                <span><b>Страницы: от</b> { page_start } <b>до</b> { page_end }</span>
-                <span><b>Номер: </b>{ issue || "Нету" }</span>
+                <span>{ title },</span>
+                <span>{ data }, </span>
+                <span>{ tom },</span>
+                <span>{ issue || "Нету" }</span>
+    
+                
             </td>
-            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">{ pages }</td>
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">
-                <div className="flex flex-row justify-between items-center w-full">
-                    <p>№</p>
-                    <p>Фамилия:</p>
-                    <p>Имя:</p>
-                    <p>Отчества:</p>
-                </div>
+                <b>от</b> { page_start }  <b>до</b> { page_end } всего { pages }
+            </td>
+            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">
+               
                 
                 { parseAuthors.map((author: IAuthor, index: number) => (
-                    <div key = { index } className = "flex gap-3 flex-row justify-between items-center w-full">
-                        <b>{ index + 1 }.</b>
-                        <p>{ author.last_name }</p>
+                    <div key = { index } className = "flex gap-3 flex-row justify-center items-center w-full">
                         <p>{ author.first_name }</p>
-                        <p>{ author.patronymic }</p><br />
+                        <p>{ author.last_name[0] }.</p>
+                        <p>{ author.patronymic[0] }.</p>
+                        
+                        <br />
                     </div>
                 )) }
             </td>

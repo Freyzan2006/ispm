@@ -7,7 +7,7 @@ import ErrorAlert from "../../components/ErrorAlert/ErrorAlert";
 import { noSpecialChars, noSpecialCharsMessage } from "../../utils/validationInput";
 
 const SelectField: React.FC<ISelectField> = 
-({ control, name, label, errorMessage, validationRules, isNumber, children }) => {
+({ control, name, label, errorMessage, validationRules, isNumber, children, width = "7" }) => {
 
 
     
@@ -41,7 +41,7 @@ const SelectField: React.FC<ISelectField> =
                     <>
                     
 
-                        <select className = { selectorStyle }
+                        <select className = { `${selectorStyle}  w-${width}/12 ` }
                             onChange = { (e) => field.onChange(isNumber ? +e.target.value : e.target.value) } 
                             value = { field.value  }
                         >

@@ -44,6 +44,8 @@ export interface ITable {
     created_at: string;
     updated_at: string;
     for_user: number;
+
+ 
 }
 
 export interface IAuthor {

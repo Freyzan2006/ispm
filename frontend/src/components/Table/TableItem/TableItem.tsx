@@ -13,10 +13,12 @@ import { ParseDate } from "../../../utils/ParseDate";
 import { IAuthor } from "../../../state/tables/Itables";
 import { useEffect } from "react";
 import { publicTypeFetch } from "../../../state/publicType/publicTypeFetch";
+import { useLocation } from "react-router-dom";
 
 const TableItem: React.FC<ITable> = ({ id, Type, name, title, data, tom, issue, page_start, page_end, pages, authors, created_at, updated_at, for_user }) => {
-
-   
+    
+    
+    
     const userId = useAppSelector((state: RootState) => state.user.id );
     const dispatch = useAppDispatch()
   
@@ -33,6 +35,8 @@ const TableItem: React.FC<ITable> = ({ id, Type, name, title, data, tom, issue, 
         dispatch(publicTypeFetch())
     }, [])
     
+    const location = useLocation();
+
 
     return (
         <tr className = "text-black dark:text-white " >
@@ -68,7 +72,7 @@ const TableItem: React.FC<ITable> = ({ id, Type, name, title, data, tom, issue, 
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">{ parse_updated_at.day }/{ parse_updated_at.month }/{ parse_updated_at.year } { `${parse_updated_at.hours}:${parse_updated_at.minutes}` }</td>
 
             {
-                userId == for_user 
+                userId == for_user && location.pathname.split("/")[1] != "delete"
                 ? (
                     <td className = "flex flex-col gap-3 justify-center p-1 dark:bg-slate-900">
                         <p><MyLink to = {`change/${id}`} styled="transition hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-yellow-500 shadow-lg shadow-yellow-500/50 flex justify-center items-center text-white gap-3"><RiDeleteBin6Fill /> Изминить</MyLink></p> 

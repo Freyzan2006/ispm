@@ -7,7 +7,7 @@ import axiosConfig from "./axiosConfig";
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
     try {
         const response = await axiosConfig.get('user/allUsers/');
-        console.log(response.data);
+      
         return response.data;
     } catch (error) {
         console.error("Error fetching users:", error);

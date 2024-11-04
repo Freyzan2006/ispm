@@ -25,6 +25,7 @@ import { IoMdSettings } from "react-icons/io";
 
 import { MdOutlineAnimation } from "react-icons/md";
 import { isBgAnimation } from "../../state/bgAnimation/bgAnimationSlice";
+import { clearUser } from "../../state/user/userSlice";
 
 const Menu: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -48,6 +49,7 @@ const Menu: React.FC = () => {
 
     function handlerLogout() {
         dispatch(clearTokens());
+        dispatch(clearUser());
         navigate(EPath.LOGIN);
 
         dispatch(setShowAlert());
@@ -97,10 +99,11 @@ const Menu: React.FC = () => {
                     
                 </DropDown>
 
+                <MyLink to = { EPath.SEARCH } styled = { EMyLink.BLUE }><FaSearch /> Поиск</MyLink>
+
                 {
                     accessToken ? (
                         <div className = { css.myMenuEl }>
-                            <MyLink to = { EPath.SEARCH } styled = { EMyLink.BLUE }><FaSearch /> Поиск</MyLink>
                             <MyLink to = { EPath.USER } styled = { EMyLink.GREEN }><FaUserCircle /> { user.username } { user.is_staff && "(Админ)" }</MyLink>
                         
                             <Button type = { ITypeBtn.BUTTON } onClick = { handlerLogout } styled = { EButton.RED }>

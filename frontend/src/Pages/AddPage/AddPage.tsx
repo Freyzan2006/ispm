@@ -178,6 +178,7 @@ const AddPage: React.FC = () => {
                 <div className = " flex justify-center items-center flex-col gap-4 w-full">                    
                     <div className = {`flex justify-center items-start gap-3 flex-row w-full ${css.fields}`}>
                         <InputField 
+                            width= { 200 }
                             isNumber = { true }
                             placeholder = "Начальная страница" 
                             errorMessage = { errors.page_start?.message } 
@@ -192,6 +193,7 @@ const AddPage: React.FC = () => {
                         />
 
                         <InputField 
+                            width= { 200 }
                             disabled = { !startPageWatch }
                             isNumber = { true }
                             placeholder = "Конечная страница" 
@@ -207,6 +209,7 @@ const AddPage: React.FC = () => {
                         />
                     
                         <InputField 
+                            width= { 200 }
                             disabled = { true }
                             isNumber = { true }
                             placeholder = "Всего страниц" 
@@ -231,6 +234,7 @@ const AddPage: React.FC = () => {
                     {fields.map((field, index) => (
                         <div key={field.id} className="flex justify-center items-center flex-row gap-5">
                             <InputField
+                                width= { 300 }
                                 placeholder="Фамилия Соавтора"
                                 errorMessage={errors.authors?.[index]?.last_name?.message}
                                 label="Фамилия Соавтора"
@@ -243,6 +247,7 @@ const AddPage: React.FC = () => {
                                 }}
                             />
                             <InputField
+                                width= { 300 }
                                 placeholder="Имя Соавтора"
                                 errorMessage={errors.authors?.[index]?.first_name?.message}
                                 label="Имя Соавтора"
@@ -255,6 +260,7 @@ const AddPage: React.FC = () => {
                                 }}
                             />
                             <InputField
+                                width= { 300 }
                                 placeholder="Отчество Соавтора"
                                 errorMessage={errors.authors?.[index]?.patronymic?.message}
                                 label="Отчество Соавтора"

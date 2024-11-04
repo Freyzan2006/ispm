@@ -5,6 +5,16 @@
     padding: 0;
 }
 
+::selection {
+    background-color: rgb(3, 93, 167);
+    color: black;
+}
+
+.dark ::selection {
+    background-color: rgb(9, 150, 155);
+    color: white;
+}
+
 html {
     scroll-behavior: smooth;
 }

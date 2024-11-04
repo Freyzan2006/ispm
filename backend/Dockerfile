@@ -19,4 +19,5 @@ RUN python manage.py migrate
 EXPOSE 8000
 
 # Запускаем сервер
+# CMD ["bash", "-c", "sleep 10 && python manage.py search_index --create && python manage.py runserver 0.0.0.0:8000"]
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

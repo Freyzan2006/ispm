@@ -1,19 +1,4 @@
-import { Action, PayloadAction, createSlice } from "@reduxjs/toolkit";
-
-// import { searchTablesThunk, tablesThunk, tablesUserThunk } from "./tablesThunk";
-
-// import { ITablesApiResponse, ITablesState } from "./Itables";
-import { EStatus } from "../api/EAPI";
-
-
-// const initialState: ITablesState  = {
-//   tables: [],
-//   nextPage: null,
-//   previousPage: null,
-//   count: 0,
-//   status: null,
-//   error: null,
-// };
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface IState {
     searchName: string;
@@ -51,7 +36,7 @@ const searchSlice = createSlice({
         },
 
         setSearchUser: (state, action: PayloadAction<string>) => {
-            state.searchUser = action.payload;
+            state.searchUser =  action.payload;
         },
 
         setSearchDate: (state, action: PayloadAction<string>) => {

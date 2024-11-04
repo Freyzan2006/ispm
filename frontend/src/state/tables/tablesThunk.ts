@@ -121,7 +121,7 @@ export const searchTablesThunk = createAsyncThunk<ITablesApiResponse, ISearchFil
               
             }
         })
-
+    console.log(response.data)
     return response.data;
 });
 

@@ -13,6 +13,8 @@ import { EPath } from "../../Routers/ERouters";
 import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../state/alert/alertSlice";
 import InputField from "../../widgets/Field/InputField";
 import { SubmitHandler, useForm } from "react-hook-form";
+import Button from "../../widgets/Button/Button";
+import { EButton, ITypeBtn } from "../../widgets/Button/EButton";
 
 
 interface IFrom {
@@ -61,6 +63,7 @@ const LoginPage: React.FC = () => {
                 <h1 className = "text-black dark:text-white  text-2xl">Вход в Аккаунт</h1>
 
                 <InputField 
+                    width = { 300 }
                     placeholder = "Логин" 
                     errorMessage = { errors.username?.message } 
                     label="Логин" name = "username" 
@@ -72,9 +75,10 @@ const LoginPage: React.FC = () => {
                     }}
                 />
 
-                <div className = "w-full flex justify-center items-center gap-5">
+                <div className = "flex justify-center items-center gap-5">
 
                     <InputField 
+                        width = { 300 }
                         placeholder = "Пароль" 
                         errorMessage = { errors.password?.message } 
                         label="Пароль" name = "password" 
@@ -88,11 +92,16 @@ const LoginPage: React.FC = () => {
                         
                     />
 
-                    <button type = "button" onClick = { () => setIsShowPassword(!isShowPassword) } className = "transition hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-green-500 shadow-lg shadow-green-500/50 flex justify-center items-center text-white gap-3">
+                    <Button onClick = { () => setIsShowPassword(!isShowPassword) } type = { ITypeBtn.BUTTON } styled = { EButton.GREEN }>
                         { isShowPassword ? <FaEyeSlash /> : <FaEye /> }
-                    </button>
+                    </Button>
+
                 </div>
-                <button type = "submit" className = { `${css.LoginPage__submit} transition hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-green-500 shadow-lg shadow-green-500/50 flex justify-center items-center text-white gap-3` }><FaUser /> Войти</button>
+                <Button type = { ITypeBtn.SUBMIT } styled = { EButton.GREEN }>
+                    <FaUser /> Войти
+                </Button>
+
+                {/* <button type = "submit" className = { `${css.LoginPage__submit} transition hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-green-500 shadow-lg shadow-green-500/50 flex justify-center items-center text-white gap-3` }><FaUser /> Войти</button> */}
             </form>
 
         </main>

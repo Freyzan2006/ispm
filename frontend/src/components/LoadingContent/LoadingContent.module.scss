@@ -1,0 +1,33 @@
+
+.loader {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+}
+
+.loader {
+    content: " ";
+    display: block;
+    width: 80px;
+    height: 80px;
+    margin: 8px;
+    border-radius: 90%;
+    border: 6px solid #000;
+    
+    animation: loader 1s linear infinite;
+}
+
+
+
+.loader {
+    border-color: rgb(0, 107, 121) transparent rgb(0, 238, 255) transparent;
+}
+
+@keyframes loader {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

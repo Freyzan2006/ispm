@@ -11,6 +11,8 @@ class PublicationTypeSerializer(serializers.ModelSerializer):
 
 
 class TableUserSerializer(serializers.ModelSerializer):
+    Type = serializers.PrimaryKeyRelatedField(queryset=PublicationType.objects.all())
+    
     class Meta:
         model = TableModel
         fields = "__all__" 
@@ -35,7 +37,6 @@ class TableUserSerializer(serializers.ModelSerializer):
 class TableModelSerializer(serializers.ModelSerializer):
     Type = serializers.PrimaryKeyRelatedField(queryset=PublicationType.objects.all())
     
-
     class Meta:
         model = TableModel
         fields = '__all__'

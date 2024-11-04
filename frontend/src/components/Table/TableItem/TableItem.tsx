@@ -75,8 +75,8 @@ const TableItem: React.FC<ITable> = ({ id, Type, name, title, data, tom, issue, 
                 userId == for_user && location.pathname.split("/")[1] != "delete"
                 ? (
                     <td className = "flex flex-col gap-3 justify-center p-1 dark:bg-slate-900">
-                        <p><MyLink to = {`change/${id}`} styled="transition hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-yellow-500 shadow-lg shadow-yellow-500/50 flex justify-center items-center text-white gap-3"><RiDeleteBin6Fill /> Изминить</MyLink></p> 
-                        <p><MyLink to = {`delete/${id}`} styled="transition hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-red-600 shadow-lg shadow-red-500/50 flex justify-center items-center text-white gap-3"><MdOutlinePublishedWithChanges /> Удалить</MyLink></p> 
+                        <p><MyLink to = {`/change/${id}`} styled="transition hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-yellow-500 shadow-lg shadow-yellow-500/50 flex justify-center items-center text-white gap-3"><MdOutlinePublishedWithChanges /> Изминить</MyLink></p> 
+                        <p><MyLink to = {`/delete/${id}`} styled="transition hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-red-600 shadow-lg shadow-red-500/50 flex justify-center items-center text-white gap-3"><RiDeleteBin6Fill /> Удалить</MyLink></p> 
                     </td> 
                 ) : <td></td>
                 

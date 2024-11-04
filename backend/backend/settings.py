@@ -130,6 +130,9 @@ INSTALLED_APPS = [
 
     'django_filters',
     
+    'django_elasticsearch_dsl',
+    'django_elasticsearch_dsl_drf',
+    
  
     "rest_framework",
 
@@ -141,6 +144,17 @@ INSTALLED_APPS = [
     "search",
     "download"
 ]
+#http://localhost:9200/_cat/indices?v
+# localhost:9200/tablemodel/_search?pretty
+# docker-compose exec web python manage.py search_index --create
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': "http://elasticsearch:9200"
+         # Замените на ваш хост Elasticsearch
+        
+        # 'hosts': 'http://elasticsearch:9200'  # Замените на ваш хост Elasticsearch
+    },
+}
 
 # AUTH_USER_MODEL = "user.UserModel"
 

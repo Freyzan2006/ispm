@@ -5,7 +5,7 @@ export interface UserState {
     username: string | null;
     is_staff: boolean | null;
     is_superuser: boolean | null;
-    status: EStatus;
+    status: EStatus | null;
     error: string | null;
 }
 

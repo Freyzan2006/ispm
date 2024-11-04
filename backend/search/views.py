@@ -1,109 +1,91 @@
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import generics
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 from table.models import TableModel
 from table.serializers import TableModelSerializer
-from user.models import UserModel
-
-from django.db.models import Q
-
-
 from table.pagination import TablePagination
+from table.permission import ReadOnly
 
+from search.documents import TableModelDocument
 
-import json
-
-from django.db.models.query import QuerySet
-
-
-from django.core.cache import cache
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from config.cache import TIME_SAVE_IN_CACHE
 
-
-
-import logging
-
-logger = logging.getLogger(__name__)
-
-
-
-
-class SearchListAPIView(generics.ListAPIView):
+class SearchAPIView(APIView):
     serializer_class = TableModelSerializer
     pagination_class = TablePagination
+    permission_classes = [ReadOnly]
 
-    def get_queryset(self):
-        # Получаем параметры запроса
-        search_name = self.request.query_params.get('searchName', '').strip()
-        search_title = self.request.query_params.get('searchTitle', '').strip()
-        search_public_type = self.request.query_params.get("searchPublicType", '').strip()
-        search_user = self.request.query_params.get("searchUser", '').strip()
-        search_date = self.request.query_params.get('searchDate', '').strip()
-        search_coauthor_first_name = self.request.query_params.get('searchCoauthorFirstName', '').strip()
-        search_coauthor_last_name = self.request.query_params.get('searchCoauthorLastName', '').strip()
-        search_coauthor_patronymic = self.request.query_params.get('searchCoauthorPatronymic', '').strip()
-
-        # Создание уникального ключа для кэша
-        cache_key = f'search_queryset__{search_name}_{search_title}_{search_public_type}_{search_user}_{search_date}_{search_coauthor_first_name}_{search_coauthor_last_name}_{search_coauthor_patronymic}'
-        print("-------------------------------------------------")
+    
+    @method_decorator(cache_page(TIME_SAVE_IN_CACHE))
+    def get(self, request):
+              
+        # Получение параметров из запрос
+        search_params = {
+            'name': request.query_params.get('searchName', '').strip(),
+            'title': request.query_params.get('searchTitle', '').strip(),
+            'Type': request.query_params.get('searchPublicType', '').strip(),
+            'date': request.query_params.get('searchDate', '').strip(),
+            'user': request.query_params.get('searchUser', '').strip(),
+            'coauthor_first_name': request.query_params.get('searchCoauthorFirstName', '').strip(),
+            'coauthor_last_name': request.query_params.get('searchCoauthorLastName', '').strip(),
+            'coauthor_patronymic': request.query_params.get('searchCoauthorPatronymic', '').strip(),
+        }
+        
+        if all(not value for value in search_params.values()):
+            queryset = TableModel.objects.all()
+            paginator = self.pagination_class()
+            paginated_queryset = paginator.paginate_queryset(queryset, request)
+            serializer = self.serializer_class(paginated_queryset, many=True)
+            return paginator.get_paginated_response(serializer.data)
         
 
-     
-        # Проверяем кэш
-        cached_queryset = cache.get(cache_key)
- 
-        if cached_queryset is not None:
-            logger.info(f"Кэш найден для ключа: {cache_key}")
-            return cached_queryset
-      
+
+        # Создание поискового запроса
+        search = TableModelDocument.search()
         
 
-        query = Q()
-        if search_name:
-            query &= Q(name__icontains=search_name)
-        if search_title:
-            query &= Q(title__icontains=search_title)
-        if search_public_type:
-            query &= Q(Type=int(search_public_type))
-        if search_user:
-            query &= Q(for_user=int(search_user))
-        if search_date:
-            query &= Q(data__icontains=search_date)
+        # Построение запросов
+        if search_params['name']:
+            search = search.query('match', name=search_params['name'])
+        if search_params['title']:
+            search = search.query('match', title=search_params['title'])
+        if search_params['Type']:
+            search = search.filter('term', Type=search_params['Type'])
+        if search_params['date']:
+            search = search.filter('term', data=search_params['date'])
+        if search_params['user']:
+            search = search.filter('term', for_user=search_params['user'])
+        
+        # Поиск по авторам
+        if search_params['coauthor_first_name'] or search_params['coauthor_last_name'] or search_params['coauthor_patronymic']:
+            author_query = []
+            if search_params['coauthor_first_name']:
+                author_query.append({"match": {"authors": search_params['coauthor_first_name']}})
+            if search_params['coauthor_last_name']:
+                author_query.append({"match": {"authors": search_params['coauthor_last_name']}})
+            if search_params['coauthor_patronymic']:
+                author_query.append({"match": {"authors": search_params['coauthor_patronymic']}})
+            
+            for q in author_query:
+                search = search.query('bool', must=q)
 
-        queryset = TableModel.objects.filter(query).order_by('-id')
+        # Выполнение поиска
+        response = search.execute()
 
-        # Фильтрация на уровне Python
-        if search_coauthor_first_name or search_coauthor_last_name or search_coauthor_patronymic:
-            filtered_records = [
-                record for record in queryset 
-                if self.author_matches(record, search_coauthor_first_name, search_coauthor_last_name, search_coauthor_patronymic)
-            ]
-            queryset = TableModel.objects.filter(id__in=[record.id for record in filtered_records])
+        # Извлечение ID результатов
+        ids = [hit.meta.id for hit in response]
 
-        # Сохраняем результат в кэш
-        cache.set(cache_key,  queryset, timeout=TIME_SAVE_IN_CACHE)  
-        print(f"Кэш сохранён для ключа: {cache_key}, данные: {queryset}")
-        return queryset
+        # Получение записей из базы данных по ID
+        queryset = TableModel.objects.filter(id__in=ids)
 
-    def author_matches(self, record, first_name, last_name, patronymic):
-        try:
-            authors = json.loads(record.authors)
-        except json.JSONDecodeError:
-            return False
-        return any(
-            (not first_name or author.get('first_name') == first_name) and
-            (not last_name or author.get('last_name') == last_name) and
-            (not patronymic or author.get('patronymic') == patronymic) for author in authors
-        )
-        
-        
-     
-      
-     
-        
-        
-        
+        # Пагинация результатов
+        paginator = self.pagination_class()
+        paginated_queryset = paginator.paginate_queryset(queryset, request)
+
+        # Сериализация данных
+        serializer = self.serializer_class(paginated_queryset, many=True)
+
+        return paginator.get_paginated_response(serializer.data)

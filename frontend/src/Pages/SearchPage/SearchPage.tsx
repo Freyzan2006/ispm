@@ -28,6 +28,10 @@ import { ISearchFiled } from "../../state/tables/Itables";
 import { EStatus } from "../../state/api/EAPI";
 import { EButton, ITypeBtn } from "../../widgets/Button/EButton";
 import Button from "../../widgets/Button/Button";
+import ErrorAlert from "../../components/ErrorAlert/ErrorAlert";
+import { Loading } from "../../widgets/Widgets";
+import Alert from "../../widgets/Alert/Alert";
+import WarningAlert from "../../components/warningAlert/WarningAlert";
 
 
 interface IFrom extends ISearchFiled {}
@@ -38,6 +42,7 @@ const SearchPage: React.FC = () => {
     const dispatch = useAppDispatch();
     const { users, status, error } = useAppSelector((state: RootState) => state.users);
     const { publicTypes } = useAppSelector((state: RootState) => state.publicTypes);
+    const tableLength = useAppSelector((state: RootState) => state.tables.tables.length);
    
 
     const { handleSubmit, control, formState: { errors  } } = useForm<IFrom>({
@@ -55,6 +60,7 @@ const SearchPage: React.FC = () => {
     const { paginationCount } = useAppSelector((state: RootState) => state.pagination);
 
     const setStateSearchFields = (data : IFrom) => {
+       
         dispatch(setSearchName(data.searchName));
         dispatch(setSearchTitle(data.searchTitle));
         dispatch(setSearchPublicType(data.searchPublicType));
@@ -69,11 +75,13 @@ const SearchPage: React.FC = () => {
    
 
     const onSubmit: SubmitHandler<IFrom> = (data) => {
-        console.log(data)
+        data.searchPublicType = data.searchPublicType == "0" ? "" : data.searchPublicType;
+        data.searchDate = data.searchDate == "0" ? "" : data.searchDate;
+        data.searchUser = data.searchUser == "0" ? "" : data.searchUser;
 
         setStateSearchFields(data);
         
-
+        
 
             
 
@@ -84,8 +92,14 @@ const SearchPage: React.FC = () => {
         
         dispatch(setShowAlert());
         try {
-            dispatch(setMessageAlert(`Вы нашли записи из таблиц`));
-            dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
+            if ( tableLength ) {
+                dispatch(setMessageAlert(`Вы нашли записи из таблиц`));
+                dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
+            } else {
+                dispatch(setMessageAlert(`По вашему поиску записи из таблицы не были найдены`));
+                dispatch(setTypeAlert(EAlertType.WARNING));
+            }
+            
         } catch(err) {
             dispatch(setMessageAlert(`Не удалось найти записи`));
             dispatch(setTypeAlert(EAlertType.ERROR));
@@ -94,8 +108,9 @@ const SearchPage: React.FC = () => {
 
 
 
-    if (status === EStatus.LOADING) return <div>Loading...</div>;
-    if (status === EStatus.FAILED) return <div>Error loading users: {error}</div>;
+    if (status === EStatus.LOADING) return <WarningAlert warningMessage = "Загрузка..." />;
+    if (status === EStatus.FAILED) return <ErrorAlert errorMessage = {`Поиск пока не работает...` } /> ;
+    // <div>Error loading users: {error}</div>
 
     return (
         <main className="flex justify-center items-center flex-col gap-5 w-full overflow-auto">
@@ -105,6 +120,7 @@ const SearchPage: React.FC = () => {
       
 
                     <InputField 
+                        width = { 300 }
                         placeholder = "Название публикации" 
                         errorMessage = { errors.searchName?.message } 
                         name = "searchName" 
@@ -115,6 +131,7 @@ const SearchPage: React.FC = () => {
                     />
 
                     <InputField 
+                        width = { 300 }
                         placeholder = "Название издания" 
                         errorMessage = { errors.searchName?.message } 
                         name = "searchTitle" 
@@ -128,6 +145,7 @@ const SearchPage: React.FC = () => {
                     <div className = {`flex items-center justify-center gap-5 ${css.media}`}>
 
                         <SelectField isNumber = { true } control = { control }
+                            width = { 300 }
                             name = "searchPublicType" 
                             errorMessage = { errors.searchPublicType?.message }
                             validationRules = {{
@@ -146,6 +164,7 @@ const SearchPage: React.FC = () => {
 
 
                         <SelectField isNumber = { true } control = { control }
+                            width = { 300 }
                             name = "searchUser" 
                             errorMessage = { errors.searchUser?.message }
                             validationRules = {{
@@ -162,6 +181,7 @@ const SearchPage: React.FC = () => {
                 
 
                         <SelectField isNumber = { true } control = { control }
+                            width = { 300 }
                             name = "searchDate" 
                             errorMessage = { errors.searchDate?.message }
                             validationRules = {{
@@ -180,6 +200,7 @@ const SearchPage: React.FC = () => {
                        
 
                         <InputField 
+                            width = { 300 }
                             placeholder = "Фамилия Соавтора" 
                             errorMessage = { errors.searchCoauthorLastName?.message } 
                             name = "searchCoauthorLastName" 
@@ -190,6 +211,7 @@ const SearchPage: React.FC = () => {
                         />
 
                         <InputField 
+                            width = { 300 }
                             placeholder = "Имя Соавтора" 
                             errorMessage = { errors.searchCoauthorFirstName?.message } 
                             name = "searchCoauthorFirstName" 
@@ -200,6 +222,7 @@ const SearchPage: React.FC = () => {
                         />
 
                         <InputField 
+                            width = { 300 }
                             placeholder = "Отчество Соавтора" 
                             errorMessage = { errors.searchCoauthorPatronymic?.message } 
                             name = "searchCoauthorPatronymic" 

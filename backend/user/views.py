@@ -10,8 +10,6 @@ from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.response import Response
 
-# from rest_framework.response import Response
-# from rest_framework import status
 
 from django.contrib.auth.models import User
 
@@ -39,16 +37,20 @@ class UserView(APIView):
             # добавьте другие поля, которые хотите вернуть
         }) 
 
-# from user.models import UserModel
+
+from django.core.cache import cache
+from django.views.decorators.cache import cache_page
+from config.cache import TIME_SAVE_IN_CACHE
+from django.utils.decorators import method_decorator
 
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
+    @method_decorator(cache_page(TIME_SAVE_IN_CACHE)) 
     def get(self, request, *args, **kwargs):
         response = super().get(request, *args, **kwargs)
-        print("Response data:", response.data)  # Добавьте отладочную информацию
         return response
 
 

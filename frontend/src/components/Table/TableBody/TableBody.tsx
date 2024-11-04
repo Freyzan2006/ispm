@@ -15,6 +15,10 @@ import { tablesUserThunk } from "../../../state/tables/tablesThunk";
 
 
 import { BiSad } from "react-icons/bi";
+import { EStatus } from "../../../state/api/EAPI";
+import ErrorAlert from "../../ErrorAlert/ErrorAlert";
+import WarningAlert from "../../warningAlert/WarningAlert";
+import LoadingContent from "../../LoadingContent/LoadingContent";
 
 const TableBody: React.FC<ITableComponent> = ({ isBelongsUser }) => {
  
@@ -44,10 +48,12 @@ const TableBody: React.FC<ITableComponent> = ({ isBelongsUser }) => {
         
     }, [dispatch, userId, isBelongsUser]) 
 
+    
 
+    if (status === EStatus.LOADING) return <tbody><tr><td><LoadingContent /></td></tr></tbody>;
+    if (status === EStatus.FAILED) return <tbody><tr><td><ErrorAlert errorMessage = "Таблица временно не работает" /></td></tr></tbody>;
 
-    if (status === 'loading') return <tbody><tr><td>Loading...</td></tr></tbody>;
-    if (status === 'failed') return <tbody><tr><td>{error}</td></tr></tbody>;
+    
 
     if (tables) {
         return (  

@@ -41,6 +41,7 @@ const InputField: React.FC<IField> =
                     <input 
                         disabled = { disabled }
                         type = { isNumber ? "number" :  type ? type : "text" }
+                        onWheel={ () => {} }
                         title = { noSpecialCharsMessage }
                         style={ { width: width } }
                         className = { `${inputStyle}` }

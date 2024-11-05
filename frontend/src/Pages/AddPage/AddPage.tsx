@@ -274,7 +274,7 @@ const AddPage: React.FC = () => {
                             <Button styled = {EButton.RED} type= { ITypeBtn.BUTTON } onClick={() => remove(index)}>Удалить</Button>
                         </div>
                     ))}
-                    <Button styled = {EButton.GREEN} type= { ITypeBtn.BUTTON } onClick={() => append({ first_name: '', last_name: '' })}>
+                    <Button styled = {EButton.GREEN} type= { ITypeBtn.BUTTON } onClick={() => append({ first_name: '', last_name: '', patronymic: "" })}>
                         <FaPlus /> Добавить Соавтора
                     </Button>
                 </div>

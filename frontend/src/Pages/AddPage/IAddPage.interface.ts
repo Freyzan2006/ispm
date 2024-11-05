@@ -1,5 +1,9 @@
 
-
+export interface IAuthors {
+    "last_name": string;
+    "first_name": string;
+    "patronymic": string;
+}
 
 export interface IFrom {
     "Type": number;
@@ -11,7 +15,7 @@ export interface IFrom {
     "page_start": number;
     "page_end": number;
     "pages": number;
-    "authors": string;
+    "authors": IAuthors[];
     "for_user": number;
 }
 

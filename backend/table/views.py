@@ -41,7 +41,7 @@ class TableListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = [ReadOnly] 
     pagination_class = TablePagination
     
-    @method_decorator(cache_page(TIME_SAVE_IN_CACHE))  
+    # @method_decorator(cache_page(TIME_SAVE_IN_CACHE))  
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
     

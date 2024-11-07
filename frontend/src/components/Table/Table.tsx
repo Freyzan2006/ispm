@@ -2,10 +2,7 @@
 
 import { RootState } from "../../state/store"
 import { useAppSelector } from "../../state/useAppDispatch"
-import { MyLink } from "../../widgets/Widgets"
 import Download from "../Download/Download"
-import ErrorAlert from "../ErrorAlert/ErrorAlert"
-import LoadingContent from "../LoadingContent/LoadingContent"
 import { ITableComponent } from "./ITable"
 import TableBody from "./TableBody/TableBody"
 
@@ -23,10 +20,9 @@ const Table: React.FC<ITableComponent> = ({ isBelongsUser }) => {
                 <TableBody isBelongsUser = { isBelongsUser } />
             </table>
 
-            { isTable ? <Download /> : <>
-            <LoadingContent />
-            <ErrorAlert errorMessage="Записей в таблице не найдено " />
-            </>  }
+            { isTable ? <Download /> : <></> }
+
+            
         </div>
 
     )

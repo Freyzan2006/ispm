@@ -82,7 +82,7 @@ class TableDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TableModelSerializer
     permission_classes = [ReadOnly, IsAuthenticated]
     
-    @method_decorator(cache_page(TIME_SAVE_IN_CACHE))  
+    # @method_decorator(cache_page(TIME_SAVE_IN_CACHE))  
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 

@@ -1,0 +1,150 @@
+.toggle {
+	display: block;
+	text-align: center;
+
+  	user-select: none;
+
+	&__checkbox {
+		display: none;
+	}
+
+	&__btn {
+		display: block;
+		margin: 0 auto;
+
+		font-size: 1.4em;
+
+		transition: all 350ms ease-in;
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	&__btn,
+	&__checkbox,
+	&__feature {
+		&,
+		&:before,
+		&:after {
+			transition: all 250ms ease-in;
+		}
+		&:before,
+		&:after {
+			content: '';
+			display: block;
+		}
+	}
+}
+	
+$toggleBtnRadius: 50px;
+$toggleBtnColor: #f9f8f6;
+
+$toggleShadowColor: #333;
+$toggleActiveColor: #FF9900;
+$toggleInactiveColor: #ccc;
+
+
+$toggleBgColor: #11111100;
+$toggleBtnColor: #dfdfdf;
+
+$toggleActiveColor: #0094e0;
+$toggleInactiveColor: #aaa;
+
+
+.toggle__push {
+	& .toggle__btn {
+		position: relative;
+		width: $toggleBtnRadius;
+		height: $toggleBtnRadius;
+		background-color: $toggleBtnColor;
+		border-radius: 50%;
+		
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: $toggleInactiveColor;
+
+		box-shadow: 0 5px 10px 0px $toggleShadowColor,
+					0 15px 20px 0px lighten($toggleShadowColor, 60%);
+
+		&,
+		&:before,
+		&:after {
+			transition-duration: 150ms;
+		}
+	}
+
+	& .toggle__checkbox {
+		&:checked {
+			& + .toggle__btn {
+				box-shadow: 0 2px 5px 0px lighten($toggleShadowColor, 30%),
+					0 15px 20px 0px transparent;
+
+				color: $toggleActiveColor;
+				
+				&:before {
+					box-shadow: inset 0 0 0 5px $toggleActiveColor,
+								inset 0 0 0 14px $toggleBtnColor;
+				}
+				&:after {
+					background-color: $toggleActiveColor;
+				}
+			}
+		}
+	}
+}
+
+.toggle__push__glow {
+	background: $toggleBgColor;
+	padding: 50px 0;
+	margin: -50px 0;
+
+	& .toggle__btn {
+		background-color: $toggleBtnColor;
+		box-shadow: 0 5px 10px 0px $toggleShadowColor,
+					0 0 0 3px lighten($toggleBgColor, 20%),
+					0 0 8px 2px transparent,
+					0 0 0 6px lighten($toggleBgColor, 50%);
+
+		&:before {
+			box-shadow: inset 0 0 0 5px $toggleInactiveColor,
+						inset 0 0 0 14px $toggleBtnColor;
+		}
+		&:after {
+			background-color: $toggleInactiveColor;
+			box-shadow: 0 0 0 2.5px $toggleBtnColor;
+		}
+
+		&:hover {
+			&:before {
+				box-shadow: inset 0 0 0 5px darken($toggleInactiveColor, 20%),
+							inset 0 0 0 14px $toggleBtnColor;
+			}
+			&:after {
+				background-color: darken($toggleInactiveColor, 20%);
+			}
+		}
+	}
+
+	& .toggle__checkbox {
+
+		&:checked {
+			& + .toggle__btn {
+				box-shadow: 0 0px 8px 0 darken($toggleActiveColor, 10%),
+							0 0 0 3px $toggleActiveColor,
+							0 0 30px 0 $toggleActiveColor,
+							0 0 0 6px lighten($toggleBgColor, 40%);
+
+				&:before {
+					box-shadow: inset 0 0 0 5px $toggleActiveColor,
+								inset 0 0 0 14px $toggleBtnColor;
+				}
+				&:after {
+					background-color: $toggleActiveColor;
+				}
+			}
+		}
+	}
+}

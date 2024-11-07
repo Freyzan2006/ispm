@@ -11,6 +11,7 @@ const initialState: AuthState = {
     status: EStatus.IDLE,
     error: null,
     refreshing: false,
+
 };
 
 const authSlice = createSlice({
@@ -41,6 +42,12 @@ const authSlice = createSlice({
         setRefreshing(state, action: PayloadAction<boolean>) {
             state.refreshing = action.payload;
         },
+
+        setAccessToken(state, action: PayloadAction<string>) {
+            state.accessToken = action.payload; // добавил этот метод
+        },
+
+
     },
 
     extraReducers(builder) {
@@ -73,8 +80,8 @@ const authSlice = createSlice({
                 state.status = EStatus.FAILED;
                 state.error = action.error.message || 'Failed to refresh token';
             });
-            },
+    },
 });
 
-export const { setTokens, clearTokens, setError } = authSlice.actions;
+export const { setTokens, clearTokens, setError, setAccessToken } = authSlice.actions;
 export default authSlice.reducer;

@@ -9,23 +9,27 @@ import { toggleActive } from "../../state/menu/menuSlice";
 import { isScreenDimming } from "../../state/screenDimming/screenDimmingSlice";
 import { useAppDispatch, useAppSelector } from '../../state/useAppDispatch';
 import { RootState } from '../../state/store';
-import Theme from "../Theme/Theme";
+import ThemeBtn from "../ThemeBtn/ThemeBtn";
 import MyLink from "../../widgets/MyLink/MyLink";
-import { clearTokens } from "../../state/auth/authSlice";
-import { useEffect } from "react";
-import { userThunk } from "../../state/user/userThunk";
+
 import { useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
 import { EButton, ITypeBtn } from "../Button/EButton";
 import { EMyLink } from "../MyLink/EMyLink";
 import { EPath } from "../../Routers/ERouters";
-import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../state/alert/alertSlice";
+import { EAlertType } from "../../state/alert/alertSlice";
 import DropDown from "../DropDown/DropDown";
 import { IoMdSettings } from "react-icons/io";
 
-import { MdOutlineAnimation } from "react-icons/md";
-import { isBgAnimation } from "../../state/bgAnimation/bgAnimationSlice";
-import { clearUser } from "../../state/user/userSlice";
+
+
+import AnimationBtn from "../AnimationBtn/AnimationBtn";
+import useGetUser from "../../hooks/useGetUser";
+import useAlert from "../../hooks/useAlert";
+import useLogout from "../../hooks/useLogout";
+
+
+
 
 const Menu: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -35,12 +39,10 @@ const Menu: React.FC = () => {
     const accessToken = useAppSelector((state: RootState) => state.auth.accessToken);
     const user = useAppSelector((state: RootState) => state.user);
     
-    
+    const showAlert = useAlert();
+    const logout = useLogout();
 
-    useEffect(() => {
-        if (accessToken) 
-            dispatch(userThunk(accessToken))
-    }, [dispatch, accessToken])
+    useGetUser()
 
     function handlerMenuMedia() {
         dispatch(toggleActive())
@@ -48,23 +50,14 @@ const Menu: React.FC = () => {
     }
 
     function handlerLogout() {
-        dispatch(clearTokens());
-        dispatch(clearUser());
+        logout();
         navigate(EPath.LOGIN);
-
-        dispatch(setShowAlert());
-        dispatch(setMessageAlert("Вы вышли из аккаунта "));
-        dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
+        showAlert("Вы вышли из аккаунта", EAlertType.SUCCESSFUL);
     }
 
 
-    function handlerAnimationBg() {
-        dispatch(isBgAnimation());
 
-        dispatch(setShowAlert());
-        dispatch(setMessageAlert("Анимация успешна изменина"));
-        dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
-    }
+   
 
 
 
@@ -78,23 +71,24 @@ const Menu: React.FC = () => {
 
             <menu className={ `${css.myMenuEl}`}>
                 <li><MyLink to = { EPath.HOME } styled = { EMyLink.LINK }><FaHome /> Главная страница</MyLink></li>
-                <li><MyLink to = { EPath.ABOUT } styled = { EMyLink.LINK }><FaCircleQuestion /> Об проекте</MyLink></li>
+                <li><MyLink to = { EPath.ABOUT } styled = { EMyLink.LINK }><FaCircleQuestion /> О проекте</MyLink></li>
             </menu>  
 
             <div className={ `${css.myMenuEl}`}>
                 
-                <DropDown intro = { <IoMdSettings /> } isScreenDark = { true }>
-                    <div className = "flex flex-col justify-center items-center gap-1 text-black dark:text-white ">
-                        <h3>Тема сайта: Светлая/Тёмная</h3>
-                        <Theme />
-                    </div>
+                <DropDown intro = { <IoMdSettings /> } >
+                    <div className = "flex flex-col justify-center items-center gap-5">
+                        <div className = "flex flex-row justify-center items-center gap-8 text-black dark:text-white ">
+                            <h3>Тема:</h3>
+                            <ThemeBtn />
+                        </div>
 
-                    <div className = "flex flex-col justify-center items-center gap-1 text-black dark:text-white ">
-                        <h3>Анимация на заднем фоне: Вкл/Выкл</h3>
-                        <Button onClick = { handlerAnimationBg} type = { ITypeBtn.BUTTON } styled = { EButton.BLUE }>
-                            <MdOutlineAnimation />
-                        </Button>
-                        
+                        <div className = "flex flex-row justify-center items-center gap-1 text-black dark:text-white ">
+                            <h3>Анимация:</h3>
+                            <AnimationBtn />
+                            
+                            
+                        </div>
                     </div>
                     
                 </DropDown>

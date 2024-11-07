@@ -1,29 +1,26 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import css from "./DropDown.module.scss";
 
 interface IProps {
     children: React.ReactNode;
     intro: React.ReactNode;
-    isScreenDark?: boolean;
 }
 
 import { FaArrowAltCircleUp } from "react-icons/fa";
 import Button from "../Button/Button";
 import { EButton, ITypeBtn } from "../Button/EButton";
+import { useAppDispatch, useAppSelector } from "../../state/useAppDispatch";
 
 
-const DropDown: React.FC<IProps> = ({ children, intro, isScreenDark, ...props }) => {
+
+const DropDown: React.FC<IProps> = ({ children, intro, ...props }) => {
     const [ isActive, setIsActive ] = useState<boolean>(false);
    
+ 
 
-    
+    const handlerShowSetting = () => setIsActive(!isActive);
 
-    function handlerShowSetting() {
-        setIsActive(!isActive)
-      
-        
-    };
 
     
 

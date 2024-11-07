@@ -1,8 +1,9 @@
 import axios from 'axios';
 import store from '../store';
-import { clearTokens } from '../auth/authSlice';
+import { clearTokens, setAccessToken } from '../auth/authSlice';
 import { refreshToken } from '../auth/authThunk';
 import { BaseAPI, KeyWordJWT } from './EAPI';
+
 
 
 const axiosConfig = axios.create({
@@ -33,31 +34,37 @@ axiosConfig.interceptors.request.use(
 
 
 axiosConfig.interceptors.response.use(
-    (response) => {
-        return response;
-    },
+    (response) => response,
     async (error) => {
         const originalRequest = error.config;
 
+        
+
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
+
+            
+
+           
 
             try {
 
                 const refreshResponse = await store.dispatch(refreshToken()).unwrap();
                 const newToken = refreshResponse.access; // или другой ключ для нового токена
 
-               
-                axiosConfig.defaults.headers.common['Authorization'] = `${KeyWordJWT.KEY} ${newToken}`;
-
                 
+                // axiosConfig.defaults.headers.common['Authorization'] = `${KeyWordJWT.KEY} ${newToken}`; было
+                store.dispatch(setAccessToken(newToken));
+                originalRequest.headers['Authorization'] = `${KeyWordJWT.KEY} ${newToken}`; // стало
 
                 return axiosConfig(originalRequest);
             } catch (err) {
                 store.dispatch(clearTokens());
-                // localStorage.removeItem('refreshToken');
                 return Promise.reject(err);
-            }
+            } 
+
+            
+            
         }
 
         return Promise.reject(error);

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../state/useAppDispatch";
+import { useAppDispatch, useAppSelector } from "../store/useAppDispatch";
 import { RootState } from "../state/store";
-import { userThunk } from "../state/user/userThunk";
+import { userThunk } from "../store/slices/userSlice/userThunk";
 
 
 

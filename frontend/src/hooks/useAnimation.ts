@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { RootState } from "../state/store";
-import { useAppDispatch, useAppSelector } from "../state/useAppDispatch";
-import { initializeAnimation, isBgAnimation } from "../state/bgAnimation/bgAnimationSlice";
+import { useAppDispatch, useAppSelector } from "../store/useAppDispatch";
+import { initializeAnimation, isBgAnimation } from "../store/slices/bgAnimationSlice/bgAnimationSlice";
 
 
 const useAnimation = () => {

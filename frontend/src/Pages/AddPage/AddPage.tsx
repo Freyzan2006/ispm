@@ -1,28 +1,33 @@
 
-import Button from "../../widgets/Button/Button";
-import { EButton, ITypeBtn } from "../../widgets/Button/EButton";
+import { Button, InputField, MyLink, SelectField } from "../../components/ui/ui";
+
 import { FaPlus } from "react-icons/fa";
-import { useAppDispatch, useAppSelector } from "../../state/useAppDispatch";
-import { RootState } from "../../state/store";
+import { useAppDispatch, useAppSelector } from "../../store/useAppDispatch";
+import { RootState } from "../../store/store";
 
 import { yearsRage } from "../../utils";
 import css from "./AddPage.module.scss";
 
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 
-import InputField from "../../widgets/Field/InputField";
 
-import SelectField from "../../widgets/Field/SelectField";
-import { MyLink } from "../../widgets/Widgets";
-import { ERouters } from "../../Routers/ERouters";
 
-import { IFrom } from "./IAddPage.interface";
+
+
+
+
+
 
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import useGetPubType from "../../hooks/useGetPubType";
 import { useCountPages } from "../../hooks/useCountPages";
-import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../state/alert/alertSlice";
-import axiosConfig from "../../state/api/axiosConfig";
+import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../store/slices/alertSlice/alertSlice";
+import axiosConfig from "../../services/api/axiosConfig";
+import { IPublicType } from "../../store/slices/publicTypeSlice/IpublicType";
+import { EButton, ITypeBtn } from "../../components/ui/Button/EButton";
+import { IFrom } from "./IAddPage";
+import { ERouters } from "../../routers/ERouters";
+
 
 
 const AddPage: React.FC = () => {
@@ -99,7 +104,7 @@ const AddPage: React.FC = () => {
                         min: { value: 1, message: 'Вы не выбрали "Тип"' },
                     }}
                 >
-                    {publicTypes.map((el, index) => (
+                    {publicTypes.map((el: IPublicType, index: number) => (
                         <option value={el.id} key={index}>
                             {el.title}
                         </option>

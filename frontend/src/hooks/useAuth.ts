@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { RootState } from "../state/store";
-import { useAppDispatch, useAppSelector } from "../state/useAppDispatch";
-import { clearTokens, setTokens } from "../state/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../store/useAppDispatch";
+import { clearTokens, setTokens } from "../store/slices/authSlice/authSlice";
 
 
 const useAuth = () => {

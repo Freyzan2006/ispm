@@ -1,5 +1,5 @@
-import Pagination from "../../components/Pagination/Pagination";
-import Table from "../../components/Table/Table";
+import Pagination from "../../components/ux/Pagination/Pagination";
+import Table from "../../components/ux/Table/Table";
 
 
 

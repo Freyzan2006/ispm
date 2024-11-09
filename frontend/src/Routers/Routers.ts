@@ -5,10 +5,10 @@ import { ERouters } from "./ERouters.ts";
 
 import App from '../App.tsx'
 import { HomePage, AboutPage, SearchPage,
-  LoginPage, UserPage, EditPage, DeletePage
-} from "../Pages/Page.ts";
-import AddPage from "../Pages/AddPage/AddPage.tsx";
-import NotFoundPage from "../Pages/NotFoundPage/NotFoundPage.tsx";
+  LoginPage, UserPage, EditPage, DeletePage, 
+  AddPage, NotFoundPage
+} from "../pages/Page.ts";
+
 
 
 const router = createBrowserRouter([

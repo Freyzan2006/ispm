@@ -1,6 +1,6 @@
 
-import { useAppDispatch } from "../state/useAppDispatch";
-import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../state/alert/alertSlice";
+import { useAppDispatch } from "../store/useAppDispatch";
+import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../store/slices/alertSlice/alertSlice";
 
 
 

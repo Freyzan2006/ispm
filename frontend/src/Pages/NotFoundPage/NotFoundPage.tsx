@@ -1,4 +1,5 @@
-import ErrorAlert from "../../components/ErrorAlert/ErrorAlert";
+import { ErrorAlert } from "../../components/ux/ux";
+
 
 
 

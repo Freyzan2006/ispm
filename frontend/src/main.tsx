@@ -5,12 +5,12 @@ import './index.scss'
 import "./input.css"
 import { Provider } from 'react-redux'
 
-import store from "./state/store.ts";
+import store from './store/store.ts'
 
 
 import { RouterProvider } from "react-router-dom";
 
-import router from './Routers/Routers.ts'
+import router from './routers/Routers.ts'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
@@ -18,5 +18,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <RouterProvider router={router} />
     </React.StrictMode>
   </Provider>
-
 )

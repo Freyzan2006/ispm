@@ -5,16 +5,17 @@ import css from "./LoginPage.module.scss";
 import { FaEye } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
-import { useAppDispatch, useAppSelector } from "../../state/useAppDispatch";
-import { RootState } from "../../state/store";
-import { login } from "../../state/auth/authThunk";
-import { redirect, useNavigate } from "react-router-dom";
-import { EPath } from "../../Routers/ERouters";
-import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../state/alert/alertSlice";
-import InputField from "../../widgets/Field/InputField";
+import { useAppDispatch } from "../../store/useAppDispatch";
+
+import { login } from "../../store/slices/authSlice/authThunk";
+import { useNavigate } from "react-router-dom";
+import { EPath } from "../../routers/ERouters";
+import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../store/slices/alertSlice/alertSlice";
+
 import { SubmitHandler, useForm } from "react-hook-form";
-import Button from "../../widgets/Button/Button";
-import { EButton, ITypeBtn } from "../../widgets/Button/EButton";
+import { Button, InputField } from "../../components/ui/ui";
+import { EButton, ITypeBtn } from "../../components/ui/Button/EButton";
+
 
 
 interface IFrom {

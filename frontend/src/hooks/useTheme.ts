@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../state/useAppDispatch";
+import { useAppDispatch, useAppSelector } from "../store/useAppDispatch";
 import { RootState } from "../state/store";
-import { changeTheme, initializeTheme } from "../state/theme/themeSlice";
-import { ETheme } from "../state/theme/ETheme";
+import { changeTheme, initializeTheme } from "../store/slices/themeSilce/themeSlice";
+import { ETheme } from "../store/slices/themeSilce/ETheme";
 
 
 const useTheme = () => {

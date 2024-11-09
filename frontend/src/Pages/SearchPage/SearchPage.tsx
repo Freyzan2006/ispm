@@ -4,34 +4,37 @@ import css from "./SearchPage.module.scss"
 
 import { FaSearch } from "react-icons/fa";
 
-import Table from "../../components/Table/Table";
-import Pagination from "../../components/Pagination/Pagination";
-import { useAppDispatch, useAppSelector } from "../../state/useAppDispatch";
 
-import { searchTablesPaginationThunk, searchTablesThunk } from "../../state/tables/tablesThunk";
+import Pagination from "../../components/ux/Pagination/Pagination";
+import { useAppDispatch, useAppSelector } from "../../store/useAppDispatch";
 
-import { fetchUsers } from "../../state/api/usersFetch";
-import { RootState } from "../../state/store";
-import { publicTypeFetch } from "../../state/publicType/publicTypeFetch"; 
+import { searchTablesPaginationThunk, searchTablesThunk } from "../../store/slices/tablesSlice/tablesThunk";
+
+import { fetchUsers } from "../../store/slices/usersSlice/usersThunk";
+import { RootState } from "../../store/store";
+import { publicTypeFetch } from "../../store/slices/publicTypeSlice/publicTypeFetch"; 
 
 
 
 
 import { yearsRage } from "../../utils";
-import { setSearchCoauthorFirstName, setSearchCoauthorLastName, setSearchCoauthorPatronymic, setSearchDate, setSearchName, setSearchPublicType, setSearchUser, setSearchTitle } from "../../state/search/searchSlice";
-import { PAGINATION_SIZE } from "../../state/api/config";
-import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../state/alert/alertSlice";
-import InputField from "../../widgets/Field/InputField";
+import { setSearchCoauthorFirstName, setSearchCoauthorLastName, setSearchCoauthorPatronymic, setSearchDate, setSearchName, setSearchPublicType, setSearchUser, setSearchTitle } from "../../store/slices/searchSlice/searchSlice";
+import { PAGINATION_SIZE } from "../../services/api/config";
+import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../store/slices/alertSlice/alertSlice";
+
 import { SubmitHandler, useForm } from "react-hook-form";
-import SelectField from "../../widgets/Field/SelectField";
-import { ISearchFiled } from "../../state/tables/Itables";
-import { EStatus } from "../../state/api/EAPI";
-import { EButton, ITypeBtn } from "../../widgets/Button/EButton";
-import Button from "../../widgets/Button/Button";
-import ErrorAlert from "../../components/ErrorAlert/ErrorAlert";
-import { Loading } from "../../widgets/Widgets";
-import Alert from "../../widgets/Alert/Alert";
-import WarningAlert from "../../components/warningAlert/WarningAlert";
+
+import { ISearchFiled } from "../../store/slices/tablesSlice/Itables";
+import { EStatus } from "../../services/api/EAPI";
+
+import ErrorAlert from "../../components/ux/ErrorAlert/ErrorAlert";
+import WarningAlert from "../../components/ux/warningAlert/WarningAlert";
+import { IPublicType } from "../../store/slices/publicTypeSlice/IpublicType";
+import { IUserList } from "../../store/slices/usersSlice/usersSlice";
+import { Button, InputField, SelectField } from "../../components/ui/ui";
+import { EButton, ITypeBtn } from "../../components/ui/Button/EButton";
+import { Table } from "../../components/ux/ux";
+
 
 
 interface IFrom extends ISearchFiled {}
@@ -40,7 +43,7 @@ const SearchPage: React.FC = () => {
 
 
     const dispatch = useAppDispatch();
-    const { users, status, error } = useAppSelector((state: RootState) => state.users);
+    const { users, status } = useAppSelector((state: RootState) => state.users);
     const { publicTypes } = useAppSelector((state: RootState) => state.publicTypes);
     const tableLength = useAppSelector((state: RootState) => state.tables.tables.length);
    
@@ -55,6 +58,7 @@ const SearchPage: React.FC = () => {
             dispatch(fetchUsers());
             dispatch(publicTypeFetch())
         }
+
     }, []);
 
     const { paginationCount } = useAppSelector((state: RootState) => state.pagination);
@@ -110,7 +114,7 @@ const SearchPage: React.FC = () => {
 
     if (status === EStatus.LOADING) return <WarningAlert warningMessage = "Загрузка..." />;
     if (status === EStatus.FAILED) return <ErrorAlert errorMessage = {`Поиск пока не работает...` } /> ;
-    // <div>Error loading users: {error}</div>
+
 
     return (
         <main className="flex justify-center items-center flex-col gap-5 w-full overflow-auto">
@@ -152,7 +156,7 @@ const SearchPage: React.FC = () => {
                                 valueAsNumber: true,
                             }}
                         >
-                            {publicTypes.map((el, index) => (
+                            {publicTypes.map((el: IPublicType, index: number) => (
                                 <option value={el.id} key={index}>
                                     {el.title}
                                 </option>
@@ -170,9 +174,9 @@ const SearchPage: React.FC = () => {
                             validationRules = {{
                                 valueAsNumber: true,
                             }}
-                        >
-                            {users.map((el, index) => (
-                                <option value={el.id} key={index}>
+                        >   
+                            { users.map((el: IUserList, index: number) => (
+                                <option value={el.id || 0} key={index}>
                                     {el.username}
                                 </option>
                             ))}

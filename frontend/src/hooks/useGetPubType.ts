@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { EStatus } from "../state/api/EAPI";
-import { useAppDispatch } from "../state/useAppDispatch";
-import { publicTypeFetch } from "../state/publicType/publicTypeFetch";
+import { EStatus } from "../services/api/EAPI";
+import { useAppDispatch } from "../store/useAppDispatch";
+import { publicTypeFetch } from "../store/slices/publicTypeSlice/publicTypeFetch";
 
 
 const useGetPubType = (status: EStatus) => {

@@ -1,26 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { IFrom } from "../AddPage/IAddPage.interface";
+import { IFrom } from "../AddPage/IAddPage";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "../../state/useAppDispatch";
-import { RootState } from "../../state/store";
-import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../state/alert/alertSlice";
-import axiosConfig from "../../state/api/axiosConfig";
+import { useAppDispatch, useAppSelector } from "../../store/useAppDispatch";
+
+import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../store/slices/alertSlice/alertSlice";
+import axiosConfig from "../../services/api/axiosConfig";
 
 import css from "./EditPage.module.scss";
-import Button from "../../widgets/Button/Button";
-import { EButton, ITypeBtn } from "../../widgets/Button/EButton";
+
 import { FaArrowAltCircleLeft, FaPlus } from "react-icons/fa";
-import SelectField from "../../widgets/Field/SelectField";
-import InputField from "../../widgets/Field/InputField";
+
 import { yearsRage } from "../../utils";
 import { useCountPages } from "../../hooks/useCountPages";
 import useGetPubType from "../../hooks/useGetPubType";
-import TableHead from "../../components/Table/TableHead/TableHead";
-import TableItem from "../../components/Table/TableItem/TableItem";
-import { ITable } from "../../state/tables/Itables";
-import { ERouters } from "../../Routers/ERouters";
-import { MyLink } from "../../widgets/Widgets";
+
+import { ERouters } from "../../routers/ERouters";
+import { RootState } from "../../store/store";
+import { Button, InputField, MyLink, SelectField } from "../../components/ui/ui";
+import { EButton, ITypeBtn } from "../../components/ui/Button/EButton";
+
 
 const EditPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -43,7 +42,7 @@ const EditPage: React.FC = () => {
     useGetPubType(status);
 
     const tables = useAppSelector((state: RootState) => state.tables.tables);
-    const [table, setTable] = useState(tables.find((el: ITable) => el.id.toString() === id));
+
 
 
 
@@ -58,7 +57,7 @@ const EditPage: React.FC = () => {
                     const parseAuthors = JSON.parse(data.authors);
 
                     // setValue("authors", parseAuthors || []);
-                    setTable(response.data)
+      
 
                     // Устанавливаем полученные значения в форму
                     reset({ ...data, authors: parseAuthors || [] });
@@ -98,26 +97,6 @@ const EditPage: React.FC = () => {
         control,
         name: "authors",
     });
-
-
-
-    // {
-    //     "id": 3,
-    //     "Type": 1,
-    //     "name": "Химический состав железа",
-    //     "title": "Издания химического раздела",
-    //     "data": 1988,
-    //     "tom": 1,
-    //     "issue": 55,
-    //     "page_start": 1,
-    //     "page_end": 5,
-    //     "pages": 5,
-    //     "authors": "[{\"first_name\":\"Иван\",\"last_name\":\"Иванович\",\"patronymic\":\"Дмитривеч\"},{\"first_name\":\"Тимур\",\"last_name\":\"Тукфатуллин\",\"patronymic\":\"Оскарович\"},{\"first_name\":\"Андрей\",\"last_name\":\"Ильин\",\"patronymic\":\"Иванович\"}]",
-    //     "created_at": "2024-10-04T19:42:18.639214Z",
-    //     "updated_at": "2024-10-04T19:42:18.639214Z",
-    //     "for_user": 1
-    // }
-
 
 
     return (

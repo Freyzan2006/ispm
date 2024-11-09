@@ -1,6 +1,6 @@
-import { clearTokens } from "../state/auth/authSlice";
-import { useAppDispatch } from "../state/useAppDispatch";
-import { clearUser } from "../state/user/userSlice";
+import { clearTokens } from "../store/slices/authSlice/authSlice";
+import { useAppDispatch } from "../store/useAppDispatch";
+import { clearUser } from "../store/slices/userSlice/userSlice";
 
 
 const useLogout = () => {

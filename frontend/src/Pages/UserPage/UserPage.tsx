@@ -1,25 +1,20 @@
-
-
-import { EPath } from "../../Routers/ERouters";
-import Pagination from "../../components/Pagination/Pagination";
-import Table from "../../components/Table/Table";
-import { RootState } from "../../state/store";
-import { useAppSelector } from "../../state/useAppDispatch";
-import { EButton } from "../../widgets/Button/EButton";
-import { MyLink } from "../../widgets/Widgets";
-
+import { EPath } from "../../routers/ERouters";
+import Pagination from "../../components/ux/Pagination/Pagination";
+import { useAppSelector } from "../../store/useAppDispatch";
 import { MdAdminPanelSettings } from "react-icons/md";
-
-import ErrorAlert from "../../components/ErrorAlert/ErrorAlert";
-
 import { FaPlus } from "react-icons/fa";
-import ErrorPage from "../NotFoundPage/NotFoundPage";
+import { RootState } from "../../store/store";
+import { EButton } from "../../components/ui/Button/EButton";
+import { MyLink } from "../../components/ui/ui";
+import { Table } from "../../components/ux/ux";
+import { NotFoundPage } from "../Page";
+
 const UserPage: React.FC = () => {
 
     const { is_staff, username } = useAppSelector((state: RootState ) => state.user);
 
     if ( !username )
-        return <ErrorPage />
+        return <NotFoundPage />
 
     return (
         

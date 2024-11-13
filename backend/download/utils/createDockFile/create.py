@@ -1,25 +1,11 @@
-# from download.utils.createDockFile.file import File
-
-# current_file = None 
-# def createDocxFile(data):
-#     global current_file
-#     if current_file is None:
-#         current_file = File(name="temp")
-#     current_file.create(data=data)
-
-#     result = current_file.save()
-#     return result
-
-
-
-
 
 from docx import Document
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-
+from django.contrib.auth.models import User
 
 from table.models import PublicationType
+from user.models import UserModel
 
 from docx.shared import RGBColor
 
@@ -66,10 +52,60 @@ def set_vertical_alignment(cell, alignment="center"):
 
 from docx.oxml.ns import qn
 
-class DocxGenerator:
-    def __init__(self, data, filename):
-        self.data = data
-        self.filename = filename
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+
+class DocxStyle:
+    def set_vertical_alignment(self, cell, alignment="center"):
+        """
+        Устанавливает вертикальное выравнивание текста в ячейке.
+        
+        :param cell: Объект ячейки
+        :param alignment: Значение выравнивания (top, center, bottom)
+        """
+        tc_pr = cell._element.get_or_add_tcPr()
+        v_align = OxmlElement('w:vAlign')
+        v_align.set(qn('w:val'), alignment)
+        tc_pr.append(v_align)
+    
+    
+    def set_horizontal_alignment(self, cell, alignment="center"):
+        """
+        Устанавливает горизонтальное выравнивание текста в ячейке.
+        
+        :param cell: Объект ячейки
+        :param alignment: Значение выравнивания (left, center, right)
+        """
+        for paragraph in cell.paragraphs:
+            if alignment == "center":
+                paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            elif alignment == "right":
+                paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+            else:
+                paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    
+    def set_font_color(self, cell, rgb_color):
+        """
+        Устанавливает цвет текста в ячейке.
+
+        :param cell: Объект ячейки
+        :param rgb_color: Цвет в формате RGB, например, RGBColor(255, 0, 0) для красного
+        """
+        for paragraph in cell.paragraphs:
+            for run in paragraph.runs:
+                run.font.color.rgb = rgb_color
+    
+    
+    def set_bold(self, cell):
+        """
+        Устанавливает жирное начертание текста в ячейке.
+
+        :param cell: Объект ячейки
+        """
+        # Получаем первый элемент run в ячейке
+        for paragraph in cell.paragraphs:
+            for run in paragraph.runs:
+                run.bold = True
+    
     
     def set_column_width(self, table, widths):
         for row in table.rows:
@@ -87,15 +123,61 @@ class DocxGenerator:
                 # Для совместимости с Word необходимо установить 'w:rFonts' через xml
                 rFonts = run._element.rPr.rFonts
                 rFonts.set(qn('w:eastAsia'), font_name)
+    
+    
+    def set_landscape(self, section):
+        """
+        Устанавливает альбомную ориентацию для указанной секции документа Word.
+        
+        :param section: Объект секции документа Word
+        """
+        section_start = section._sectPr
+        page_size = section_start.xpath('./w:pgSz')[0]
+        page_size.set(qn('w:orient'), 'landscape')
+        page_size.set(qn('w:w'), '16840')  # ширина страницы в EMU (21 см для альбомной ориентации)
+        page_size.set(qn('w:h'), '11900')  # высота страницы в EMU (29.7 см для альбомной ориентации)
+
+class DocxGenerator:
+    def __init__(self, data, filename):
+        self.data = data
+        self.filename = filename
+        self.docxStyle = DocxStyle()
+    
+
 
     def create_docx(self):
         doc = Document()
         
       
-       
+        self.docxStyle.set_landscape(doc.sections[0])
         
+        
+        user_ids = {rec["for_user"] for rec in self.data}
+        
+        users = User.objects.filter(id__in=user_ids).values_list('id', 'username')
+        
+        # Создаем словарь для быстрого доступа к имени пользователя по его id
+        user_dict = {user_id: username for user_id, username in users}
+
+        # Заполняем список имен пользователей
+        owner_name_recording = [user_dict[user_id] for user_id in user_ids]
+        
+        # owner_recording_in_table = set()
+        # for rec in self.data:
+        #     owner_recording_in_table.add(rec["for_user"])
+        
+        
+        # for user_id in owner_recording_in_table:
+        #     owner_name_recording.append(User.objects.get(pk = user_id).username)
+
         # Добавляем заголовок
-        doc.add_heading(f'Таблица с {len(self.data)}ш.т записями.', level=1)
+        doc.add_heading(f'Таблица с {len(self.data)}ш.т записями. ', level=1)
+        doc.add_heading("Записи пользователей:", level = 1)
+        for i in range(len(owner_name_recording)):
+            doc.add_paragraph(f"{i + 1}. {owner_name_recording[i]}")
+
+        
+        print(owner_name_recording)   
 
         # Определяем заголовки таблицы
         headers = ['№', 'Название научной работы', 'Тип публикации', 'Информация об издании', 'Кол-во страниц', 'Соавторы']
@@ -104,8 +186,8 @@ class DocxGenerator:
         # table = doc.add_table(rows=len(self.data), cols=len(headers))
         table = doc.add_table(rows=1, cols=len(headers))
         table.style = "Table Grid"
-        # table.font  = "Times New Roman"
-        
+        # table.font  = "Times New Roman" 
+         
         
 
         
@@ -135,89 +217,41 @@ class DocxGenerator:
         hdr_cells = table.rows[0].cells
         for i, header in enumerate(headers):
             hdr_cells[i].text = header
-            set_bold(hdr_cells[i])  # Делаем заголовки жирными
-            set_font_color(hdr_cells[i], RGBColor(63, 38, 186))
-            set_vertical_alignment(hdr_cells[i], 'center')
-            self.set_font(hdr_cells[i])   
+            self.docxStyle.set_bold(hdr_cells[i])  # Делаем заголовки жирными
+            self.docxStyle.set_font_color(hdr_cells[i], RGBColor(0, 0, 0))
+            self.docxStyle.set_horizontal_alignment(hdr_cells[i], 'center') 
+            self.docxStyle.set_vertical_alignment(hdr_cells[i], 'center')
+            self.docxStyle.set_font(hdr_cells[i])   
+          
                    
 
         
 
         # Заполняем таблицу данными
-        for item in self.data:
+        for index, item in enumerate(self.data):
             row_cells = table.add_row().cells
-            row_cells[0].text = str(item.get('id', ''))
+            row_cells[0].text = str(index + 1)
             row_cells[1].text = item.get('name', '')
             row_cells[2].text = str(PublicationType.objects.get(pk = int( item.get('Type', ''))))
             
 
-            # row_cells[3].text = f'''
-            # {item.get('title', '')} {str(item.get('data', ''))}
-            # {str(item.get('tom', ''))} 
-            # {str(item.get('issue', ''))}
-            # {str(item.get('page_start', ''))}
-            # {str(item.get('page_end', ''))}
-            # '''
+           
 
             row_cells[3].text = f"{item.get('title', '')}, {str(item.get('data', ''))}, {str(item.get('tom', ''))}, {str(item.get('issue', ''))}"
             row_cells[4].text = f"от {str(item.get('page_start', ''))} до {str(item.get('page_end', ''))} всего {str(item.get('pages', ''))}"
-            # row_cells[5].text = item.get('Co_authors', '')
+          
             
             for i, key in enumerate(parse_json_to_dict(item.get("authors", []))):
                 row_cells[5].text += f"{i + 1} Ф: {key['last_name']} И: {key['first_name']}; О: {key['patronymic']}\n\n" 
          
             for cell in row_cells:
-                self.set_font(cell)
+                self.docxStyle.set_font(cell)
+                self.docxStyle.set_horizontal_alignment(cell, 'center') 
+                self.docxStyle.set_vertical_alignment(cell, 'center')
           
-        self.set_column_width(table, column_widths)
+        self.docxStyle.set_column_width(table, column_widths)
 
         # Сохраняем документ
         doc.save(self.filename)
 
-    # def create_docx(self):
-    #     doc = Document()
-
-    #     table = doc.add_table(rows=len(self.data), cols = 8)
-
-    #     table.style = "Table Grid"
-
-    #     for row in range(len(self.data)):
-    #         for col in range(8):
-    #             cell = table.cell(row, col)
-    #             cell.text = str(row)
-
-    #     doc.save(self.filename)
-
-
-   
-
-    # def create_docx(self):
-    #     doc = Document()
-    #     doc.add_heading('Table Data', level=1)
-        
-    #     # Создание таблицы
-    #     table = doc.add_table(rows=1, cols=len(self.data[0]))
-    #     hdr_cells = table.rows[0].cells
-    #     headers = ['id', 'Type', 'name', 'title', 'data', 'tom', 'issue', 'page_start', 'page_end', 'pages', 'Co_authors', 'created_at', 'updated_at', 'for_user']
-        
-    #     for i, header in enumerate(headers):
-    #         hdr_cells[i].text = header
-
-    #     for item in self.data:
-    #         row_cells = table.add_row().cells
-    #         row_cells[0].text = str(item['id'])
-    #         row_cells[1].text = str(item['Type'])
-    #         row_cells[2].text = item['name']
-    #         row_cells[3].text = item['title']
-    #         row_cells[4].text = str(item['data'])
-    #         row_cells[5].text = str(item['tom'])
-    #         row_cells[6].text = str(item['issue'])
-    #         row_cells[7].text = str(item['page_start'])
-    #         row_cells[8].text = str(item['page_end'])
-    #         row_cells[9].text = str(item['pages'])
-    #         row_cells[10].text = item['Co_authors']
-    #         row_cells[11].text = item['created_at']
-    #         row_cells[12].text = item['updated_at']
-    #         row_cells[13].text = str(item['for_user'])
-
-    #     doc.save(self.filename)
+  

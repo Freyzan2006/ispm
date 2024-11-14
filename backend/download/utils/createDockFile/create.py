@@ -148,8 +148,15 @@ class DocxGenerator:
     def create_docx(self):
         doc = Document()
         
+        
       
         self.docxStyle.set_landscape(doc.sections[0])
+        
+        # Даты
+        dates = {rec["data"] for rec in self.data}
+        
+    
+        
         
         
         user_ids = {rec["for_user"] for rec in self.data}
@@ -162,22 +169,27 @@ class DocxGenerator:
         # Заполняем список имен пользователей
         owner_name_recording = [user_dict[user_id] for user_id in user_ids]
         
-        # owner_recording_in_table = set()
-        # for rec in self.data:
-        #     owner_recording_in_table.add(rec["for_user"])
-        
-        
-        # for user_id in owner_recording_in_table:
-        #     owner_name_recording.append(User.objects.get(pk = user_id).username)
+       
 
         # Добавляем заголовок
-        doc.add_heading(f'Таблица с {len(self.data)}ш.т записями. ', level=1)
-        doc.add_heading("Записи пользователей:", level = 1)
+        doc.add_heading(f'Таблица с {len(self.data)}ш.т записями. ', level=1).runs[0].font.color.rgb = RGBColor(0, 0, 0) 
+        doc.add_heading(f"""
+        В Национальном университете Узбекистана имени Мирзо Улугбека
+        НИИ физики полупроводников и микроэлектроники
+        Тукфатуллин Оскар Фаритович, заведующий лабораторией «Возобновляемые источники энергии»
+        СПИСОК НАУЧНЫХ ПУБЛИКАЦИЙ
+        ({min(dates)} - {max(dates)} годы)
+        """).runs[0].font.color.rgb = RGBColor(0, 0, 0) 
+        
+        
+        doc.add_heading("Записи пользователей:", level = 1).runs[0].font.color.rgb = RGBColor(0, 0, 0) 
+        
+        
         for i in range(len(owner_name_recording)):
             doc.add_paragraph(f"{i + 1}. {owner_name_recording[i]}")
-
+ 
         
-        print(owner_name_recording)   
+        
 
         # Определяем заголовки таблицы
         headers = ['№', 'Название научной работы', 'Тип публикации', 'Информация об издании', 'Кол-во страниц', 'Соавторы']

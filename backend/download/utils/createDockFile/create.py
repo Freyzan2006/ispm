@@ -154,8 +154,10 @@ class DocxGenerator:
         
         # Даты
         dates = {rec["data"] for rec in self.data}
+        data.sort(key=lambda x: x["date"]) 
         
-    
+        # date_sorted = sorted(data, key=lambda x: x["data"])
+ 
         
         
         

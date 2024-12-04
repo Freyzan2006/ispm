@@ -11,7 +11,7 @@ from download.serializers import DataSerializer
 from rest_framework.permissions import AllowAny
 
 
-
+from django.contrib.auth.models import User
 
 from django.http import HttpResponse
 import uuid
@@ -28,12 +28,13 @@ class DownloadTableView(APIView):
         serializer = DataSerializer(data=requests.data)
         if serializer.is_valid():
             data = serializer.validated_data['data']
-            
+            print()
+            # user = User.objects.get()
             # Генерация уникального имени для файла
             filename = f"table_{uuid.uuid4().hex}.docx"
             
-            # Создание документа
-            docx_generator = DocxGenerator(data, filename)
+            # Создание документ
+            docx_generator = DocxGenerator(data, filename, requests.user)
             docx_generator.create_docx()
             
             # Отправка файла клиенту

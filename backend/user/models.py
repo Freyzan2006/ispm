@@ -3,4 +3,5 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class UserModel(User):
-    pass 
+    def __init__(self):
+        super().__init__() 

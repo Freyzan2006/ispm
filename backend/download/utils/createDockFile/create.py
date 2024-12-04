@@ -138,10 +138,11 @@ class DocxStyle:
         page_size.set(qn('w:h'), '11900')  # высота страницы в EMU (29.7 см для альбомной ориентации)
 
 class DocxGenerator:
-    def __init__(self, data, filename):
+    def __init__(self, data, filename, user):
         self.data = data
         self.filename = filename
         self.docxStyle = DocxStyle()
+        self.user = user
     
 
 
@@ -154,7 +155,7 @@ class DocxGenerator:
         
         # Даты
         dates = {rec["data"] for rec in self.data}
-        data.sort(key=lambda x: x["date"]) 
+        # self.data.sort(key=lambda x: x["date"]) 
         
         # date_sorted = sorted(data, key=lambda x: x["data"])
  
@@ -174,17 +175,17 @@ class DocxGenerator:
        
 
         # Добавляем заголовок
-        doc.add_heading(f'Таблица с {len(self.data)}ш.т записями. ', level=1).runs[0].font.color.rgb = RGBColor(0, 0, 0) 
+     
         doc.add_heading(f"""
         В Национальном университете Узбекистана имени Мирзо Улугбека
         НИИ физики полупроводников и микроэлектроники
-        Тукфатуллин Оскар Фаритович, заведующий лабораторией «Возобновляемые источники энергии»
+        { self.user.username or "Аноним" } , заведующий лабораторией «Возобновляемые источники энергии»
         СПИСОК НАУЧНЫХ ПУБЛИКАЦИЙ
         ({min(dates)} - {max(dates)} годы)
         """).runs[0].font.color.rgb = RGBColor(0, 0, 0) 
         
         
-        doc.add_heading("Записи пользователей:", level = 1).runs[0].font.color.rgb = RGBColor(0, 0, 0) 
+        # doc.add_heading("Записи пользователей:", level = 1).runs[0].font.color.rgb = RGBColor(0, 0, 0) 
         
         
         for i in range(len(owner_name_recording)):

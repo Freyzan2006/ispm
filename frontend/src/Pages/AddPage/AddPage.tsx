@@ -55,7 +55,7 @@ const AddPage: React.FC = () => {
         if ( !userId ) return 
        
         data.for_user = userId;
-        data.authors = JSON.stringify(data.authors);
+        data.authors = JSON.stringify(data.authors) as any;
         console.log(data)
        
 

@@ -146,7 +146,7 @@
 
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ITablesApiResponse, ISearchFiled } from './Itables';
+import { ITablesApiResponse, ISearchFiled, IPagination } from './Itables';
 import { tableAPIService } from '../../../services/TableService/TableService';
 
 export const tablesPaginationThunk = createAsyncThunk<ITablesApiResponse, { url?: string, page_size?: string }, { rejectValue: string }>(
@@ -195,7 +195,7 @@ export const searchTablesThunk = createAsyncThunk<ITablesApiResponse, ISearchFil
 
 
 
-export const searchTablesPaginationThunk = createAsyncThunk<ITablesApiResponse, ISearchFiled, {}>(
+export const searchTablesPaginationThunk = createAsyncThunk<ITablesApiResponse, IPagination, {}>(
     'table/searchFetchAllTableData', 
     async (params, { rejectWithValue }) => {
         try {

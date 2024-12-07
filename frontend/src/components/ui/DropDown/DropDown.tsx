@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import css from "./DropDown.module.scss";
 
 interface IProps {
@@ -10,7 +10,7 @@ interface IProps {
 import { FaArrowAltCircleUp } from "react-icons/fa";
 import Button from "../Button/Button";
 import { EButton, ITypeBtn } from "../Button/EButton";
-import { useAppDispatch, useAppSelector } from "../../store/useAppDispatch";
+
 
 
 

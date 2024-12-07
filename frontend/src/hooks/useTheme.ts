@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../store/useAppDispatch";
-import { RootState } from "../state/store";
+import { RootState } from "../store/store";
 import { changeTheme, initializeTheme } from "../store/slices/themeSilce/themeSlice";
 import { ETheme } from "../store/slices/themeSilce/ETheme";
 

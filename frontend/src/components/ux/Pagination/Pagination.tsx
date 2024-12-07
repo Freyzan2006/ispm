@@ -56,6 +56,7 @@ const Pagination: React.FC<IProps> = ({ isBelongsUser, isSearch }) => {
         if ( isBelongsUser ) {
             dispatch(tablesUserPaginationThunk({ userId: id, page_size: +value }))
         } else if ( isSearch ) {
+            
             dispatch(searchTablesPaginationThunk({ searchName, searchPublicType, searchUser, searchDate, page_size: +value }))
         } else {
             dispatch(tablesPaginationThunk({ page_size: value }));

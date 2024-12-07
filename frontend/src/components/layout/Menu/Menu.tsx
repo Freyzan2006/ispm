@@ -62,10 +62,10 @@ const Menu: React.FC = () => {
 
    
 
-
+   
 
     return (
-        <div className = { `${css.myMenu} ${isAction ? `${css.active} bg-blue-600 dark:bg-slate-900` : ""}`}>
+        <div className = { `${css.myMenu}  ${isAction ? `${css.active}  bg-blue-600 dark:bg-slate-900  ` : ""}`}>
            
 
             <Button type = { ITypeBtn.BUTTON } onClick = { handlerMenuMedia } styled = { `${EButton.GREEN} ${css.myMenuBtn} ${css.isScreenDimmingBtn}` }>

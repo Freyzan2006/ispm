@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { RootState } from "../state/store";
+import { RootState } from "../store/store";
 import { useAppDispatch, useAppSelector } from "../store/useAppDispatch";
 import { initializeAnimation, isBgAnimation } from "../store/slices/bgAnimationSlice/bgAnimationSlice";
 

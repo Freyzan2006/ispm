@@ -4,7 +4,7 @@ import { LoginResponse, Credentials } from "./IauthThunk";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { clearTokens, setError, setTokens } from "./authSlice";
 import axiosConfig from "../../../services/api/axiosConfig";
-import { AppDispatch, RootState } from "../../../state/store";
+import { AppDispatch, RootState } from "../../../store/store";
 import { UserAPI } from "../../../services/api/EAPI";
 
 

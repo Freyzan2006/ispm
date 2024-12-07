@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-interface IState {
+export interface IState {
     searchName: string;
     searchTitle: string;
     searchPublicType: string;

@@ -2,30 +2,29 @@
 
 
 
-import { KeyWordJWT } from '../../../services/api/EAPI';
+
 import axiosConfig from '../../../services/api/axiosConfig';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 
-
-export const getUserData = async (token: string) => {
+// token: string
+export const getUserData = async () => {
     try {
         const response = await axiosConfig.get(`user/`);
        
 
         return response.data;
     } catch (error) {
-        // console.error('Failed to fetch user data:', error);
-        // throw error;
-       
+
     }
 };
 
-
+// token: string
 export const userThunk = createAsyncThunk(
     'user/fetchUserData',
-    async (token: string) => {
-        const response = await getUserData(token);
+    async () => {
+        // const response = await getUserData(token);
+        const response = await getUserData();
         return response;
     }
 );

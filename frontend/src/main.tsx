@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client'
 
 import './index.scss'
 import "./input.css"
+
+
+
 import { Provider } from 'react-redux'
 
 import store from './store/store.ts'

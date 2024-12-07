@@ -33,7 +33,7 @@ const TableItem: React.FC<ITable> = ({ id, Type, name, title, data, tom, issue, 
     const titleTypePublic = typePublication.find(el => el.id == Type);
    
    
-    const parseAuthors = JSON.parse(authors);
+    const parseAuthors = JSON.parse(authors as any);
 
     useEffect(() => {
         dispatch(publicTypeFetch())

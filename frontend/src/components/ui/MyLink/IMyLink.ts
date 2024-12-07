@@ -1,4 +1,4 @@
-import { EPath } from "../../Routers/ERouters";
+import { EPath } from "../../../routers/ERouters";
 
 
 export interface IProps {

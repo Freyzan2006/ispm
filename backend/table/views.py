@@ -25,7 +25,7 @@ from django.utils.decorators import method_decorator
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-
+from django.db.models.signals import post_save, post_delete
 
 import logging
 
@@ -41,7 +41,7 @@ class TableListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = [ReadOnly] 
     pagination_class = TablePagination
     
-    # @method_decorator(cache_page(TIME_SAVE_IN_CACHE))  
+    @method_decorator(cache_page(TIME_SAVE_IN_CACHE))  
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
     
@@ -52,6 +52,9 @@ class TableListCreateAPIView(generics.ListCreateAPIView):
 
         try:
             self.perform_create(serializer)
+            # Удаляем или обновляем кэш
+            # cache_key = f"table_list"
+            # cache.delete(cache_key)  # Или обновите с новыми данными
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except BulkIndexError as e:
             # Логируем ошибки индексации
@@ -82,9 +85,21 @@ class TableDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TableModelSerializer
     permission_classes = [ReadOnly, IsAuthenticated]
     
-    # @method_decorator(cache_page(TIME_SAVE_IN_CACHE))  
+    @method_decorator(cache_page(TIME_SAVE_IN_CACHE))  
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+    
+    # def perform_update(self, serializer):
+    #     super().perform_update(serializer)
+    #     # Инвалидация кэша
+    #     cache_key = f"table_list"
+    #     cache.delete(cache_key)
+
+    # def perform_destroy(self, instance):
+    #     super().perform_destroy(instance)
+    #     # Инвалидация кэша
+    #     cache_key = f"table_list"
+    #     cache.delete(cache_key)
 
 
 class PublicationTypeCreateAPIView(generics.ListCreateAPIView):
@@ -120,14 +135,14 @@ from rest_framework.generics import get_object_or_404
 class TableDeleteAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @method_decorator(cache_page(TIME_SAVE_IN_CACHE))    
     def delete(self, request, pk, format=None):
         my_model = get_object_or_404(TableModel, pk=pk)  # Получаем объект
         if my_model.owner != request.user:
             return Response({'detail': 'У вас нет прав на удаление этой записи.'}, status=status.HTTP_403_FORBIDDEN)
         my_model.delete()
 
-        cache_key = f'table_list_{request.user.id}'
-        cache.delete(cache_key)
+     
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 

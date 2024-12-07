@@ -4,7 +4,7 @@
 
 import { SearchAPI, TableAPI } from "../api/EAPI";
 import axiosConfig from "../api/axiosConfig";
-import { ISearchFiled, ITablesApiResponse } from "../../store/slices/tablesSlice/Itables";
+import { IPagination, ISearchFiled, ITablesApiResponse } from "../../store/slices/tablesSlice/Itables";
 import { TableAPIParams } from "./ITableAPI";
 
 // import { TableAPIPath, ITableAPIPath, TableAPIParams } from "./ITableAPI";
@@ -72,7 +72,7 @@ class TableAPIService {
         return response.data;
     }
 
-    async searchTablesWithPagination(params: ISearchFiled): Promise<ITablesApiResponse> {
+    async searchTablesWithPagination(params: IPagination): Promise<ITablesApiResponse> {
         const { page_size, ...searchParams } = params;
         const response = await axiosConfig.get<ITablesApiResponse>(SearchAPI.SEARCH_GET, {
             params: { ...searchParams, page_size }

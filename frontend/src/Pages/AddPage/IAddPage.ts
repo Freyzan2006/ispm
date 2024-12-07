@@ -1,8 +1,8 @@
 
 export interface IAuthors {
-    "last_name": string;
-    "first_name": string;
-    "patronymic": string;
+    "last_name": JSON | string;
+    "first_name": JSON | string;
+    "patronymic": JSON | string;
 }
 
 export interface IFrom {

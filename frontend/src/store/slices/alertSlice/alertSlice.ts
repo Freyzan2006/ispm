@@ -7,7 +7,7 @@ export enum EAlertType {
     INFO
 }
 
-interface IAlertSlice {
+export interface IAlertSlice {
     isActive: boolean,
     time: number,
     type: EAlertType,

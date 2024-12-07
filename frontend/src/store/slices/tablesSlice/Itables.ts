@@ -13,6 +13,14 @@ export interface ISearchFiled {
     searchCoauthorPatronymic: string;
 }
 
+export interface IPagination {
+    searchName: string;
+    searchPublicType: string;
+    searchUser: string;
+    searchDate: string;
+    page_size?: number;
+}
+
 export interface ITablesApiResponse {
     results: ITable[];
     next: string | null;

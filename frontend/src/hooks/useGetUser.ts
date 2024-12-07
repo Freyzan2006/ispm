@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../store/useAppDispatch";
-import { RootState } from "../state/store";
+import { RootState } from "../store/store";
 import { userThunk } from "../store/slices/userSlice/userThunk";
 
 
@@ -11,7 +11,7 @@ const useGetUser = () => {
 
     useEffect(() => {
         if (accessToken) 
-            dispatch(userThunk(accessToken))
+            dispatch(userThunk())
     }, [dispatch, accessToken])
 }
 

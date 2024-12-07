@@ -41,7 +41,7 @@ const EditPage: React.FC = () => {
     useCountPages({startPageWatch, endPageWatch, setValue});
     useGetPubType(status);
 
-    const tables = useAppSelector((state: RootState) => state.tables.tables);
+    // const tables = useAppSelector((state: RootState) => state.tables.tables);
 
 
 
@@ -74,7 +74,8 @@ const EditPage: React.FC = () => {
         if (!userId) return;
 
         data.for_user = userId;
-        data.authors = JSON.stringify(data.authors);
+        data.authors = JSON.stringify(data.authors) as any;
+       
 
         try {
             if (id) {
@@ -247,7 +248,7 @@ const EditPage: React.FC = () => {
                 </div>
 
               
-
+            
 
                 <div className="flex flex-col justify-center items-center gap-5">
                     <h2 className="text-black dark:text-white text-2xl">Соавторы</h2>
@@ -256,7 +257,7 @@ const EditPage: React.FC = () => {
                             <InputField
                                 width= { 300 }
                                 placeholder="Фамилия Соавтора"
-                                errorMessage={errors.authors?.[index]?.last_name?.message}
+                                errorMessage={ errors.authors?.[index]?.last_name?.message }
                                 label="Фамилия Соавтора"
                                 name={`authors[${index}].last_name`}
                                 control={control}
@@ -310,5 +311,7 @@ const EditPage: React.FC = () => {
         </main>
     )
 }
+
+
 
 export default EditPage;

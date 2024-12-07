@@ -3,7 +3,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import { MAX_PAGINATION_SIZE, PAGINATION_SIZE } from "../../../services/api/config";
 
-interface IPaginationState {
+export interface IPaginationState {
     paginationCount: number;
     maxPaginationCount: number;
     minPaginationCount: number;

@@ -1,22 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchUsers } from "./usersThunk";
+import { EStatus } from "../../../services/api/EAPI";
 
 export interface IUserList {
   id: number;
   username: string;
-  // добавьте другие поля по необходимости
 }
 
-interface UsersState {
+export interface UsersState {
   users: IUserList[];
-  status: 'idle' | 'loading' | 'failed';
-  error: string | null
+  status: EStatus;
+  error: string | undefined
 }
 
 const initialState: UsersState = {
   users: [],
-  status: 'idle',
-  error: null,
+  status: EStatus.IDLE,
+  error: undefined,
 };
 
 const usersSlice = createSlice({
@@ -26,18 +26,18 @@ const usersSlice = createSlice({
     extraReducers: (builder) => {
       builder
         .addCase(fetchUsers.pending, (state) => {
-            state.status = 'loading';
+            state.status = EStatus.LOADING;
         })
         .addCase(fetchUsers.fulfilled, (state, action) => {
-            state.status = 'idle';
+            state.status = EStatus.IDLE;
             state.users = action.payload;
         })
         .addCase(fetchUsers.rejected, (state, action) => {
-            state.status = 'failed';
+            state.status = EStatus.FAILED;
             state.error = action.error.message;
             console.error("Fetch users failed:", action.error.message); // Добавьте отладочную информацию
         });
     },
   });
   
-export default usersSlice.reducer;
+export default usersSlice;

@@ -61,7 +61,7 @@ const LoginPage: React.FC = () => {
     return (
         <main className = "flex justify-center items-center">
             <form className = { `${css.LoginPage} ` } onSubmit = { handleSubmit(onSubmit) }>
-                <h1 className = "text-black dark:text-white  text-2xl">Вход в Аккаунт</h1>
+                <h1 className = "TEXT_COLOR  text-2xl">Вход в Аккаунт</h1>
 
                 <InputField 
                     width = { 300 }
@@ -76,7 +76,7 @@ const LoginPage: React.FC = () => {
                     }}
                 />
 
-                <div className = "flex justify-center items-center gap-5">
+                <div className = "flex justify-center gap-5">
 
                     <InputField 
                         width = { 300 }
@@ -92,10 +92,10 @@ const LoginPage: React.FC = () => {
                         type = { isShowPassword ? "text" : "password" }
                         
                     />
-
-                    <Button onClick = { () => setIsShowPassword(!isShowPassword) } type = { ITypeBtn.BUTTON } styled = { EButton.GREEN }>
+                    
+                    {/* <Button onClick = { () => setIsShowPassword(!isShowPassword) } type = { ITypeBtn.BUTTON } styled = { `${EButton.GREEN}` }>
                         { isShowPassword ? <FaEyeSlash /> : <FaEye /> }
-                    </Button>
+                    </Button> */}
 
                 </div>
                 <Button type = { ITypeBtn.SUBMIT } styled = { EButton.GREEN }>

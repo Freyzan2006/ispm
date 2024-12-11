@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom"
 import { RootState } from "../../../store/store";
 import { useAppSelector } from "../../../store/useAppDispatch";
-// import { BgAnimation, Container, Footer, Header, HelperWidgets, Loading } from "../layout";
+
 import React, { Suspense } from "react";
 import { Loading } from "../layout";
 
@@ -39,19 +39,7 @@ const Layout: React.FC = () => {
                 </Suspense>
             </div>
 
-            {/* <div className = "flex flex-col gap-10 z-10">
-                <HelperWidgets />
 
-                <Header />
-
-                <Container>
-                    <Outlet />
-                </Container>
-
-                <Footer />
-
-                { isActiveAnimation && <BgAnimation id="particles" /> }
-            </div> */}
         </div>
         
     )

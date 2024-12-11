@@ -4,7 +4,7 @@
 
 module.exports = {
   mode: "jit",
-  content: ["./src/**/*.{html,js,tsx,jsx}"],
+  content: ["./src/**/*.{html,js,tsx,jsx,ts}"],
   darkMode: 'class',
   theme: {
     extend: {
@@ -13,5 +13,8 @@ module.exports = {
       }
     },
   },
+  safelist: [
+    
+  ],
   plugins: [],
 }

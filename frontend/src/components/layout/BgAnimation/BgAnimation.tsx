@@ -5,7 +5,7 @@ import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { useEffect, useMemo, useState } from "react";
 import { loadSlim } from "@tsparticles/slim";
 
-
+import css from "./BgAnimation.module.scss";
 
 interface IProps {
   id: string;
@@ -104,7 +104,7 @@ const BgAnimation: React.FC<IProps> = (props) => {
   );
 
 
-  return <Particles id={props.id} options={options} />
+  return <Particles id={props.id} options={options} className = { css.BgAnimation } />
 };
 
 export default BgAnimation;

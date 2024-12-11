@@ -10,7 +10,7 @@ const InputField: React.FC<IField> =
 ({ control, name, label, errorMessage, placeholder, validationRules, isNumber, disabled, type, width = 500 }) => {
 
 
-    const inputStyle = `${css.input} w-full bg-white dark:bg-slate-900  dark:border-white dark:text-white dark:shadow-lg dark:shadow-gray-500`;
+    const inputStyle = `${css.input}`;
     
 
 
@@ -22,7 +22,7 @@ const InputField: React.FC<IField> =
         
         <div className = "flex justify-center items-center gap-3 flex-col w-full">
             {label && (
-                <label className="text-black dark:text-white text-lg">
+                <label className="TEXT_COLOR text-lg">
                     { label }
                 </label>
             )}
@@ -45,7 +45,7 @@ const InputField: React.FC<IField> =
                         onWheel={ () => {} }
                         title = { noSpecialCharsMessage }
                         style={ { width: width } }
-                        className = { `${inputStyle}` }
+                        className = { `${inputStyle} INPUT` }
                         onChange = { (e) => field.onChange(
                             isNumber ? Number(e.target.value) : e.target.value
                         ) } 

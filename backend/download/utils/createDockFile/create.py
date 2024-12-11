@@ -137,6 +137,9 @@ class DocxStyle:
         page_size.set(qn('w:w'), '16840')  # ширина страницы в EMU (21 см для альбомной ориентации)
         page_size.set(qn('w:h'), '11900')  # высота страницы в EMU (29.7 см для альбомной ориентации)
 
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.shared import Pt
+
 class DocxGenerator:
     def __init__(self, data, filename, user):
         self.data = data
@@ -155,9 +158,7 @@ class DocxGenerator:
         
         # Даты
         dates = {rec["data"] for rec in self.data}
-        # self.data.sort(key=lambda x: x["date"]) 
-        
-        # date_sorted = sorted(data, key=lambda x: x["data"])
+ 
  
         
         
@@ -174,22 +175,39 @@ class DocxGenerator:
         
        
 
-        # Добавляем заголовок
-     
-        doc.add_heading(f"""
+       
+        
+        heading_text = f"""
         В Национальном университете Узбекистана имени Мирзо Улугбека
         НИИ физики полупроводников и микроэлектроники
-        { self.user.username or "Аноним" } , заведующий лабораторией «Возобновляемые источники энергии»
+        {self.user.username or "Аноним"}, заведующий лабораторией «Возобновляемые источники энергии»
         СПИСОК НАУЧНЫХ ПУБЛИКАЦИЙ
         ({min(dates)} - {max(dates)} годы)
-        """).runs[0].font.color.rgb = RGBColor(0, 0, 0) 
+        """ 
+
+        # Добавляем заголовок
+        heading = doc.add_heading(heading_text, level=1)
+
+        # Настраиваем свойства текста
+        run = heading.runs[0]
+        run.font.color.rgb = RGBColor(0, 0, 0)
+        for run in heading.runs:
+
+            run.font.name = 'Times New Roman'
+            run.font.size = Pt(12) 
+            
+            rFonts = run._element.rPr.rFonts
+            rFonts.set(qn('w:eastAsia'), 'Times New Roman')
+
+        # Настраиваем выравнивание заголовка
+        heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
         
         
-        # doc.add_heading("Записи пользователей:", level = 1).runs[0].font.color.rgb = RGBColor(0, 0, 0) 
+      
         
         
-        for i in range(len(owner_name_recording)):
-            doc.add_paragraph(f"{i + 1}. {owner_name_recording[i]}")
+        # for i in range(len(owner_name_recording)):
+        #     doc.add_paragraph(f"{i + 1}. {owner_name_recording[i]}")
  
         
         
@@ -197,11 +215,10 @@ class DocxGenerator:
         # Определяем заголовки таблицы
         headers = ['№', 'Название научной работы', 'Тип публикации', 'Информация об издании', 'Кол-во страниц', 'Соавторы']
         
-        # Создаем таблицу с одной строкой для заголовков
-        # table = doc.add_table(rows=len(self.data), cols=len(headers))
+   
         table = doc.add_table(rows=1, cols=len(headers))
         table.style = "Table Grid"
-        # table.font  = "Times New Roman" 
+       
          
         
 

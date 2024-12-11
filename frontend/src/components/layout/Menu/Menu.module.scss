@@ -22,7 +22,7 @@ $mediaSize: 1280px;
         right: 0;
         bottom: 0;
      
-        // width: 100px;
+   
         height: 100vh;
       
   
@@ -56,6 +56,8 @@ $mediaSize: 1280px;
     justify-content: center;
     align-items: center;
     gap: 30px;
+
+
     
 
     @media (max-width: $mediaSize) {
@@ -64,7 +66,7 @@ $mediaSize: 1280px;
         flex-direction: column;
         flex-wrap: wrap;
         
-        
+      
 
     }
 }

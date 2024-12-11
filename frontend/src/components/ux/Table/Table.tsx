@@ -15,8 +15,8 @@ const Table: React.FC<ITableComponent> = ({ isBelongsUser }) => {
     const isTable: number = useAppSelector((state: RootState) => state.tables.tables).length;
 
     return (
-        <div className = "overflow-x-auto pb-5 flex flex-col gap-2 items-center p-3 overflow-y-auto max-h-[800px]">
-            <table className="table p-5 adaptive-table">
+        <div className = "overflow-x-auto pb-5 flex flex-col gap-2 items-center p-3 overflow-y-auto max-h-[800px] h-min-[800px]">
+            <table className="table adaptive-table ">
                 { isTable ? <TableHead /> : <></> }
                 <TableBody isBelongsUser = { isBelongsUser } />
             </table>

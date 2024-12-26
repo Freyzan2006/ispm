@@ -1,10 +1,10 @@
 
-import { useState } from "react";
+
 import css from "./LoginPage.module.scss";
 
-import { FaEye } from "react-icons/fa";
+
 import { FaUser } from "react-icons/fa";
-import { FaEyeSlash } from "react-icons/fa6";
+
 import { useAppDispatch } from "../../store/useAppDispatch";
 
 import { login } from "../../store/slices/authSlice/authThunk";
@@ -35,7 +35,7 @@ const LoginPage: React.FC = () => {
     });
 
 
-    const [ isShowPassword, setIsShowPassword ] = useState<boolean>(false);
+   
 
   
 
@@ -89,7 +89,7 @@ const LoginPage: React.FC = () => {
                             minLength: { value: 2, message: 'Минимальная длина 2 символа' },
                             maxLength: { value: 255, message: 'Максимальная длина 255 символов' },
                         }}
-                        type = { isShowPassword ? "text" : "password" }
+                        type = { "password" }
                         
                     />
                     

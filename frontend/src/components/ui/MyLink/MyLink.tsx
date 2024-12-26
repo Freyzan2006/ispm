@@ -4,9 +4,10 @@ import { NavLink } from "react-router-dom";
 import { IProps } from "./IMyLink";
 import { EMyLink } from "./EMyLink";
 
-const MyLink: React.FC<IProps> = ({ children ,to, styled, ...props }) => {
+
+const MyLink: React.FC<IProps> = ({ children ,to, styled = EMyLink.LINK, ...props }) => {
     return (
-        <NavLink to = { to } className = { `${styled ? styled : EMyLink.LINK }` } { ...props }>
+        <NavLink to = { to } className = { styled } { ...props }>
             { children }
         </NavLink>
     )

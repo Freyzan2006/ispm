@@ -1,0 +1,23 @@
+
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    environment:
+      - NODE_ENV=production  # development # Пробрасываем порт 3000 для локальной разработки
+    # volumes:
+    #   - ./src:/app/src # Добавляем исходные файлы
+    #   - ./dist:/usr/share/nginx/html
+    #   - ./tailwind.config.js:/app/tailwind.config.js
+    #   - ./postcss.config.js:/app/postcss.config.js
+      
+
+
+
+networks:
+  shared_network:
+    external: true

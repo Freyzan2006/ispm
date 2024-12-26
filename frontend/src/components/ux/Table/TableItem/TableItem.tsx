@@ -43,7 +43,7 @@ const TableItem: React.FC<ITable> = ({ id, Type, name, title, data, tom, issue, 
 
 
     return (
-        <tr className = "text-black dark:text-white " >
+        <tr className = "text-black dark:text-white" >
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900" scope="row">{ id }</td>
           
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">{ name }</td>

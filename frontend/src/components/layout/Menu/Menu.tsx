@@ -96,13 +96,19 @@ const Menu: React.FC = () => {
                     
                 </DropDown>
 
-                <MyLink to = { EPath.SEARCH } styled = { EButton.BLUE }><FaSearch /> Поиск</MyLink>
+
+                
+                <MyLink to = { EPath.SEARCH } styled = { EButton.BLUE + " " + "myLinkSearch" }><FaSearch /> Поиск</MyLink>
+
+                
 
                 {
                     accessToken ? (
                         <div className = { css.myMenuEl }>
                             <MyLink to = { EPath.USER } styled = { EButton.GREEN }><FaUserCircle /> { user.username } { user.is_staff && "(Админ)" }</MyLink>
-                        
+
+                            
+
                             <Button type = { ITypeBtn.BUTTON } onClick = { handlerLogout } styled = { EButton.RED }>
                                 <FaSignOutAlt /> Выход
                             </Button>

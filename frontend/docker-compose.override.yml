@@ -1,0 +1,5 @@
+# services:
+#   frontend:
+#     volumes:
+#       - ./src:/app/src
+#       - ./tailwind.config.js:/app/tailwind.config.js

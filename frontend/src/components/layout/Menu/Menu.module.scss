@@ -1,5 +1,9 @@
 $mediaSize: 1280px;
 
+.myMenuEl .myLinkSearch {
+    @apply bg-sky-500 text-white; /* Tailwind стили */
+}
+
 .myMenu {
     display: flex;
     justify-content: center;

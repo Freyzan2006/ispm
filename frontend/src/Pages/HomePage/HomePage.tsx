@@ -4,13 +4,14 @@ import Table from "../../components/ux/Table/Table";
 
 
 
+
 const HomePage: React.FC = () => {
 
 
 
     return (
         <main className = "flex flex-col gap-3">
-            <Table />  
+            <Table />
             <Pagination />
         </main>
     )

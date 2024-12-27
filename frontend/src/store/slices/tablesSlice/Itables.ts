@@ -48,7 +48,7 @@ export interface ITable {
     page_start: number;
     page_end: number;
     pages: number;
-    authors: IAuthor[];
+    authors: IAuthor[] | string;
     created_at: string;
     updated_at: string;
     for_user: number;

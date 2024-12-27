@@ -10,11 +10,12 @@ import { useAppDispatch } from "../../store/useAppDispatch";
 import { login } from "../../store/slices/authSlice/authThunk";
 import { useNavigate } from "react-router-dom";
 import { EPath } from "../../routers/ERouters";
-import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../store/slices/alertSlice/alertSlice";
+import { EAlertType } from "../../store/slices/alertSlice/alertSlice";
 
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button, InputField } from "../../components/ui/ui";
 import { EButton, ITypeBtn } from "../../components/ui/Button/EButton";
+import useAlert from "../../hooks/useAlert";
 
 
 
@@ -30,13 +31,12 @@ const LoginPage: React.FC = () => {
     const navigate = useNavigate();
 
 
-    const { handleSubmit, control, formState: { errors  } } = useForm<IFrom>({
+    const { handleSubmit, control, formState: { errors, isSubmitting  } } = useForm<IFrom>({
         mode: "onChange",
     });
 
 
-   
-
+    const showAlert = useAlert();
   
 
 
@@ -44,15 +44,12 @@ const LoginPage: React.FC = () => {
         try {
             await dispatch(login({ username, password })).unwrap();
 
-            dispatch(setShowAlert());
-            dispatch(setMessageAlert(`Добро пожаловать ${username}`));
-            dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
+            showAlert(`Добро пожаловать ${username}`, EAlertType.SUCCESSFUL);
             navigate(EPath.HOME)
         
         } catch (error) {
-            dispatch(setShowAlert());
-            dispatch(setMessageAlert("Проверьте пожалуйтса свой логин и пароль"));
-            dispatch(setTypeAlert(EAlertType.ERROR));
+
+            showAlert("Проверьте пожалуйста свой логин и пароль", EAlertType.ERROR);
             
             console.error('Failed to login:', error);
         }  
@@ -98,8 +95,8 @@ const LoginPage: React.FC = () => {
                     </Button> */}
 
                 </div>
-                <Button type = { ITypeBtn.SUBMIT } styled = { EButton.GREEN }>
-                    <FaUser /> Войти
+                <Button disabled = { isSubmitting } type = { ITypeBtn.SUBMIT } styled = { EButton.GREEN }>
+                    { isSubmitting ? <>Идёт загрузка...</> : <><FaUser /> Войти </> }
                 </Button>
 
                 {/* <button type = "submit" className = { `${css.LoginPage__submit} transition hover:scale-105 rounded-2xl pl-4 pr-4 pt-2 pb-2 bg-green-500 shadow-lg shadow-green-500/50 flex justify-center items-center text-white gap-3` }><FaUser /> Войти</button> */}

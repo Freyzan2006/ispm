@@ -18,7 +18,7 @@ const Loading: React.FC<IProps> = ({ time }) => {
 
     useEffect(() => {
         const loader = setTimeout(() => {
-            dispatch(isLoading());
+            dispatch(isLoading(false));
         }, time);
     
         return () => {

@@ -1,4 +1,5 @@
 
+
 export interface ITableComponent {
-    isBelongsUser?: boolean
+    isBelongsUser?: boolean;
 }

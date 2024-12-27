@@ -10,6 +10,7 @@ import { RootState } from '../../store/store';
 import TableHead from '../../components/ux/Table/TableHead/TableHead';
 import TableItem from '../../components/ux/Table/TableItem/TableItem';
 import { MyLink } from '../../components/ui/ui';
+import { headingTitleTable } from '../../components/ux/Table/Table';
 
 
 
@@ -56,13 +57,13 @@ const DeletePage: React.FC = () => {
         navigate("/")
         return response.data
     };
-
+    
     return (
         <main className = 'flex justify-center items-center gap-5 flex-col'>
             <h2 className = ' text-2xl text-black dark:text-white'>Вы уверены что хотите удалить запись ?</h2>
 
             <table>
-                <TableHead />
+                <TableHead headingTitleTable = { headingTitleTable } />
                 <tbody>
                     <TableItem { ...table }  />
                 </tbody>

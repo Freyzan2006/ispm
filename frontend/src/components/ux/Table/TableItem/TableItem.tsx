@@ -18,6 +18,8 @@ import { useAppDispatch, useAppSelector } from "../../../../store/useAppDispatch
 import { ParseDate } from "../../../../utils/ParseDate";
 import { publicTypeFetch } from "../../../../store/slices/publicTypeSlice/publicTypeFetch";
 import { MyLink } from "../../../ui/ui";
+import { LoadingContent } from "../../../layout/layout";
+
 
 const TableItem: React.FC<ITable> = ({ id, Type, name, title, data, tom, issue, page_start, page_end, pages, authors, created_at, updated_at, for_user }) => {
     
@@ -44,36 +46,79 @@ const TableItem: React.FC<ITable> = ({ id, Type, name, title, data, tom, issue, 
 
     return (
         <tr className = "text-black dark:text-white" >
-            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900" scope="row">{ id }</td>
+            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900" scope="row">{ id || <LoadingContent w = "50px" h = "50px" /> }</td>
           
-            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">{ name }</td>
-            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">{ titleTypePublic?.title }</td>
+            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">{ name || <LoadingContent w = "50px" h = "50px" /> }</td>
+            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">{ titleTypePublic?.title || <LoadingContent w = "50px" h = "50px" /> }</td>
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900 leading-loose">
-                <span>{ title },</span>
-                <span>{ data }, </span>
-                <span>{ tom },</span>
-                <span>{ issue || "Нету" }</span>
-    
+                {
+                    title ? (
+                        <>
+                            <span>{ title },</span>
+                            <span>{ data }, </span>
+                            <span>{ tom },</span>
+                            <span>{ issue || "Нету" }</span>
+                        </>
+                    ) : <LoadingContent w = "50px" h = "50px" />
+                }
                 
+
             </td>
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">
-                <b>от</b> { page_start }  <b>до</b> { page_end } всего { pages }
+                {
+                    pages ?
+                    (<><b>от</b> { page_start }  <b>до</b> { page_end } всего { pages }</>)
+                    : <LoadingContent w = "50px" h = "50px" />
+                }
+                
             </td>
             <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">
                
                 
-                { parseAuthors.map((author: IAuthor, index: number) => (
-                    <div key = { index } className = "flex gap-3 flex-row justify-center items-center w-full">
-                        <p>{ author.first_name }</p>
-                        <p>{ author.last_name[0] }.</p>
-                        <p>{ author.patronymic[0] }.</p>
-                        
-                        <br />
-                    </div>
-                )) }
+                
+                {
+                    parseAuthors.map((author: IAuthor, index: number) => (
+                        <div key = { index } className = "flex gap-3 flex-row justify-center items-center w-full">
+                            {
+                                author.first_name ? (
+                                <>
+                                    <p>{ author.first_name }</p>
+                                    <p>{ author.last_name[0] }.</p>
+                                    <p>{ author.patronymic[0] }.</p>
+                                    <br />
+                                </>
+                                ) : <LoadingContent w = "50px" h = "50px" />
+                            }
+                        </div>
+                    )) 
+                }
+                  
             </td>
-            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">{ parse_created_at.day }/{ parse_created_at.month }/{ parse_created_at.year } { `${parse_created_at.hours}:${parse_created_at.minutes}` }</td>
-            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">{ parse_updated_at.day }/{ parse_updated_at.month }/{ parse_updated_at.year } { `${parse_updated_at.hours}:${parse_updated_at.minutes}` }</td>
+            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">
+                {
+                    parse_created_at.day 
+                    ?
+                    (
+                        <>
+                        { parse_created_at.day }/{ parse_created_at.month }/{ parse_created_at.year } { `${parse_created_at.hours}:${parse_created_at.minutes}` }
+                        </>
+                    )
+                    : <LoadingContent w = "50px" h = "50px" />
+                }
+                
+                
+            </td>
+            <td className = "border-2 p-3 border-blue-600 dark:border-blue-950 dark:bg-slate-900">
+                {
+                    parse_updated_at.day 
+                    ?
+                    (
+                        <>
+                        { parse_updated_at.day }/{ parse_updated_at.month }/{ parse_updated_at.year } { `${parse_updated_at.hours}:${parse_updated_at.minutes}` }
+                        </>
+                    ) : <LoadingContent w = "50px" h = "50px" />
+                }
+            </td>
 
             {
                 userId == for_user && location.pathname.split("/")[1] != "delete"

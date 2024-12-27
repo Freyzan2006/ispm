@@ -6,15 +6,43 @@ import { BaseAPI, KeyWordJWT } from './EAPI';
 
 
 
+
 const axiosConfig = axios.create({
     baseURL: BaseAPI.BaseAPI,
     withCredentials: true,
+
+    timeout: 5000,
 
     headers: {
         'Content-Type': 'application/json',
     },
     
 });
+
+axiosConfig.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      if (!error.response) {
+        
+        console.error("Сервер недоступен: ", error.message);
+      } else {
+        console.error("Ошибка сервера: ", error.response.status, error.response.data);
+      }
+      return Promise.reject(error); // Пробрасываем ошибку дальше
+    }
+);
+
+// const refreshResponse = await store.dispatch(refreshToken()).unwrap();
+// const newToken = refreshResponse.access; // или другой ключ для нового токена
+
+
+// // axiosConfig.defaults.headers.common['Authorization'] = `${KeyWordJWT.KEY} ${newToken}`; было
+// store.dispatch(setAccessToken(newToken));
+// originalRequest.headers['Authorization'] = `${KeyWordJWT.KEY} ${newToken}`; // стало
+
+// return axiosConfig(originalRequest);
+
+
 
 axiosConfig.interceptors.request.use(
     (config) => {

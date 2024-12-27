@@ -28,12 +28,13 @@ import { ISearchFiled } from "../../store/slices/tablesSlice/Itables";
 import { EStatus } from "../../services/api/EAPI";
 
 import ErrorAlert from "../../components/ux/ErrorAlert/ErrorAlert";
-import WarningAlert from "../../components/ux/warningAlert/WarningAlert";
+
 import { IPublicType } from "../../store/slices/publicTypeSlice/IpublicType";
 import { IUserList } from "../../store/slices/usersSlice/usersSlice";
 import { Button, InputField, SelectField } from "../../components/ui/ui";
 import { EButton, ITypeBtn } from "../../components/ui/Button/EButton";
 import { Table } from "../../components/ux/ux";
+import { LoadingContent } from "../../components/layout/layout";
 
 
 
@@ -110,9 +111,9 @@ const SearchPage: React.FC = () => {
         }
     }
 
+    // <WarningAlert warningMessage = "Загрузка..." />
 
-
-    if (status === EStatus.LOADING) return <WarningAlert warningMessage = "Загрузка..." />;
+    if (status === EStatus.LOADING) return <main className="flex justify-center items-center flex-col gap-5 w-full overflow-auto p-5 min-h-[500px]:"><LoadingContent /></main>;
     if (status === EStatus.FAILED) return <ErrorAlert errorMessage = {`Поиск пока не работает...` } /> ;
 
 
@@ -242,7 +243,7 @@ const SearchPage: React.FC = () => {
                 </div>
 
                 <Button type = { ITypeBtn.SUBMIT } styled = { EButton.GREEN } >
-                    <FaSearch /> Поиск
+                    <FaSearch /> Поиск { status }
                 </Button>
             </form>
 

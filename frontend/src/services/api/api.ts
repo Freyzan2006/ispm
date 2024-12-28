@@ -1,4 +1,8 @@
-export const BaseAPI = "http://127.0.0.1:8000/api/v1"; 
+import { modeProjectAPI } from "./deploy";
+
+
+
+export const BaseAPI = `${modeProjectAPI}/api/v1`; 
 
 export const TablesAPI = `table/`;
 export const AuthAPI = `${BaseAPI}/user`;

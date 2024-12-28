@@ -28,7 +28,7 @@ DEBUG = True
 
 # CORS_ALLOW_ALL_ORIGINS = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ispm-backend.onrender.com', 'localhost', '127.0.0.1']
 
 # CORS_ALLOW_ALL_ORIGINS = True 
 
@@ -108,6 +108,7 @@ CACHES = {
         }
     }
 }
+
 
 
 
@@ -272,9 +273,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "https://ispm123.netlify.app"
+   
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "https://ispm123.netlify.app"
 ]

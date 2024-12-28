@@ -11,7 +11,7 @@ const axiosConfig = axios.create({
     baseURL: BaseAPI.BaseAPI,
     withCredentials: true,
 
-    timeout: 5000,
+    timeout: 20000,
 
     headers: {
         'Content-Type': 'application/json',

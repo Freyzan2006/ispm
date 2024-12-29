@@ -51,15 +51,17 @@ const Pagination: React.FC<IProps> = ({ isBelongsUser, isSearch }) => {
 
 
     const handlePagination = (value: string) => {
-        dispatch(ChangePagination(+value));
+        const pageSize = +value;
+        dispatch(ChangePagination(pageSize));
+        // dispatch(ChangePagination(+value));
 
         if ( isBelongsUser ) {
-            dispatch(tablesUserPaginationThunk({ userId: id, page_size: +value }))
+            dispatch(tablesUserPaginationThunk({ userId: id, page_size: pageSize }))
         } else if ( isSearch ) {
             
-            dispatch(searchTablesPaginationThunk({ searchName, searchPublicType, searchUser, searchDate, page_size: +value }))
+            dispatch(searchTablesPaginationThunk({ searchName, searchPublicType, searchUser, searchDate, page_size: pageSize }))
         } else {
-            dispatch(tablesPaginationThunk({ page_size: value }));
+            dispatch(tablesPaginationThunk({ page_size: String(pageSize) }));
         }
     }
 

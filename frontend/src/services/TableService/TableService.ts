@@ -4,7 +4,7 @@ import axiosConfig from "../api/axiosConfig";
 import { IPagination, ISearchFiled, ITablesApiResponse } from "../../store/slices/tablesSlice/Itables";
 import { TableAPIParams } from "./ITableAPI";
 import { isProduction } from "../api/deploy";
-
+import { PAGINATION_SIZE } from "../api/config";
 
 
 
@@ -17,7 +17,19 @@ class TableAPIService {
             params.url = "https" + params.url?.substring(4);
         } 
         
-        const response = await axiosConfig.get<ITablesApiResponse>(params.url || TableAPI.ALL_TABLE_GET, { params });
+        
+        // if ( params.url ) {
+            
+        //     console.log(a.search)
+        // }
+        
+
+      
+        console.log(params);
+        const response = await axiosConfig.get<ITablesApiResponse>(params.url || TableAPI.ALL_TABLE_GET + "?page=1" + `&page_size=${params.page_size || PAGINATION_SIZE}`);
+        
+        // const response = await axiosConfig.get<ITablesApiResponse>(params.url || TableAPI.ALL_TABLE_GET, { params });
+       
         return response.data;
     }
 

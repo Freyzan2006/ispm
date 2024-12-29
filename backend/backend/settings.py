@@ -151,7 +151,10 @@ INSTALLED_APPS = [
 # docker-compose exec web python manage.py search_index --create
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': "http://elasticsearch:9200"
+        # 'hosts': "http://elasticsearch:9200",
+        "hosts": 'https://elasticsearch:9200',
+        # 'HOST': 'http://elasticsearch:9200', 
+        # 'PORT': 9200,      
          # Замените на ваш хост Elasticsearch
         
         # 'hosts': 'http://elasticsearch:9200'  # Замените на ваш хост Elasticsearch
@@ -283,3 +286,4 @@ CORS_ORIGIN_WHITELIST = [
     "http://localhost:5173",
     "https://ispm123.netlify.app"
 ]
+

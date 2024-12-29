@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -132,8 +135,8 @@ INSTALLED_APPS = [
 
     'django_filters',
     
-    'django_elasticsearch_dsl',
-    'django_elasticsearch_dsl_drf',
+    # 'django_elasticsearch_dsl',
+    # 'django_elasticsearch_dsl_drf',
     
  
     "rest_framework",
@@ -149,18 +152,24 @@ INSTALLED_APPS = [
 #http://localhost:9200/_cat/indices?v
 # localhost:9200/tablemodel/_search?pretty
 # docker-compose exec web python manage.py search_index --create
-ELASTICSEARCH_DSL = {
-    'default': {
-        # 'hosts': "http://elasticsearch:9200",
-        "hosts": 'https://elasticsearch:9200',
-        # 'HOST': 'http://elasticsearch:9200', 
-        # 'PORT': 9200,      
-         # Замените на ваш хост Elasticsearch
-        
-        # 'hosts': 'http://elasticsearch:9200'  # Замените на ваш хост Elasticsearch
-    },
-}
+# ELASTICSEARCH_DSL = {
+#     'default': {
+#         "hosts": ["http://localhost:9200", "http://elasticsearch:9200", "https://ispm-elasticsearch.onrender.com"]
 
+#         # 'hosts': [os.getenv('ELASTICSEARCH_HOST')],  # Используем переменную окружения
+#         # 'http_auth': (os.getenv('ELASTICSEARCH_USER'), os.getenv('ELASTICSEARCH_PASSWORD')),  # Также через env
+#         # 'verify_certs': True,
+#         # 'headers': {
+#         #     "Content-Type": "application/json"
+#         # },
+#     },
+# }
+# https://6a172969dc8b444ba61d1363d0bbd018.us-central1.gcp.cloud.es.io:443
+# essu_WmpCSVNrVmFVVUpDTTNOVFlURm5jVUo1VVVnNk9VcDNkRlY0YnpSUk4wdFRlSEJLUVdWdWRIbHdadz09AAAAAGtN5yY=
+
+# 'https://ispm-elasticsearch-d60661.es.us-east-1.aws.elastic.cloud:443'
+# dmhPYkVaUUJQNW5yTGZfX2FFZlk6ekUtSFJSTmJRY0c3bi1TSEI0UFZwZw==
+# essu_WmpCSVNrVmFVVUpDTTNOVFlURm5jVUo1VVVnNk9VcDNkRlY0YnpSUk4wdFRlSEJLUVdWdWRIbHdadz09AAAAAGtN5yY=
 # AUTH_USER_MODEL = "user.UserModel"
 
 MEDIA_URL = "/download/media/"

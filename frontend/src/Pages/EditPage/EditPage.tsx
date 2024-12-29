@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { IFrom } from "../AddPage/IAddPage";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "../../store/useAppDispatch";
+import { useAppSelector } from "../../store/useAppDispatch";
 
-import { EAlertType, setMessageAlert, setShowAlert, setTypeAlert } from "../../store/slices/alertSlice/alertSlice";
+import { EAlertType } from "../../store/slices/alertSlice/alertSlice";
 import axiosConfig from "../../services/api/axiosConfig";
 
 import css from "./EditPage.module.scss";
@@ -19,6 +19,7 @@ import { ERouters } from "../../routers/ERouters";
 import { RootState } from "../../store/store";
 import { Button, InputField, MyLink, SelectField } from "../../components/ui/ui";
 import { EButton, ITypeBtn } from "../../components/ui/Button/EButton";
+import useAlert from "../../hooks/useAlert";
 
 
 const EditPage: React.FC = () => {
@@ -36,14 +37,14 @@ const EditPage: React.FC = () => {
 
     const { publicTypes, status } = useAppSelector((state: RootState) => state.publicTypes);
     const userId = useAppSelector((state: RootState) => state.user.id);
-    const dispatch = useAppDispatch();
+  
 
     useCountPages({startPageWatch, endPageWatch, setValue});
     useGetPubType(status);
 
     // const tables = useAppSelector((state: RootState) => state.tables.tables);
 
-
+    const showAlert = useAlert();
 
 
     useEffect(() => {
@@ -82,15 +83,12 @@ const EditPage: React.FC = () => {
                 // Выполняем PATCH-запрос для обновления записи
                 const response = await axiosConfig.patch(`table/${id}/`, data);
                 console.log(response.data);
-                dispatch(setMessageAlert(`Запись "${data.name}" успешно обновлена.`));
+                showAlert(`Запись "${data.name}" успешно обновлена.`, EAlertType.SUCCESSFUL);
             } else {
-                dispatch(setMessageAlert("ID записи отсутствует."));
+                showAlert("ID записи отсутствует.", EAlertType.SUCCESSFUL); 
             }
-            dispatch(setShowAlert());
-            dispatch(setTypeAlert(EAlertType.SUCCESSFUL));
         } catch (err) {
-            dispatch(setMessageAlert("Не удалось обновить запись."));
-            dispatch(setTypeAlert(EAlertType.ERROR));
+            showAlert("Не удалось обновить запись.", EAlertType.ERROR); 
         }
     };
 

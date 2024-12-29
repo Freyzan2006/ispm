@@ -17,23 +17,17 @@ from table.pagination import TablePagination
 from table.permission import ReadOnly
 
 
-from django.core.cache import cache
+
 from django.views.decorators.cache import cache_page
 from config.cache import TIME_SAVE_IN_CACHE
 from django.utils.decorators import method_decorator
 
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
-from django.db.models.signals import post_save, post_delete
 
-import logging
 
-from search.documents import TableModelDocument
 
-from elasticsearch.helpers import BulkIndexError
 
-logger = logging.getLogger(__name__)
+
 
 class TableListCreateAPIView(generics.ListCreateAPIView):
     queryset = TableModel.objects.all().order_by('id') 
@@ -56,10 +50,6 @@ class TableListCreateAPIView(generics.ListCreateAPIView):
             # cache_key = f"table_list"
             # cache.delete(cache_key)  # Или обновите с новыми данными
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        except BulkIndexError as e:
-            # Логируем ошибки индексации
-            print(f"BulkIndexError: {e.errors}")
-            return Response({"error": e.errors}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
             # Логируем все остальные ошибки
             print(f"Error occurred: {str(e)}")
@@ -83,7 +73,8 @@ class TableListCreateAPIView(generics.ListCreateAPIView):
 class TableDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = TableModel.objects.all()
     serializer_class = TableModelSerializer
-    permission_classes = [ReadOnly, IsAuthenticated]
+    # permission_classes = [ReadOnly, IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     @method_decorator(cache_page(TIME_SAVE_IN_CACHE))  
     def dispatch(self, *args, **kwargs):

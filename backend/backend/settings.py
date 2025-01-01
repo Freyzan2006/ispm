@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-from dotenv import load_dotenv
+
 import os
 
-load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -236,10 +236,21 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'table_l9rs',
+        'USER': 'admin',
+        'PASSWORD': 'VSqFFlMi4Mb3OA2p6K3xy4l13NHhRiAl',
+        'HOST': 'dpg-ctoo965svqrc73ba74d0-a.oregon-postgres.render.com',
+        'PORT': '5432',
     }
 }
 
@@ -294,5 +305,9 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:5173",
     "https://ispm123.netlify.app"
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://ispm-backend.onrender.com',
 ]
 

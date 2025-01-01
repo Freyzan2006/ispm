@@ -5,6 +5,8 @@ import { useAppSelector } from "../../../store/useAppDispatch";
 import React, { Suspense } from "react";
 import { Loading } from "../layout";
 
+
+
 const FooterLazy = React.lazy(() => import("../Footer/Footer"));
 const HelperWidgetsLazy = React.lazy(() => import("../HelperWidgets/HelperWidgets"));
 const HeaderLazy = React.lazy(() => import("../Header/Header"));
@@ -17,6 +19,11 @@ const ContainerLazy = React.lazy(() => import("../Container/Container"));
 const Layout: React.FC = () => {
 
     const { isActiveAnimation } = useAppSelector((state: RootState) => state.bgAnimation); 
+    
+    
+  
+
+
 
     return (
         

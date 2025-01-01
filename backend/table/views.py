@@ -23,8 +23,7 @@ from config.cache import TIME_SAVE_IN_CACHE
 from django.utils.decorators import method_decorator
 
 
-
-
+from django.core.cache import cache
 
 
 
@@ -35,7 +34,7 @@ class TableListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = [ReadOnly] 
     pagination_class = TablePagination
     
-    @method_decorator(cache_page(TIME_SAVE_IN_CACHE))  
+    @method_decorator(cache_page(TIME_SAVE_IN_CACHE, key_prefix="table_list_cache"))  
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
     
@@ -47,8 +46,8 @@ class TableListCreateAPIView(generics.ListCreateAPIView):
         try:
             self.perform_create(serializer)
             # Удаляем или обновляем кэш
-            # cache_key = f"table_list"
-            # cache.delete(cache_key)  # Или обновите с новыми данными
+            cache_key = f"table_list_cache"
+            cache.delete(cache_key)  # Или обновите с новыми данными
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             # Логируем все остальные ошибки
@@ -80,17 +79,10 @@ class TableDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
     
-    # def perform_update(self, serializer):
-    #     super().perform_update(serializer)
-    #     # Инвалидация кэша
-    #     cache_key = f"table_list"
-    #     cache.delete(cache_key)
-
-    # def perform_destroy(self, instance):
-    #     super().perform_destroy(instance)
-    #     # Инвалидация кэша
-    #     cache_key = f"table_list"
-    #     cache.delete(cache_key)
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        # Инвалидация кэша после обновления записи
+        cache.delete('table_list_cache')  # Очистка кэша для списка
 
 
 class PublicationTypeCreateAPIView(generics.ListCreateAPIView):
@@ -133,7 +125,8 @@ class TableDeleteAPIView(APIView):
             return Response({'detail': 'У вас нет прав на удаление этой записи.'}, status=status.HTTP_403_FORBIDDEN)
         my_model.delete()
 
-     
+        # Удаляем кэш после удаления записи
+        cache.delete('table_list_cache')  # Очистка кэша для списка
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 

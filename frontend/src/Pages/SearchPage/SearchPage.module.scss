@@ -54,3 +54,13 @@ $screenMedia: 900px;
         flex-wrap: wrap;
     }
 }
+
+
+
+
+.Table {
+    @media (max-width: $screenMedia) {
+      
+        align-items: end;
+    }
+}

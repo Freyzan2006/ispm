@@ -73,8 +73,8 @@ const Menu: React.FC = () => {
             </Button>
 
             <menu className={ `${css.myMenuEl}`}>
-                <li><MyLink to = { EPath.HOME } styled = { EMyLink.LINK }><FaHome /> Главная страница</MyLink></li>
-                <li><MyLink to = { EPath.ABOUT } styled = { EMyLink.LINK }><FaCircleQuestion /> О проекте</MyLink></li>
+                <li><MyLink onClick = { handlerMenuMedia } to = { EPath.HOME } styled = { EMyLink.LINK }><FaHome /> Главная страница</MyLink></li>
+                <li><MyLink onClick = { handlerMenuMedia } to = { EPath.ABOUT } styled = { EMyLink.LINK }><FaCircleQuestion /> О проекте</MyLink></li>
             </menu>  
 
             <div className={ `${css.myMenuEl}`}>
@@ -98,23 +98,23 @@ const Menu: React.FC = () => {
 
 
                 
-                <MyLink to = { EPath.SEARCH } styled = { EButton.BLUE + " " + "myLinkSearch" }><FaSearch /> Поиск</MyLink>
+                <MyLink onClick = { handlerMenuMedia } to = { EPath.SEARCH } styled = { EButton.BLUE + " " + "myLinkSearch" }><FaSearch /> Поиск</MyLink>
 
                 
 
                 {
                     accessToken ? (
                         <div className = { css.myMenuEl }>
-                            <MyLink to = { EPath.USER } styled = { EButton.GREEN }><FaUserCircle /> { user.username } { user.is_staff && "(Админ)" }</MyLink>
+                            <MyLink onClick = { handlerMenuMedia } to = { EPath.USER } styled = { EButton.GREEN }><FaUserCircle /> { user.username } { user.is_staff && "(Админ)" }</MyLink>
 
                             
 
-                            <Button type = { ITypeBtn.BUTTON } onClick = { handlerLogout } styled = { EButton.RED }>
+                            <Button type = { ITypeBtn.BUTTON } onClick = { () => { handlerLogout(); handlerMenuMedia() } } styled = { EButton.RED }>
                                 <FaSignOutAlt /> Выход
                             </Button>
                         </div>
                     ) : (
-                        <MyLink to = { EPath.LOGIN } styled = { EButton.BLUE }>Вход <FaDoorOpen /></MyLink>
+                        <MyLink onClick = { handlerMenuMedia } to = { EPath.LOGIN } styled = { EButton.BLUE }>Вход <FaDoorOpen /></MyLink>
                     )
                 }
             </div>

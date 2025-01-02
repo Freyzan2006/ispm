@@ -14,27 +14,23 @@ $mediaSize: 1280px;
     padding: 8px 8px;
     position: relative;
     top: 0;
-   
+    
 
     @media (max-width: $mediaSize) {
         
-        height: 100%;
+        
         display: flex;
         flex-direction: column;
-        width: 300px;
+        width: 180px;
         position: fixed;
         right: 0;
         bottom: 0;
-     
-   
-        height: 100vh;
-      
-  
+        min-height: 100vh;
         z-index: 400;
         transform: translateX(100%);
-        transition: 0.5s;
+        transition: transform 0.5s;
+       
         
-
         &.active {
             transform: translateX(0%);
         }
@@ -49,7 +45,7 @@ $mediaSize: 1280px;
 
     @media (max-width: $mediaSize) {
         
-        transform: translateY(0%)
+        transform: translateY(0%);
         
     }
 }
@@ -72,6 +68,14 @@ $mediaSize: 1280px;
         
       
 
+    }
+}
+
+@media (max-width: $mediaSize) {
+    html, body {
+        height: 100%; /* Задаем высоту для body */
+        margin: 0;    /* Убираем отступы */
+        overflow-x: hidden; /* Отключаем горизонтальный скролл */
     }
 }
 

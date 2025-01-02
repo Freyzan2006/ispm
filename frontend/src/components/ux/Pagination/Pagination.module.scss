@@ -1,3 +1,6 @@
+$mediaSize: 480px;
+
+
 .pagination {
     width: 100%;
     display: flex;
@@ -5,6 +8,10 @@
     align-items: center;
     gap: 30px;
     flex-wrap: wrap;
+
+    @media (max-width: $mediaSize) {
+        flex-direction: column-reverse;
+    }
 
     &__control {
         display: flex;
@@ -46,79 +53,4 @@
         border-radius: 50%; /* Круглая ручка */
         box-shadow: 0 0 5px 1px black; /* Тень для ручки */
     }
-
-   
-    //   /* Ползунок */
-    // &__input {
-    //     -webkit-appearance: none; /* Убирает стандартный стиль ползунка в Webkit-браузерах */
-    //     width: 100%; /* Ширина ползунка */
-    //     height: 10px; /* Высота трека */
-    //     background: #186bd8; /* Цвет трека */
-    //     border-radius: 5px; /* Радиус скругления трека */
-    //     outline: none; /* Убирает обводку при фокусе */
-    //     opacity: 0.7; /* Прозрачность */
-    //     transition: opacity .2s; /* Плавное изменение прозрачности */
-    // }
-      
-    //   /* Стиль ползунка при наведении */
-    // &__input:hover {
-    //     opacity: 1;
-    // }
-    
-    // /* Стиль для трека ползунка */
-    // &__input::-webkit-slider-runnable-track {
-    //     width: 100%;
-    //     height: 10px;
-    //     background: #186bd8; /* Цвет трека */
-    //     border-radius: 5px; /* Радиус скругления трека */
-    // }
-    
-    // /* Стиль для ручки ползунка */
-    // &__input::-webkit-slider-thumb {
-    //     -webkit-appearance: none; /* Убирает стандартный стиль */
-    //     appearance: none; /* Убирает стандартный стиль */
-    //     width: 20px; /* Ширина ручки */
-    //     height: 20px; /* Высота ручки */
-    //     background: black; /* Цвет ручки */
-    //     cursor: pointer; /* Курсор для ручки */
-    //     border-radius: 50%; /* Круглая ручка */
-    //     box-shadow: 0 0 5px 1px black; /* Тень для ручки */
-    // }
-    
-    // /* Стиль для ручки ползунка в Firefox */
-    // &__input::-moz-range-thumb {
-    //     width: 20px;
-    //     height: 20px;
-    //     background: black;
-    //     cursor: pointer;
-    //     border-radius: 50%;
-    //     box-shadow: 0 0 5px 1px black;
-    // }
-    
-    // /* Стиль для ручки ползунка в Edge и Chrome */
-    // &__input::-ms-thumb {
-    //     width: 20px;
-    //     height: 20px;
-    //     background: black;
-    //     cursor: pointer;
-    //     border-radius: 50%;
-    //     box-shadow: 0 0 5px 1px black;
-    // }
-    
-    // /* Стиль для трека ползунка в Firefox */
-    // &__input::-moz-range-track {
-    //     width: 100%;
-    //     height: 10px;
-    //     background: #186bd8;
-    //     border-radius: 5px;
-    // }
-    
-    // /* Стиль для трека ползунка в Edge и Chrome */
-    // &__input::-ms-track {
-    //     width: 100%;
-    //     height: 10px;
-    //     background: transparent;
-    //     border-color: transparent;
-    //     color: transparent;
-    // }
 }

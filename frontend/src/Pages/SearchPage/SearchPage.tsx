@@ -118,7 +118,7 @@ const SearchPage: React.FC = () => {
 
 
     return (
-        <main className="flex justify-center items-center flex-col gap-5 w-full overflow-auto">
+        <main className=" flex flex-col gap-3 ">
             <form className={`${css.SearchPage} shadow-lg shadow-blue-400 dark:shadow-lg dark:shadow-gray-500 `} onSubmit = { handleSubmit(onSubmit) } >
                 <h1 className="text-black dark:text-white text-2xl">Поиск</h1>
                 <div className="flex flex-col justify-center items-center gap-4 w-full flex-wrap">
@@ -243,13 +243,15 @@ const SearchPage: React.FC = () => {
                 </div>
 
                 <Button type = { ITypeBtn.SUBMIT } styled = { EButton.GREEN } >
-                    <FaSearch /> Поиск { status }
+                    <FaSearch /> Поиск 
                 </Button>
             </form>
 
-         
+           
             <Table />
             <Pagination isSearch = { true } />
+           
+            
         </main>
     );
 };

@@ -20,6 +20,8 @@ export const headingTitleTable = ["№", "Название научной раб
     "Дата создания публикации на сайте", "Дата обновления публикации на сайте"
 ];
 
+import css from "./Table.module.scss"
+
 
 const Table: React.FC<ITableComponent> = ({ isBelongsUser }) => {
 
@@ -36,10 +38,11 @@ const Table: React.FC<ITableComponent> = ({ isBelongsUser }) => {
     useFetchTables({ isBelongsUser });
     
     
-   
+    // overflow-x: hidden;
+    // overflow-x-auto
     return (
-        <div className = "overflow-x-auto pb-5 flex flex-col gap-2 items-center p-3 overflow-y-auto max-h-[800px] min-h-[300px]">
-            <table className="table  adaptive-table">
+        <div className = {`${css.Table}  pb-5 flex flex-col gap-2 items-center p-3 overflow-y-auto max-h-[800px] min-h-[300px] `}>
+            <table className="table adaptive-table">
                 { isHaveTable ? <TableHead headingTitleTable = { headingTitleTable } /> : <></> }
                 <TableBody />
             </table> 

@@ -28,7 +28,7 @@ const DropDown: React.FC<IProps> = ({ children, intro, ...props }) => {
   
 
     return (
-        <div { ...props } className = { css.DropDown }>
+        <div { ...props } className = { `${css.DropDown}    ` }>
 
             <button className = {"text-black dark:text-white text-2xl " + css.DropDown__intro} onClick = { handlerShowSetting }>
                 { intro }

@@ -70,9 +70,9 @@ const Pagination: React.FC<IProps> = ({ isBelongsUser, isSearch }) => {
 
     return (
         <section className = { css.pagination }>
-            <Button onClick={() => handlePageChange(previousPage, currentPage - 1)} type = { ITypeBtn.BUTTON } styled = { `${EButton.IS_ACTIVE} ${!previousPage ? EButton.RED : EButton.GREEN}` } disabled = {!previousPage} >
-                <IoChevronBackSharp /> { currentPage - 1 <= 0 ? '' : currentPage - 1 }
-            </Button>
+
+
+
 
             <span className = " dark:text-white text-slate-900 flex justify-center items-center flex-row">Сейчас <RiPagesLine />: { currentPage }</span>
             <span className = " dark:text-white text-slate-900 flex justify-center items-center flex-row">Сейчас записей <RiPagesLine />: { countTableInPage }</span>
@@ -86,11 +86,18 @@ const Pagination: React.FC<IProps> = ({ isBelongsUser, isSearch }) => {
                     <span>{ maxPaginationCount }</span>
                 </div>
             </div>
-           
+
+            <div className="flex justify-center items-center gap-6">
+                <Button onClick={() => handlePageChange(previousPage, currentPage - 1)} type = { ITypeBtn.BUTTON } styled = { `${EButton.IS_ACTIVE} ${!previousPage ? EButton.RED : EButton.GREEN}` } disabled = {!previousPage} >
+                    <IoChevronBackSharp /> { currentPage - 1 <= 0 ? '' : currentPage - 1 }
+                </Button>
             
-            <Button onClick={() => handlePageChange(nextPage, currentPage + 1)} type = { ITypeBtn.BUTTON } styled = { `${EButton.IS_ACTIVE} ${!nextPage ? EButton.RED : EButton.GREEN}` } disabled = {!nextPage} >
-                <GrNext /> { count / paginationSize ? currentPage + 1 : '' }
-            </Button>
+                <Button onClick={() => handlePageChange(nextPage, currentPage + 1)} type = { ITypeBtn.BUTTON } styled = { `${EButton.IS_ACTIVE} ${!nextPage ? EButton.RED : EButton.GREEN}` } disabled = {!nextPage} >
+                    <GrNext /> { count / paginationSize ? currentPage + 1 : '' }
+                </Button>
+            </div>
+
+
         </section>
     )
 }

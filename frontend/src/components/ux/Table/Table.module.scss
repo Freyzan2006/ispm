@@ -1,0 +1,8 @@
+$mediaSize: 900px;
+
+.Table {
+    @media (max-width: $mediaSize) {
+      
+        align-items: start;
+    }
+}

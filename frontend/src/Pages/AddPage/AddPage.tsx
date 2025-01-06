@@ -27,10 +27,14 @@ import { IPublicType } from "../../store/slices/publicTypeSlice/IpublicType";
 import { EButton, ITypeBtn } from "../../components/ui/Button/EButton";
 import { IFrom } from "./IAddPage";
 import { ERouters } from "../../routers/ERouters";
+import { useState } from "react";
+
 
 
 
 const AddPage: React.FC = () => {
+
+    const [isLoading, setIsLoading] = useState(false);  // Состояние для загрузки
 
     const { handleSubmit, watch, setValue, control, formState: { errors, isValid  } } = useForm<IFrom>({
         mode: "onChange",
@@ -52,7 +56,12 @@ const AddPage: React.FC = () => {
     
 
     const onSubmit: SubmitHandler<IFrom> = (data) => {
+        
         if ( !userId ) return 
+
+        setIsLoading(true); 
+
+        
        
         data.for_user = userId;
         data.authors = JSON.stringify(data.authors) as any;
@@ -77,6 +86,8 @@ const AddPage: React.FC = () => {
         } catch(err) {
             dispatch(setMessageAlert(`Не удалось создать запись в таблице :(`));
             dispatch(setTypeAlert(EAlertType.ERROR));
+        } finally {
+            setIsLoading(false);  // Завершаем загрузку
         }
     }
 
@@ -159,10 +170,10 @@ const AddPage: React.FC = () => {
                     label="Том" name = "tom" 
                     control = { control } 
                     validationRules = {{
-                        required: '"Том" обязательно',
-                        valueAsNumber: true,
-                        min: { value: 1, message: 'минимум 1 том' },
-                        max: { value: 1000,  message: 'максимум 1000 томов' }
+                        // required: '"Том" обязательно',
+                        // valueAsNumber: true,
+                        // min: { value: 0, message: 'минимум 1 том' },
+                        // max: { value: 1000,  message: 'максимум 1000 томов' }
                     }}
                 />
 
@@ -240,35 +251,35 @@ const AddPage: React.FC = () => {
                         <div key={field.id} className="flex justify-center items-center flex-row gap-5">
                             <InputField
                                 width= { 300 }
-                                placeholder="Фамилия Соавтора"
+                                placeholder="Фамилия"
                                 errorMessage={errors.authors?.[index]?.last_name?.message}
-                                label="Фамилия Соавтора"
+                                label="Фамилия"
                                 name={`authors[${index}].last_name`}
                                 control={control}
                                 validationRules={{
-                                    required: '"Фамилия Соавтора" обязательно',
+                                    required: '"Фамилия" обязательно',
                                     minLength: { value: 4, message: 'Минимальная длина 4 символа' },
                                     maxLength: { value: 255, message: 'Максимальная длина 255 символов' },
                                 }}
                             />
                             <InputField
                                 width= { 300 }
-                                placeholder="Имя Соавтора"
+                                placeholder="Имя"
                                 errorMessage={errors.authors?.[index]?.first_name?.message}
-                                label="Имя Соавтора"
+                                label="Имя"
                                 name={`authors[${index}].first_name`}
                                 control={control}
                                 validationRules={{
-                                    required: '"Имя Соавтора" обязательно',
+                                    required: '"Имя" обязательно',
                                     minLength: { value: 4, message: 'Минимальная длина 4 символа' },
                                     maxLength: { value: 255, message: 'Максимальная длина 255 символов' },
                                 }}
                             />
                             <InputField
                                 width= { 300 }
-                                placeholder="Отчество Соавтора"
+                                placeholder="Отчество"
                                 errorMessage={errors.authors?.[index]?.patronymic?.message}
-                                label="Отчество Соавтора"
+                                label="Отчество"
                                 name={`authors[${index}].patronymic`}
                                 control={control}
                                 validationRules={{
@@ -280,7 +291,7 @@ const AddPage: React.FC = () => {
                         </div>
                     ))}
                     <Button styled = {EButton.GREEN} type= { ITypeBtn.BUTTON } onClick={() => append({ first_name: '', last_name: '', patronymic: "" })}>
-                        <FaPlus /> Добавить Соавтора
+                        <FaPlus /> Добавить соавтора
                     </Button>
                 </div>
                 
@@ -290,10 +301,15 @@ const AddPage: React.FC = () => {
                     <MyLink to = { `/${ERouters.USER}/` } styled = { EButton.BLUE }>
                         <FaArrowAltCircleLeft />
                     </MyLink>
-                    <Button disabled = { !isValid } type = { ITypeBtn.SUBMIT } 
+                    <Button disabled = { !isValid || isLoading } type = { ITypeBtn.SUBMIT } 
                     styled = { isValid ? EButton.GREEN : `${EButton.RED} opacity-40` } 
                     >
-                        <FaPlus /> { isValid ? "Добавить" : "Заполните все поля"} 
+                        <FaPlus /> { 
+                        isValid 
+                        ? 
+                        isLoading ? "Идёт добавление... " : "Добавить" 
+                        : 
+                        "Заполните все поля"} 
                     </Button>
                 </div>
 

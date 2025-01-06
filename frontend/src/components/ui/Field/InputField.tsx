@@ -7,7 +7,7 @@ import { ErrorAlert } from "../../ux/ux";
 
 
 const InputField: React.FC<IField> = 
-({ control, name, label, errorMessage, placeholder, validationRules, isNumber, disabled, type, width = 500 }) => {
+({ control, name, label, errorMessage, placeholder, validationRules, isNumber, disabled, type, onChange = () => {}, width = 500 }) => {
 
 
     const inputStyle = `${css.input}`;
@@ -46,9 +46,12 @@ const InputField: React.FC<IField> =
                         title = { noSpecialCharsMessage }
                         style={ { width: width } }
                         className = { `${inputStyle} INPUT` }
-                        onChange = { (e) => field.onChange(
-                            isNumber ? Number(e.target.value) : e.target.value
-                        ) } 
+                        onChange = { (e) => {
+                            onChange();
+                            field.onChange(isNumber ? Number(e.target.value) : e.target.value);
+                            
+                            } 
+                        }
                         value = { field.value === 0 ? "" : field.value } 
                         placeholder = { placeholder }
                         

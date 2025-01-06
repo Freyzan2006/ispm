@@ -2,6 +2,7 @@ import { Control } from "react-hook-form";
 
 
 export interface IField {
+    onChange?: () => void
     disabled?: boolean
     isNumber?: boolean,
     control: Control<any, any>;

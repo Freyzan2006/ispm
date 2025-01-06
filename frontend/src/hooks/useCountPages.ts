@@ -19,6 +19,8 @@ export const useCountPages = ({startPageWatch, endPageWatch, setValue}: IProps) 
             else {
                 const counter = (+endPageWatch - +startPageWatch) + 1;
                 setValue("pages", counter);
+
+                
             }
         }
     }, [startPageWatch, endPageWatch, setValue]);

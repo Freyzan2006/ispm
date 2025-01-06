@@ -39,7 +39,11 @@ class DocxGenerator:
         
     
         # Добавляем заголовок
-        heading = self.doc.add_heading(self.content.get_title_text(), level=1)
+        heading = self.doc.add_heading(level=1)
+        run = heading.add_run(self.content.get_title_text())
+        
+        # Устанавливаем шрифт "Times New Roman" и размер шрифта
+        run.font.name = 'Times New Roman'
         self.doc.add_page_break()
 
 

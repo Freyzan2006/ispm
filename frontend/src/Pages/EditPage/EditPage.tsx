@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IFrom } from "../AddPage/IAddPage";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
@@ -20,10 +20,12 @@ import { RootState } from "../../store/store";
 import { Button, InputField, MyLink, SelectField } from "../../components/ui/ui";
 import { EButton, ITypeBtn } from "../../components/ui/Button/EButton";
 import useAlert from "../../hooks/useAlert";
+import { MdOutlinePublishedWithChanges } from "react-icons/md";
 
 
 const EditPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
+    const [isLoading, setIsLoading] = useState(false);  // Состояние для загрузки
 
 
     const { handleSubmit, watch, setValue, control, formState: { errors, isValid }, reset } = useForm<IFrom>({
@@ -45,7 +47,7 @@ const EditPage: React.FC = () => {
     // const tables = useAppSelector((state: RootState) => state.tables.tables);
 
     const showAlert = useAlert();
-
+    
 
     useEffect(() => {
         // Загружаем данные записи при монтировании компонента
@@ -74,11 +76,15 @@ const EditPage: React.FC = () => {
     const onSubmit: SubmitHandler<IFrom> = async (data) => {
         if (!userId) return;
 
+        setIsLoading(true); 
+
         data.for_user = userId;
         data.authors = JSON.stringify(data.authors) as any;
        
 
         try {
+            
+
             if (id) {
                 // Выполняем PATCH-запрос для обновления записи
                 const response = await axiosConfig.patch(`table/${id}/`, data);
@@ -89,6 +95,8 @@ const EditPage: React.FC = () => {
             }
         } catch (err) {
             showAlert("Не удалось обновить запись.", EAlertType.ERROR); 
+        } finally {
+            setIsLoading(false);  // Завершаем загрузку
         }
     };
 
@@ -96,6 +104,10 @@ const EditPage: React.FC = () => {
         control,
         name: "authors",
     });
+
+
+
+
 
 
     return (
@@ -173,10 +185,10 @@ const EditPage: React.FC = () => {
                     label="Том" name = "tom" 
                     control = { control } 
                     validationRules = {{
-                        required: '"Том" обязательно',
-                        valueAsNumber: true,
-                        min: { value: 1, message: 'минимум 1 том' },
-                        max: { value: 1000,  message: 'максимум 1000 томов' }
+                        // required: '"Том" обязательно',
+                        // valueAsNumber: true,
+                        // min: { value: 1, message: 'минимум 1 том' },
+                        // max: { value: 1000,  message: 'максимум 1000 томов' }
                     }}
                 />
 
@@ -207,8 +219,9 @@ const EditPage: React.FC = () => {
                                 required: '"Начальная страница" обязательно',
                                 valueAsNumber: true,
                                 min: { value: 1, message: 'минимум 1 страница' },
-                                max: { value: endPageWatch || 5000,  message: 'Начальная страница не может быть больше конечной страницы.' }
+                                max: { value: endPageWatch,  message: 'Начальная страница не может быть больше конечной страницы.' }
                             }}
+
                         />
 
                         <InputField 
@@ -225,6 +238,7 @@ const EditPage: React.FC = () => {
                                 min: { value: 1, message: 'минимум "Начальная страница" ' },
                                 max: { value: 5000,  message: 'максимум 1000 страниц ' }
                             }}
+                       
                         />
                     
                         <InputField 
@@ -241,6 +255,7 @@ const EditPage: React.FC = () => {
                                 min: { value: 1, message: 'минимум "Страницы от" ' },
                                 max: { value: 5000,  message: 'максимум 1000 страниц ' }
                             }}
+                           
                         />
                     </div>
                 </div>
@@ -254,35 +269,35 @@ const EditPage: React.FC = () => {
                         <div key={field.id} className="flex justify-center items-center flex-row gap-5">
                             <InputField
                                 width= { 300 }
-                                placeholder="Фамилия Соавтора"
+                                placeholder="Фамилия"
                                 errorMessage={ errors.authors?.[index]?.last_name?.message }
-                                label="Фамилия Соавтора"
+                                label="Фамилия"
                                 name={`authors[${index}].last_name`}
                                 control={control}
                                 validationRules={{
-                                    required: '"Фамилия Соавтора" обязательно',
+                                    required: '"Фамилия" обязательно',
                                     minLength: { value: 4, message: 'Минимальная длина 4 символа' },
                                     maxLength: { value: 255, message: 'Максимальная длина 255 символов' },
                                 }}
                             />
                             <InputField
                                 width= { 300 }
-                                placeholder="Имя Соавтора"
+                                placeholder="Имя"
                                 errorMessage={errors.authors?.[index]?.first_name?.message}
-                                label="Имя Соавтора"
+                                label="Имя"
                                 name={`authors[${index}].first_name`}
                                 control={control}
                                 validationRules={{
-                                    required: '"Имя Соавтора" обязательно',
+                                    required: '"Имя" обязательно',
                                     minLength: { value: 4, message: 'Минимальная длина 4 символа' },
                                     maxLength: { value: 255, message: 'Максимальная длина 255 символов' },
                                 }}
                             />
                             <InputField
                                 width= { 300 }
-                                placeholder="Отчество Соавтора"
+                                placeholder="Отчество"
                                 errorMessage={errors.authors?.[index]?.patronymic?.message}
-                                label="Отчество Соавтора"
+                                label="Отчество"
                                 name={`authors[${index}].patronymic`}
                                 control={control}
                                 validationRules={{
@@ -294,15 +309,19 @@ const EditPage: React.FC = () => {
                         </div>
                     ))}
                     <Button styled = {EButton.GREEN} type= { ITypeBtn.BUTTON } onClick={() => append({ first_name: '', last_name: '', patronymic: "" })}>
-                        <FaPlus /> Добавить Соавтора
+                        <FaPlus /> Добавить соавтора
                     </Button>
                 </div>
                 <div className="flex justify-center items-center gap-3">
                     <MyLink to = { `/${ERouters.USER}/` } styled = { EButton.BLUE }>
                         <FaArrowAltCircleLeft />
                     </MyLink>
-                    <Button disabled={!isValid} type= { ITypeBtn.SUBMIT } styled={isValid ? EButton.GREEN : `${EButton.RED} opacity-40`}>
-                        <FaPlus /> {isValid ? "Сохранить изменения" : "Заполните все поля"}
+                    <Button disabled={!isValid || isLoading } type= { ITypeBtn.SUBMIT } styled={isValid ? EButton.YELLOW : `${EButton.RED} opacity-40`}>
+                        <MdOutlinePublishedWithChanges /> {isValid 
+                        ? 
+                        isLoading ? "Идёт сохранение" : "Сохранить изменения..."
+                        : 
+                        "Заполните все поля"}
                     </Button>
                 </div>
             </form>

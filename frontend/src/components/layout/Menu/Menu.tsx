@@ -27,6 +27,7 @@ import { EAlertType } from "../../../store/slices/alertSlice/alertSlice";
 import useGetUser from "../../../hooks/useGetUser";
 import { MyLink } from "../../ui/ui";
 import { AnimationBtn, ThemeBtn } from "../../ux/ux";
+import { useState } from "react";
 
 
 
@@ -37,6 +38,8 @@ import { AnimationBtn, ThemeBtn } from "../../ux/ux";
 const Menu: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+
+    const [isMedia, setIsMedia] = useState<boolean>(false); 
 
     const isAction = useAppSelector((state: RootState) => state.menu.isActive);    
     const accessToken = useAppSelector((state: RootState) => state.auth.accessToken);
@@ -50,6 +53,7 @@ const Menu: React.FC = () => {
     function handlerMenuMedia() {
         dispatch(toggleActive())
         dispatch(isScreenDimming())
+        setIsMedia(!isMedia);
     }
 
     function handlerLogout() {
@@ -73,8 +77,8 @@ const Menu: React.FC = () => {
             </Button>
 
             <menu className={ `${css.myMenuEl}`}>
-                <li><MyLink onClick = { handlerMenuMedia } to = { EPath.HOME } styled = { EMyLink.LINK }><FaHome /> Главная страница</MyLink></li>
-                <li><MyLink onClick = { handlerMenuMedia } to = { EPath.ABOUT } styled = { EMyLink.LINK }><FaCircleQuestion /> О проекте</MyLink></li>
+                <li><MyLink onClick = { isMedia ? handlerMenuMedia : () => {} } to = { EPath.HOME } styled = { EMyLink.LINK }><FaHome /> Главная страница</MyLink></li>
+                <li><MyLink onClick = { isMedia ? handlerMenuMedia : () => {} } to = { EPath.ABOUT } styled = { EMyLink.LINK }><FaCircleQuestion /> О проекте</MyLink></li>
             </menu>  
 
             <div className={ `${css.myMenuEl}`}>
@@ -98,23 +102,23 @@ const Menu: React.FC = () => {
 
 
                 
-                <MyLink onClick = { handlerMenuMedia } to = { EPath.SEARCH } styled = { EButton.BLUE + " " + "myLinkSearch" }><FaSearch /> Поиск</MyLink>
+                <MyLink onClick = { isMedia ? handlerMenuMedia : () => {} } to = { EPath.SEARCH } styled = { EButton.BLUE + " " + "myLinkSearch" }><FaSearch /> Поиск</MyLink>
 
                 
 
                 {
                     accessToken ? (
                         <div className = { css.myMenuEl }>
-                            <MyLink onClick = { handlerMenuMedia } to = { EPath.USER } styled = { EButton.GREEN }><FaUserCircle /> { user.username } { user.is_staff && "(Админ)" }</MyLink>
+                            <MyLink onClick = { isMedia ? handlerMenuMedia : () => {} } to = { EPath.USER } styled = { EButton.GREEN }><FaUserCircle /> { user.username } { user.is_staff && "(Админ)" }</MyLink>
 
                             
 
-                            <Button type = { ITypeBtn.BUTTON } onClick = { () => { handlerLogout(); handlerMenuMedia() } } styled = { EButton.RED }>
+                            <Button type = { ITypeBtn.BUTTON } onClick = { () => { handlerLogout(); isMedia && handlerMenuMedia() } } styled = { EButton.RED }>
                                 <FaSignOutAlt /> Выход
                             </Button>
                         </div>
                     ) : (
-                        <MyLink onClick = { handlerMenuMedia } to = { EPath.LOGIN } styled = { EButton.BLUE }>Вход <FaDoorOpen /></MyLink>
+                        <MyLink onClick = { isMedia ? handlerMenuMedia : () => {} } to = { EPath.LOGIN } styled = { EButton.BLUE }>Вход <FaDoorOpen /></MyLink>
                     )
                 }
             </div>

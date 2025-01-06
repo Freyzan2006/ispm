@@ -158,9 +158,10 @@ def create_paginated_tables(doc, table, data, rows_per_page, docxStyle):
         hdr_cells = table.rows[0].cells
         for i, header in enumerate(headers):
             hdr_cells[i].text = header
-            docxStyle.set_bold(hdr_cells[i])
+            # docxStyle.set_bold(hdr_cells[i])
             docxStyle.set_horizontal_alignment(hdr_cells[i], 'center')
             docxStyle.set_vertical_alignment(hdr_cells[i], 'center')
+            docxStyle.set_font(hdr_cells[i], font_name="Times New Roman", font_size=12)
 
         # Заполняем строки данными
         for index, item in enumerate(chunk):
@@ -177,7 +178,8 @@ def create_paginated_tables(doc, table, data, rows_per_page, docxStyle):
                 row_cells[2].text = "Не указано"
 
             row_cells[3].text = f"{item.get('title', '')}, {str(item.get('data', ''))}, {str(item.get('tom', ''))}, {str(item.get('issue', ''))}"
-            row_cells[4].text = f"от {str(item.get('page_start', ''))} до {str(item.get('page_end', ''))} всего {str(item.get('pages', ''))}"
+            # row_cells[4].text = f"от {str(item.get('page_start', ''))} до {str(item.get('page_end', ''))} всего {str(item.get('pages', ''))}"
+            row_cells[4].text = f"{str(item.get('pages', ''))}"
 
             row_cells[5].text = ""
             for key in parse_json_to_dict(item.get("authors", [])):

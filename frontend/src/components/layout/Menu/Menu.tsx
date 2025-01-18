@@ -28,6 +28,7 @@ import useGetUser from "../../../hooks/useGetUser";
 import { MyLink } from "../../ui/ui";
 import { AnimationBtn, ThemeBtn } from "../../ux/ux";
 import { useState } from "react";
+import { splitLoginUserFirstAndLastName } from "../../../utils/splitLoginUserFirstAndLastName";
 
 
 
@@ -64,7 +65,7 @@ const Menu: React.FC = () => {
 
 
 
-   
+
 
    
 
@@ -109,7 +110,7 @@ const Menu: React.FC = () => {
                 {
                     accessToken ? (
                         <div className = { css.myMenuEl }>
-                            <MyLink onClick = { isMedia ? handlerMenuMedia : () => {} } to = { EPath.USER } styled = { EButton.GREEN }><FaUserCircle /> { user.username } { user.is_staff && "(Админ)" }</MyLink>
+                            <MyLink onClick = { isMedia ? handlerMenuMedia : () => {} } to = { EPath.USER } styled = { EButton.GREEN }><FaUserCircle /> { splitLoginUserFirstAndLastName(user.username) } { user.is_staff && "(Админ)" }</MyLink>
 
                             
 

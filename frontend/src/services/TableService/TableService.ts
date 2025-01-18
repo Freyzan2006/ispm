@@ -3,32 +3,26 @@ import { SearchAPI, TableAPI } from "../api/EAPI";
 import axiosConfig from "../api/axiosConfig";
 import { IPagination, ISearchFiled, ITablesApiResponse } from "../../store/slices/tablesSlice/Itables";
 import { TableAPIParams } from "./ITableAPI";
-import { isProduction } from "../api/deploy";
+
 import { PAGINATION_SIZE } from "../api/config";
+import BaseService from "../BaseService";
 
 
 
 
 
 
-class TableAPIService {
+class TableAPIService extends BaseService {
     async fetchTables(params: TableAPIParams): Promise<ITablesApiResponse> {
-        if ( isProduction && params.url ) {
-            params.url = "https" + params.url?.substring(4);
-        } 
-        
-        
-        // if ( params.url ) {
-            
-        //     console.log(a.search)
-        // }
-        
+        params.url = this.adjustUrlForProduction(params.url);
+      
+       
 
       
-        console.log(params);
+        
         const response = await axiosConfig.get<ITablesApiResponse>(params.url || TableAPI.ALL_TABLE_GET + "?page=1" + `&page_size=${params.page_size || PAGINATION_SIZE}`);
         
-        // const response = await axiosConfig.get<ITablesApiResponse>(params.url || TableAPI.ALL_TABLE_GET, { params });
+        
        
         return response.data;
     }

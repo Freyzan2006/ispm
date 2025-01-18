@@ -44,7 +44,7 @@ class DocxGenerator:
         
         # Устанавливаем шрифт "Times New Roman" и размер шрифта
         run.font.name = 'Times New Roman'
-        self.doc.add_page_break()
+        # self.doc.add_page_break()
 
 
         self.docxStyle.set_style_title(text = heading)

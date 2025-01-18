@@ -27,7 +27,7 @@ import { IPublicType } from "../../store/slices/publicTypeSlice/IpublicType";
 import { EButton, ITypeBtn } from "../../components/ui/Button/EButton";
 import { IFrom } from "./IAddPage";
 import { ERouters } from "../../routers/ERouters";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 
@@ -36,13 +36,21 @@ const AddPage: React.FC = () => {
 
     const [isLoading, setIsLoading] = useState(false);  // Состояние для загрузки
 
-    const { handleSubmit, watch, setValue, control, formState: { errors, isValid  } } = useForm<IFrom>({
+    const { handleSubmit, watch, setValue, control, formState: { errors, isValid  }, clearErrors } = useForm<IFrom>({
         mode: "onChange",
     });
 
     const startPageWatch = watch("page_start");
     const endPageWatch = watch("page_end");
    
+
+    useEffect(() => {
+        if (startPageWatch < endPageWatch) {
+            clearErrors("page_start")
+        }
+        setValue("page_start", startPageWatch)
+        console.log("render")
+    }, [endPageWatch, setValue])
   
     const { publicTypes, status } = useAppSelector((state: RootState) => state.publicTypes);
     const userId = useAppSelector((state: RootState) => state.user.id);

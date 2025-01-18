@@ -28,13 +28,20 @@ const EditPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);  // Состояние для загрузки
 
 
-    const { handleSubmit, watch, setValue, control, formState: { errors, isValid }, reset } = useForm<IFrom>({
+    const { handleSubmit, watch, setValue, control, formState: { errors, isValid }, reset, clearErrors } = useForm<IFrom>({
         mode: "onChange",
     });
 
     const startPageWatch = watch("page_start");
     const endPageWatch = watch("page_end");
 
+    useEffect(() => {
+        if (startPageWatch < endPageWatch) {
+            clearErrors("page_start")
+        }
+        setValue("page_start", startPageWatch)
+        console.log("render")
+    }, [endPageWatch, setValue, startPageWatch])
 
 
     const { publicTypes, status } = useAppSelector((state: RootState) => state.publicTypes);
@@ -73,6 +80,8 @@ const EditPage: React.FC = () => {
         }
     }, [id]);
 
+    
+
     const onSubmit: SubmitHandler<IFrom> = async (data) => {
         if (!userId) return;
 
@@ -99,6 +108,8 @@ const EditPage: React.FC = () => {
             setIsLoading(false);  // Завершаем загрузку
         }
     };
+
+  
 
     const { fields, append, remove } = useFieldArray({
         control,

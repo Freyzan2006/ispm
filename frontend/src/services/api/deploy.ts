@@ -1,6 +1,6 @@
 export const isProduction: boolean = true; 
 
-export const BACKEND_PROD: string = "https://ispm-backend.onrender.com"
+export const BACKEND_PROD: string = "https://ispm-backend-2pi6.onrender.com"
 export const BACKEND_DEV: string = "http://127.0.0.1:8000"
 
 

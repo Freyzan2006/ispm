@@ -1,5 +1,5 @@
 
-version: '3.8'  # Используйте последнюю поддерживаемую версию
+
 services:
   web:
     build: 
@@ -17,14 +17,23 @@ services:
       # - ELASTICSEARCH_HOST=http://elasticsearch:9200
     depends_on:
       - redis
+      - postgres
       # - elasticsearch
     env_file:
       - .env
     
-    db:
-      image: sqlite
-      volumes:
-        - ./db.sqlite3:/app/db.sqlite3  # Привязываем базу данных
+  postgres:
+    image: "postgres:16"  # Используем официальную PostgreSQL версию
+    environment:
+      - POSTGRES_USER=ispm_db_user  # Установите пользователя
+      - POSTGRES_PASSWORD=G0ZtP3jgKYSbxsZrwOfmYZ5k7VdaPg2F  # Установите пароль
+      - POSTGRES_DB=ispm_db  # Установите имя базы данных
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Персистентные данные для PostgreSQL
+    ports:
+      - "5432:5432"
+    networks:
+      - mynetwork
 
   redis:
     image: "redis:alpine"
@@ -48,6 +57,7 @@ services:
 
 volumes:
   web:
+  postgres_data: 
 
 networks:
   mynetwork:

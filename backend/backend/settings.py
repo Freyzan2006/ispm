@@ -31,7 +31,7 @@ DEBUG = True
 
 # CORS_ALLOW_ALL_ORIGINS = True
 
-ALLOWED_HOSTS = ['ispm-backend.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['ispm-backend-2pi6.onrender.com', 'localhost', '127.0.0.1']
 
 # CORS_ALLOW_ALL_ORIGINS = True 
 
@@ -106,7 +106,7 @@ CACHES = {
         'BACKEND': 'django_redis.cache.RedisCache',
         # 'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         # 'LOCATION': f"redis://{os.getenv('REDIS_HOST', 'redis')}:{os.getenv('REDIS_PORT', 6379)}/1",
-        'LOCATION': "redis://red-ctnvl7lumphs73cad9kg:6379",
+        'LOCATION': "redis://red-cub5hvq3esus73eqetr0:6379",
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
@@ -242,14 +242,14 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-
+# postgresql://ispm_db_user:G0ZtP3jgKYSbxsZrwOfmYZ5k7VdaPg2F@dpg-cub5h2bqf0us73cctcd0-a.oregon-postgres.render.com/ispm_db
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'table_l9rs',
-        'USER': 'admin',
-        'PASSWORD': 'VSqFFlMi4Mb3OA2p6K3xy4l13NHhRiAl',
-        'HOST': 'dpg-ctoo965svqrc73ba74d0-a.oregon-postgres.render.com',
+        'NAME': 'ispm_db',
+        'USER': 'ispm_db_user',
+        'PASSWORD': 'G0ZtP3jgKYSbxsZrwOfmYZ5k7VdaPg2F',
+        'HOST': 'dpg-cub5h2bqf0us73cctcd0-a.oregon-postgres.render.com',
         'PORT': '5432',
     }
 }
@@ -298,7 +298,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://ispm123.netlify.app"
+    "https://ispm123.netlify.app",
+    "http://localhost:8000"
    
 ]
 
@@ -308,6 +309,8 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://ispm-backend.onrender.com',
+    'https://ispm-backend-2pi6.onrender.com',
 ]
+
+
 
